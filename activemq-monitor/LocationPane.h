@@ -22,18 +22,14 @@ public:
 	~LocationPane();
 
 public slots:
-	void createLocation(LocationItem *item);
-	void updateLocation(LocationItem *item);
-	void updateProperties(QTreeWidgetItem *treeItem);
+	//	void createLocation(LocationItem *item);
+	//	void updateLocation(LocationItem *item);
+	//	void updateProperties(QTreeWidgetItem *treeItem);
 
 	void contextMenuRequested(const QPoint &pos);
 	void insertItemClicked();
 	void removeItemClicked();
 	void setPropertiesVisible(bool visible);
-
-private slots:
-	void actionHovered(QAction *action);
-	void actionTriggered(QAction *action);
 
 private:
 	inline void registerLocationItem(const QString &locationId, LocationItem *item)
@@ -62,31 +58,40 @@ private:
 	{
 		return item ? getTreeItem(item->getId()) : 0;
 	}
+
 	inline QTreeWidgetItem *getSelectedTreeItem() const
 	{
 		QList<QTreeWidgetItem *> itemList = ui.locationTree->selectedItems();
 		return itemList.isEmpty() ? 0 : itemList.first();
 	}
-	inline LocationItem *getSelectedLocationItem() const
+	inline LocationItem *getSelectedItem() const
 	{
-		return getLocationItem(getSelectedTreeItem());
+		return (LocationItem *) getSelectedTreeItem();
 	}
 
-	void handleCreateLocation();
-	void handleCreateChannel();
-	void handleEdit();
-	void handleDelete();
-	void handleConnect();
-	void handleDisconnect();
-	void handleSubscribe();
-	void handleUnsubscribe();
-	void handleAutomaticallyConnect(bool checked);
-	void handleAutomaticallySubscribe(bool checked);
+	inline LocationItem *getRootItem() const
+	{
+		return rootItem;
+	}
+
+private:
+	void action(QAction *action);
+	void actionAddRemoteHost();
+	void actionAddSubscription();
+	void actionEdit();
+	void actionDelete();
+	void actionConnect();
+	void actionDisconnect();
+	void actionSubscribe();
+	void actionUnsubscribe();
+	void actionAutoConnection(bool checked);
+	void actionAutoSubscription(bool checked);
 
 private:
 	Ui::LocationPaneClass ui;
 	QMenu *contextMenu;
 	QHash<QString, LocationItem *> locationHash;
+	LocationItem *rootItem;
 };
 
 #endif // LOCATIONPANE_H

@@ -109,14 +109,20 @@
     </layout>
    </item>
   </layout>
-  <action name="actionCreateLocation">
+  <action name="actionAddRemoteHost">
    <property name="text">
-    <string>Create Location...</string>
+    <string>Add Remote Host Connection...</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Remote Host Connection</string>
    </property>
   </action>
-  <action name="actionCreateChannel">
+  <action name="actionAddSubscription">
    <property name="text">
-    <string>Create Channel...</string>
+    <string>Add Subscription...</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Subscription</string>
    </property>
   </action>
   <action name="actionDelete">
@@ -124,7 +130,7 @@
     <string>Delete</string>
    </property>
   </action>
-  <action name="actionChannelAuto">
+  <action name="actionAutoSubscription">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -132,7 +138,7 @@
     <string>Subscribe Automatically</string>
    </property>
   </action>
-  <action name="actionHostnameAuto">
+  <action name="actionAutoConnection">
    <property name="checkable">
     <bool>true</bool>
    </property>
