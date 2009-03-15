@@ -19,11 +19,7 @@ signals:
 
 public slots:
 	virtual void accept();
-
-	void validateLocation()
-	{
-		ui.create->setEnabled(!ui.hostname->text().isEmpty());
-	}
+	void validateLocation();
 
 private:
 	Ui::LocationCreateDialogClass ui;

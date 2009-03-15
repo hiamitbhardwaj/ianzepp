@@ -19,7 +19,7 @@ public:
 
 	QString getRemoteUri(bool complete = true);
 	QString getSubscription();
-	QString getDisplayText();
+	QString getToolTip ();
 
 	inline bool isAutomatic()
 	{
@@ -71,9 +71,10 @@ public:
 	}
 
 public:
+	QString display;
 	QString protocol;
 	QString hostname;
-	quint16 port;
+	QString port;
 	QString channelType;
 	QString channel;
 	quint32 messages;
