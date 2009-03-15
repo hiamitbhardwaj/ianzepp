@@ -8,30 +8,31 @@
 #include "LocationItem.h"
 
 LocationItem::LocationItem(QObject *parent) :
-	QObject(parent)
+	QObject(parent), messages(0), bytes(0), connected(false)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 LocationItem::~LocationItem()
 {
-	// TODO Auto-generated destructor stub
 }
 
-QString LocationItem::getRemoteUri(bool complete)
+QString LocationItem::getId(IdType type)
 {
-	QString remoteUri;
-	remoteUri += protocol;
-	remoteUri += "://";
-	remoteUri += hostname;
-	remoteUri += ":";
-	remoteUri += port;
+	switch (type)
+	{
+	case Full:
+	case Subscription:
+		return QString(getHostnameUri() + getSubscription());
+	case Hostname:
+		return QString(getHostnameUri());
+	default:
+		throw QString("Invalid IdType specified: " + QString::number(type));
+	}
+}
 
-	if (complete)
-		return remoteUri += getSubscription();
-	else
-		return remoteUri;
+QString LocationItem::getHostnameUri()
+{
+	return QString("tcp://" + hostname + ":" + port);
 }
 
 QString LocationItem::getSubscription()
@@ -42,22 +43,4 @@ QString LocationItem::getSubscription()
 		return QString("/queue/" + channel);
 	else
 		return QString::null;
-}
-
-QString LocationItem::getToolTip()
-{
-	QString tooltip;
-	tooltip += "<p><b>Display Name:<b></p>";
-	tooltip += "<p>" + display + "</p>";
-	tooltip += "<p><b>Connection URI:<b></p>";
-	tooltip += "<p>" + getRemoteUri(false) + QString(automatic ? " [auto]" : "") + "</p>";
-
-	if (isSubscription())
-	{
-		tooltip += "<p><b>Subscription Details:<b></p>";
-		tooltip += "<p>" + getSubscription() + "</p>";
-	}
-
-	tooltip += "<p><i>Double-click to this information<i></p>";
-	return tooltip;
 }
