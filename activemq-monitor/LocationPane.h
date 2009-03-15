@@ -21,11 +21,6 @@ public:
 	LocationPane(QWidget *parent = 0);
 	~LocationPane();
 
-	enum Columns
-	{
-		DescriptionColumn, IdColumn
-	};
-
 public slots:
 	void createLocation(LocationItem *item);
 	void updateLocation(LocationItem *item);
@@ -53,14 +48,10 @@ private:
 	{
 		return locationHash.value(locationId);
 	}
-	inline LocationItem *getLocationItem(QTreeWidgetItem *treeItem) const
-	{
-		return treeItem ? getLocationItem(treeItem->text(IdColumn)) : 0;
-	}
 
 	inline QList<QTreeWidgetItem *> getTreeItemList(const QString &locationId) const
 	{
-		return ui.locationTree->findItems(locationId, Qt::MatchExactly, IdColumn);
+		return ui.locationTree->findItems(locationId, Qt::MatchExactly, LocationItem::IdColumn);
 	}
 	inline QTreeWidgetItem *getTreeItem(const QString &locationId) const
 	{

@@ -33,6 +33,22 @@ signals:
 	void createLocation(LocationItem *item);
 	void updateLocation(LocationItem *item);
 
+public:
+	inline AcceptSignal getAcceptSignal() const
+	{
+		return acceptSignal;
+	}
+	inline void setAcceptSignal(AcceptSignal acceptSignal)
+	{
+		this->acceptSignal = acceptSignal;
+	}
+	inline void setLocationItem(LocationItem *item)
+	{
+		locationItem = item;
+	}
+
+	virtual void exec();
+
 public slots:
 	virtual void accept();
 	void populate(LocationItem *item);
@@ -42,18 +58,10 @@ public slots:
 	void setChannelVisible(bool visible);
 	void setMessageVisible(bool visible);
 
-	inline AcceptSignal getAcceptSignal() const
-	{
-		return acceptSignal;
-	}
-	inline void setAcceptSignal(AcceptSignal acceptSignal)
-	{
-		this->acceptSignal = acceptSignal;
-	}
-
 private:
 	Ui::LocationCreateDialogClass ui;
 	AcceptSignal acceptSignal;
+	LocationItem *locationItem;
 };
 
 #endif // LOCATIONCREATEDIALOG_H

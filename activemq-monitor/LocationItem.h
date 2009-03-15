@@ -10,92 +10,179 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtGui/QTreeWidget>
 
-class LocationItem: public QObject
+class LocationItem: public QTreeWidgetItem
 {
 public:
-	static const quint16 StompPort = 61613;
-	static const quint16 OpenWirePort = 61616;
-	static const quint16 HttpPort = 80;
-	static const quint16 HttpsPort = 443;
-
-	enum IdType
+	enum Ports
 	{
-		Full, Hostname, Subscription
+		Http = 80, Https = 443, Stomp = 61613, OpenWire = 61616
+	};
+
+	enum Columns
+	{
+		DescriptionColumn, IdColumn
 	};
 
 public:
-	LocationItem(QObject *parent = 0);
+	LocationItem();
+	LocationItem(QTreeWidget * parent, int type = Type);
+	LocationItem(QTreeWidgetItem * parent, int type = Type);
 	virtual ~LocationItem();
 
-	QString getId(IdType = Full);
-	QString getHostnameUri();
-	QString getSubscription();
-
-	inline bool isAutomaticConnection()
+public:
+	bool isHttp() const
 	{
-		return hostnameAuto;
+		return remotePort == QString::number(Http);
 	}
-	inline bool isAutomaticSubscription()
+	bool isHttps() const
 	{
-		return hostnameAuto;
+		return remotePort == QString::number(Https);
 	}
-	inline bool isConnected()
+	bool isOpenWire() const
 	{
-		return connected;
+		return remotePort == QString::number(OpenWire);
 	}
-
-	inline bool isRemoteHost()
+	bool isQueue() const
 	{
-		return getSubscription().isEmpty();
+		return type.toLower() == "queue" && !subscription.isEmpty();
 	}
-	inline bool isSubscription()
+	bool isRemoteHost() const
 	{
-		return false == getSubscription().isEmpty();
+		return !isSubscription() && !remoteHost.isEmpty() && !remotePort.isEmpty();
 	}
-
-	inline bool isStomp()
+	bool isStomp() const
 	{
-		return port == QString::number(StompPort);
+		return remotePort == QString::number(Stomp);
 	}
-	inline bool isOpenWire()
+	bool isSubscription() const
 	{
-		return port == QString::number(OpenWirePort);
+		return !subscription.isEmpty() && !type.isEmpty();
 	}
-	inline bool isHttp()
+	bool isTopic() const
 	{
-		return port == QString::number(HttpPort);
+		return type.toLower() == "topic" && !subscription.isEmpty();
 	}
 
-	inline bool isTopic()
-	{
-		return channelType.toLower() == "topic" && false == channel.isEmpty();
-	}
-	inline bool isQueue()
-	{
-		return channelType.toLower() == "queue" && false == channel.isEmpty();
-	}
-
-	inline void incrementMessages(quint32 num = 1)
+	void incrementMessages(quint32 num = 1)
 	{
 		messages += num;
 	}
-	inline void incrementBytes(quint32 num = 1)
+	void incrementBytes(quint32 num = 1)
 	{
 		bytes += num;
 	}
 
-public:
-	QString display;
-	QString hostname;
-	bool hostnameAuto;
-	QString port;
-	QString channel;
-	QString channelType;
-	bool channelAuto;
+	bool getAutoConnection() const
+	{
+		return autoConnection;
+	}
+
+	bool getAutoSubscription() const
+	{
+		return autoSubscription;
+	}
+
+	quint32 getBytes() const
+	{
+		return bytes;
+	}
+
+	bool getConnected() const
+	{
+		return connected;
+	}
+
+	QString getDisplayText() const;
+
+	QString getId() const
+	{
+		return text(IdColumn);
+	}
+
+	quint32 getMessages() const
+	{
+		return messages;
+	}
+
+	QString getRemoteHost() const
+	{
+		return remoteHost;
+	}
+
+	QString getRemotePort() const
+	{
+		return remotePort;
+	}
+
+	QString getSubscription() const
+	{
+		return subscription;
+	}
+
+	QString getType() const
+	{
+		return type;
+	}
+
+	void setAutoConnection(bool autoConnection)
+	{
+		this->autoConnection = autoConnection;
+	}
+
+	void setAutoSubscription(bool autoSubscription)
+	{
+		this->autoSubscription = autoSubscription;
+	}
+
+	void setBytes(quint32 bytes)
+	{
+		this->bytes = bytes;
+	}
+
+	void setConnected(bool connected)
+	{
+		this->connected = connected;
+	}
+
+	void setMessages(quint32 messages)
+	{
+		this->messages = messages;
+	}
+
+	void setRemoteHost(QString remoteHost)
+	{
+		this->remoteHost = remoteHost;
+	}
+
+	void setRemotePort(QString remotePort)
+	{
+		this->remotePort = remotePort;
+	}
+
+	void setSubscription(QString subscription)
+	{
+		this->subscription = subscription;
+	}
+
+	void setType(QString type)
+	{
+		this->type = type;
+	}
+
+private:
+	// Internal data
+	QString remoteHost;
+	QString remotePort;
+	QString type;
+	QString subscription;
 	quint32 messages;
 	quint32 bytes;
+	bool autoConnection;
+	bool autoSubscription;
 	bool connected;
+
 };
 
 #endif /* LOCATIONITEM_H_ */

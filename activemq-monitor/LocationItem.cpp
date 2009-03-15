@@ -7,8 +7,18 @@
 
 #include "LocationItem.h"
 
-LocationItem::LocationItem(QObject *parent) :
-	QObject(parent), messages(0), bytes(0), connected(false)
+LocationItem::LocationItem() :
+	QTreeWidgetItem()
+{
+}
+
+LocationItem::LocationItem(QTreeWidget *parent, int type) :
+	QTreeWidgetItem(parent, type)
+{
+}
+
+LocationItem::LocationItem(QTreeWidgetItem *parent, int type) :
+	QTreeWidgetItem(parent, type)
 {
 }
 
@@ -16,31 +26,22 @@ LocationItem::~LocationItem()
 {
 }
 
-QString LocationItem::getId(IdType type)
+QString LocationItem::getDisplayText() const
 {
-	switch (type)
-	{
-	case Full:
-	case Subscription:
-		return QString(getHostnameUri() + getSubscription());
-	case Hostname:
-		return QString(getHostnameUri());
-	default:
-		throw QString("Invalid IdType specified: " + QString::number(type));
-	}
-}
+	bool isHost = isRemoteHost();
 
-QString LocationItem::getHostnameUri()
-{
-	return QString("tcp://" + hostname + ":" + port);
-}
-
-QString LocationItem::getSubscription()
-{
-	if (isTopic())
-		return QString("/topic/" + channel);
+	if (isHost && isHttp())
+		return QString("http://" + getRemoteHost());
+	else if (isHost && isHttps())
+		return QString("https://" + getRemoteHost());
+	else if (isHost && isOpenWire())
+		return QString("openwire://" + getRemoteHost());
+	else if (isHost && isStomp())
+		return QString("stomp://" + getRemoteHost());
+	else if (isTopic())
+		return QString("/topic/" + subscription);
 	else if (isQueue())
-		return QString("/queue/" + channel);
+		return QString("/queue/" + subscription);
 	else
 		return QString::null;
 }

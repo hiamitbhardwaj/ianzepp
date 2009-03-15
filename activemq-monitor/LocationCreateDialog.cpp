@@ -15,33 +15,67 @@ LocationCreateDialog::~LocationCreateDialog()
 {
 }
 
+void LocationCreateDialog::exec()
+{
+	if (locationItem == 0)
+		return;
+
+	bool isRemoteHost = locationItem->isRemoteHost();
+	bool isSubscription = locationItem->isSubscription();
+
+	if (isRemoteHost || isSubscription)
+	{
+		ui.display->setText(locationItem->getDisplayText());
+		ui.hostname->setText(locationItem->getRemoteHost());
+		ui.hostnameAuto->setChecked(locationItem->getAutoConnection());
+
+		if (locationItem->isStomp())
+			ui.port->setCurrentIndex(StompIndex);
+		else if (locationItem->isOpenWire())
+			ui.port->setCurrentIndex(OpenWireIndex);
+		else if (locationItem->isHttp())
+			ui.port->setCurrentIndex(HttpIndex);
+		else
+			ui.port->setEditText(locationItem->getRemotePort());
+	}
+
+	if (isSubscription)
+	{
+		if (locationItem->isTopic())
+			ui.channelType->setCurrentIndex(TopicIndex);
+		else if (locationItem->isQueue())
+			ui.channelType->setCurrentIndex(QueueIndex);
+
+		ui.channel->setText(locationItem->getSubscription());
+		ui.channelAuto->setCheckable(locationItem->getAutoSubscription());
+	}
+}
 void LocationCreateDialog::accept()
 {
-	LocationItem *item = new LocationItem(this->parentWidget());
+	LocationItem *item = new LocationItem();
 
 	// Basic remote items
-	item->display = ui.display->text();
-	item->hostname = ui.hostname->text();
-	item->hostnameAuto = ui.hostnameAuto->isChecked();
+	item->setRemoteHost(ui.hostname->text());
+	item->setAutoConnection(ui.hostnameAuto->isChecked());
 
 	// Port management
 	QString port = ui.port->currentText();
 
 	if (port == "<stomp>" || port.isEmpty())
-		item->port = QString::number(LocationItem::StompPort);
+		item->setRemotePort(QString::number(LocationItem::Stomp));
 	else if (port == "<openwire>")
-		item->port = QString::number(LocationItem::OpenWirePort);
+		item->setRemotePort(QString::number(LocationItem::OpenWire));
 	else if (port == "<http>")
-		item->port = QString::number(LocationItem::HttpPort);
+		item->setRemotePort(QString::number(LocationItem::Http));
 	else if (port == "<https>")
-		item->port = QString::number(LocationItem::HttpsPort);
+		item->setRemotePort(QString::number(LocationItem::Https));
 	else
-		item->port = port;
+		item->setRemotePort(port);
 
 	// Channel management
-	item->channelType = ui.channelType->currentText();
-	item->channel = ui.channel->text();
-	item->channelAuto = ui.channelAuto->isChecked();
+	item->setType(ui.channelType->currentText());
+	item->setSubscription(ui.channel->text());
+	item->setAutoSubscription(ui.channelAuto->isChecked());
 
 	// Send out
 	if (getAcceptSignal() == Create)
@@ -51,33 +85,6 @@ void LocationCreateDialog::accept()
 
 	// Accept the dialog
 	QDialog::accept();
-}
-
-void LocationCreateDialog::populate(LocationItem *item)
-{
-	if (item == 0)
-		return;
-
-	ui.display->setText(item->display);
-	ui.hostname->setText(item->hostname);
-	ui.hostnameAuto->setChecked(item->hostnameAuto);
-
-	if (item->isStomp())
-		ui.port->setCurrentIndex(StompIndex);
-	else if (item->isOpenWire())
-		ui.port->setCurrentIndex(OpenWireIndex);
-	else if (item->isHttp())
-		ui.port->setCurrentIndex(HttpIndex);
-	else
-		ui.port->setEditText(item->port);
-
-	if (item->isTopic())
-		ui.channelType->setCurrentIndex(TopicIndex);
-	else if (item->isQueue())
-		ui.channelType->setCurrentIndex(QueueIndex);
-
-	ui.channel->setText(item->channel);
-	ui.channelAuto->setCheckable(item->channelAuto);
 }
 
 void LocationCreateDialog::validateLocation()
