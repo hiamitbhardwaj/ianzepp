@@ -42,7 +42,7 @@ public:
 	{
 		this->acceptSignal = acceptSignal;
 	}
-	inline void setLocationItem(LocationItem *item)
+	inline void setParentItem(LocationItem *item)
 	{
 		locationItem = item;
 	}
