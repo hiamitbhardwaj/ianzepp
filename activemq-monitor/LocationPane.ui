@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>459</width>
+    <width>426</width>
     <height>574</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QTreeWidget" name="treeWidget">
+    <widget class="QTreeWidget" name="locationTree">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -31,17 +31,47 @@
        <height>0</height>
       </size>
      </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ContiguousSelection</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>200</number>
+     </attribute>
+     <attribute name="headerShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Location</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>Id</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="LocationProperties" name="propertiesWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="propertiesVisible">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -55,19 +85,22 @@
         <string>Show Properties</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
+       </property>
+       <property name="tristate">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="addItem">
        <property name="text">
         <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="removeItem">
        <property name="text">
         <string>Remove</string>
        </property>
@@ -75,17 +108,33 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="LocationProperties" name="widget" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-    </widget>
-   </item>
   </layout>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionAutoConnect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto-Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Auto-Connect</string>
+   </property>
+  </action>
+  <action name="actionProperties">
+   <property name="text">
+    <string>Properties</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -99,14 +148,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>checkBox</sender>
+   <sender>propertiesVisible</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget</receiver>
+   <receiver>propertiesWidget</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>52</x>
-     <y>458</y>
+     <x>53</x>
+     <y>569</y>
     </hint>
     <hint type="destinationlabel">
      <x>83</x>
@@ -114,5 +163,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>locationTree</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>LocationPaneClass</receiver>
+   <slot>contextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>503</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>locationTree</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>LocationPaneClass</receiver>
+   <slot>updateProperties(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>363</x>
+     <y>345</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>348</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>insertItemClicked()</slot>
+  <slot>removeItemClicked()</slot>
+  <slot>contextMenuRequested(QPoint)</slot>
+  <slot>updateProperties(QTreeWidgetItem*)</slot>
+ </slots>
 </ui>

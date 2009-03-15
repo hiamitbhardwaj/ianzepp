@@ -7,11 +7,13 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += DetailsPane.h \
+HEADERS += LocationItem.h \
+    DetailsPane.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += DetailsPane.cpp \
+SOURCES += LocationItem.cpp \
+    DetailsPane.cpp \
     LocationPane.cpp \
     LocationProperties.cpp \
     main.cpp \
