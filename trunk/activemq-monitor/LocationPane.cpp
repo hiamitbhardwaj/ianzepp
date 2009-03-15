@@ -23,7 +23,7 @@ LocationPane::LocationPane(QWidget *parent) :
 	contextMenu->addAction(ui.actionDelete);
 
 	// Tweak the tree
-	ui.locationTree->setColumnHidden(IdColumn, true);
+	ui.locationTree->setColumnHidden(LocationItem::IdColumn, true);
 }
 
 LocationPane::~LocationPane()
@@ -38,24 +38,25 @@ void LocationPane::contextMenuRequested(const QPoint &pos)
 	LocationItem *item = getSelectedLocationItem();
 	bool isRemoteHost = item && item->isRemoteHost();
 	bool isSubscription = item && item->isSubscription();
+	bool isConnected = item && item->getConnected();
 
 	ui.actionCreateLocation->setEnabled(item == 0);
 	ui.actionCreateChannel->setEnabled(isRemoteHost);
 	ui.actionEdit->setEnabled(isRemoteHost || isSubscription);
 	ui.actionDelete->setEnabled(isRemoteHost || isSubscription);
 	ui.actionConnect->setVisible(isRemoteHost);
-	ui.actionConnect->setEnabled(isRemoteHost && false == item->connected);
+	ui.actionConnect->setEnabled(isRemoteHost && !isConnected);
 	ui.actionDisconnect->setVisible(isRemoteHost);
-	ui.actionDisconnect->setEnabled(isRemoteHost && item->connected);
+	ui.actionDisconnect->setEnabled(isRemoteHost && isConnected);
 	ui.actionHostnameAuto->setVisible(isRemoteHost);
 	ui.actionHostnameAuto->setVisible(isRemoteHost);
-	ui.actionHostnameAuto->setChecked(isRemoteHost && item->hostnameAuto);
+	ui.actionHostnameAuto->setChecked(isRemoteHost && item->getAutoConnection());
 	ui.actionSubscribe->setVisible(isSubscription);
-	ui.actionSubscribe->setEnabled(isSubscription && false == item->connected);
+	ui.actionSubscribe->setEnabled(isSubscription && !isConnected);
 	ui.actionUnsubscribe->setVisible(isSubscription);
-	ui.actionUnsubscribe->setEnabled(isSubscription && item->connected);
+	ui.actionUnsubscribe->setEnabled(isSubscription && isConnected);
 	ui.actionChannelAuto->setVisible(isSubscription);
-	ui.actionChannelAuto->setChecked(isSubscription && item->channelAuto);
+	ui.actionChannelAuto->setChecked(isSubscription && item->getAutoSubscription());
 	actionTriggered(contextMenu->exec(ui.locationTree->mapToGlobal(pos)));
 }
 
@@ -76,16 +77,16 @@ void LocationPane::createLocation(LocationItem *item)
 	if (item->isRemoteHost())
 	{
 		treeItem = new QTreeWidgetItem(ui.locationTree);
-		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getHostnameUri());
-		treeItem->setData(DescriptionColumn, Qt::ToolTipRole, item->display);
-	}
-	else if (item->isSubscription())
-	{
-		treeItem = new QTreeWidgetItem(getTreeItem(item->getId(LocationItem::Hostname)));
-		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getSubscription());
-	}
 
-	treeItem->setData(IdColumn, Qt::DisplayRole, locationId);
+		//		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getDisplayText());
+	}
+	//	else if (item->isSubscription())
+	//	{
+	//		treeItem = new QTreeWidgetItem(getTreeItem(item->getId(LocationItem::Hostname)));
+	//		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getSubscription());
+	//	}
+
+//	treeItem->setData(IdColumn, Qt::DisplayRole, locationId);
 
 	// Register
 	registerLocationItem(locationId, item);
@@ -93,39 +94,39 @@ void LocationPane::createLocation(LocationItem *item)
 
 void LocationPane::updateLocation(LocationItem *item)
 {
-	LocationItem *originalItem = getLocationItem(item->getId());
-
-	// Update the display (using the original item id)
-	QTreeWidgetItem *treeItem = getTreeItem(originalItem->getId());
-
-	if (item->isRemoteHost())
-	{
-		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getHostnameUri());
-		treeItem->setData(DescriptionColumn, Qt::ToolTipRole, item->display);
-	}
-	else if (item->isSubscription())
-	{
-		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getSubscription());
-	}
-
-	// Change the item id (if needed)
-	if (originalItem->getId() != item->getId())
-	{
-		unregisterLocationItem(originalItem->getId());
-		treeItem->setData(IdColumn, Qt::DisplayRole, item->getId());
-		registerLocationItem(item->getId(), originalItem);
-	}
-
-	// Finally, update the original item with new values
-	originalItem->bytes = item->bytes;
-	originalItem->channel = item->channel;
-	originalItem->channelAuto = item->channelAuto;
-	originalItem->channelType = item->channelType;
-	originalItem->display = item->display;
-	originalItem->hostname = item->hostname;
-	originalItem->hostnameAuto = item->hostnameAuto;
-	originalItem->messages = item->messages;
-	originalItem->port = item->port;
+//	LocationItem *originalItem = getLocationItem(item->getId());
+//
+//	// Update the display (using the original item id)
+//	QTreeWidgetItem *treeItem = getTreeItem(originalItem->getId());
+//
+//	if (item->isRemoteHost())
+//	{
+//		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getHostnameUri());
+//		treeItem->setData(DescriptionColumn, Qt::ToolTipRole, item->display);
+//	}
+//	else if (item->isSubscription())
+//	{
+//		treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->getSubscription());
+//	}
+//
+//	// Change the item id (if needed)
+//	if (originalItem->getId() != item->getId())
+//	{
+//		unregisterLocationItem(originalItem->getId());
+//		treeItem->setData(IdColumn, Qt::DisplayRole, item->getId());
+//		registerLocationItem(item->getId(), originalItem);
+//	}
+//
+//	// Finally, update the original item with new values
+//	originalItem->bytes = item->bytes;
+//	originalItem->channel = item->channel;
+//	originalItem->channelAuto = item->channelAuto;
+//	originalItem->channelType = item->channelType;
+//	originalItem->display = item->display;
+//	originalItem->hostname = item->hostname;
+//	originalItem->hostnameAuto = item->hostnameAuto;
+//	originalItem->messages = item->messages;
+//	originalItem->port = item->port;
 }
 
 void LocationPane::updateProperties(QTreeWidgetItem *treeItem)
@@ -184,34 +185,21 @@ void LocationPane::actionTriggered(QAction *action)
 void LocationPane::handleCreateLocation()
 {
 	LocationCreateDialog *dialog = new LocationCreateDialog(this);
-	dialog->setChannelVisible(false);
-	dialog->setMessageVisible(false);
+	dialog->setLocationItem(new LocationItem(ui.locationTree));
 	dialog->exec();
 }
 
 void LocationPane::handleCreateChannel()
 {
 	LocationCreateDialog *dialog = new LocationCreateDialog(this);
-	dialog->populate(getSelectedLocationItem());
-	dialog->setLocationEnabled(false);
-	dialog->setChannelEnabled(true);
-	dialog->setChannelVisible(true);
-	dialog->setMessageVisible(false);
+	dialog->setLocationItem(getSelectedLocationItem());
 	dialog->exec();
 }
 
 void LocationPane::handleEdit()
 {
-	LocationItem *item = getSelectedLocationItem();
-	bool isRemoteHost = item && item->isRemoteHost();
-	bool isSubscription = item && item->isSubscription();
-
 	LocationCreateDialog *dialog = new LocationCreateDialog(this);
-	dialog->populate(getSelectedLocationItem());
-	dialog->setLocationEnabled(isRemoteHost);
-	dialog->setChannelEnabled(false == isRemoteHost && isSubscription);
-	dialog->setChannelVisible(false == isRemoteHost && isSubscription);
-	dialog->setMessageVisible(false);
+	dialog->setLocationItem(getSelectedLocationItem());
 	dialog->setAcceptSignal(LocationCreateDialog::Update);
 	dialog->exec();
 }
