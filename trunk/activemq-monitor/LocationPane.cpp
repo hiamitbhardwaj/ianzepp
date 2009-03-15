@@ -11,7 +11,7 @@ LocationPane::LocationPane(QWidget *parent) :
 	contextMenu->addAction(ui.actionCreateLocation);
 
 	// Tweak the tree
-	//ui.locationTree->setColumnHidden(IdColumn, true);
+	ui.locationTree->setColumnHidden(IdColumn, true);
 }
 
 LocationPane::~LocationPane()
@@ -30,6 +30,20 @@ void LocationPane::contextMenuRequested(const QPoint &pos)
 void LocationPane::createLocation(LocationItem *item)
 {
 	QTreeWidgetItem *treeItem = getTreeItem(item);
+
+	if (treeItem)
+	{
+		QString messageTitle = "Error creating new location";
+		QString messageText = "Remote location already exists: " + item->getRemoteUri();
+		QMessageBox::warning(this, messageTitle, messageText);
+		return;
+	}
+
+	// Create the new tree item
+	treeItem = new QTreeWidgetItem(ui.locationTree);
+	treeItem->setData(DescriptionColumn, Qt::DisplayRole, item->display);
+	treeItem->setData(DescriptionColumn, Qt::ToolTipRole, item->getToolTip());
+	treeItem->setData(IdColumn, Qt::DisplayRole, item->getRemoteUri());
 }
 
 void LocationPane::updateProperties(QTreeWidgetItem *treeItem)

@@ -6,6 +6,7 @@
 #include <QtCore/QRegExp>
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
+#include <QtGui/QMessageBox>
 #include <QtGui/QWidget>
 
 #include "ui_LocationPane.h"
@@ -51,7 +52,7 @@ private:
 		return treeItem ? getLocationItem(treeItem->text(IdColumn)) : 0;
 	}
 
-	inline QList<QTreeWidgetItem *> *getTreeItemList(LocationItem *item) const
+	inline QList<QTreeWidgetItem *> getTreeItemList(LocationItem *item) const
 	{
 		if (item)
 			return ui.locationTree->findItems(item->getRemoteUri(), Qt::MatchExactly, IdColumn);
@@ -60,8 +61,8 @@ private:
 	}
 	inline QTreeWidgetItem *getTreeItem(LocationItem *item) const
 	{
-		QList<QTreeWidgetItem *> *itemList = getTreeItemsList(item);
-		return itemList->isEmpty() ? 0 : itemList->first();
+		QList<QTreeWidgetItem *> itemList = getTreeItemList(item);
+		return itemList.isEmpty() ? 0 : itemList.first();
 	}
 
 	void handleCreateLocation();

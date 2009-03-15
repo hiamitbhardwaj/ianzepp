@@ -44,12 +44,20 @@ QString LocationItem::getSubscription()
 		return QString::null;
 }
 
-QString LocationItem::getDisplayText()
+QString LocationItem::getToolTip()
 {
+	QString tooltip;
+	tooltip += "<p><b>Display Name:<b></p>";
+	tooltip += "<p>" + display + "</p>";
+	tooltip += "<p><b>Connection URI:<b></p>";
+	tooltip += "<p>" + getRemoteUri(false) + QString(automatic ? " [auto]" : "") + "</p>";
+
 	if (isSubscription())
-		return getSubscription();
-	else if (isRemoteHost())
-		return getRemoteUri(false);
-	else
-		return QString("<unknown>");
+	{
+		tooltip += "<p><b>Subscription Details:<b></p>";
+		tooltip += "<p>" + getSubscription() + "</p>";
+	}
+
+	tooltip += "<p><i>Double-click to this information<i></p>";
+	return tooltip;
 }
