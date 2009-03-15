@@ -1,0 +1,12 @@
+INPUT(
+./release\LocationItem.o
+./release\DetailsPane.o
+./release\LocationPane.o
+./release\LocationProperties.o
+./release\main.o
+./release\ActiveMQMonitor.o
+./release\moc_DetailsPane.o
+./release\moc_LocationPane.o
+./release\moc_LocationProperties.o
+./release\moc_ActiveMQMonitor.o
+);
