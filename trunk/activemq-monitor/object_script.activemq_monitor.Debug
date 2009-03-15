@@ -1,10 +1,12 @@
 INPUT(
+./debug\LocationCreateDialog.o
 ./debug\LocationItem.o
 ./debug\DetailsPane.o
 ./debug\LocationPane.o
 ./debug\LocationProperties.o
 ./debug\main.o
 ./debug\ActiveMQMonitor.o
+./debug\moc_LocationCreateDialog.o
 ./debug\moc_DetailsPane.o
 ./debug\moc_LocationPane.o
 ./debug\moc_LocationProperties.o

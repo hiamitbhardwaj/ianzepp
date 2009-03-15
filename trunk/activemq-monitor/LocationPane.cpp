@@ -8,11 +8,10 @@ LocationPane::LocationPane(QWidget *parent) :
 
 	// Initialize the context menu
 	contextMenu = new QMenu(this);
-	contextMenu->addAction(ui.actionConnect);
-	contextMenu->addAction(ui.actionDisconnect);
-	contextMenu->addAction(ui.actionAutoConnect);
-	contextMenu->addSeparator();
-	contextMenu->addAction(ui.actionProperties);
+	contextMenu->addAction(ui.actionCreateLocation);
+
+	// Tweak the tree
+	//ui.locationTree->setColumnHidden(IdColumn, true);
 }
 
 LocationPane::~LocationPane()
@@ -24,24 +23,13 @@ void LocationPane::contextMenuRequested(const QPoint &pos)
 {
 	qDebug() << "LocationPane::contextMenuRequested(const QPoint &pos)";
 
-	LocationItem *item = getLocationItem(ui.locationTree->currentItem());
-
-	// Set proper values on action objects prior to menu display
-	if (item)
-	{
-		ui.actionConnect->setEnabled(!item->connected);
-		ui.actionDisconnect->setEnabled(item->connected);
-		ui.actionAutoConnect->setChecked(item->autoConnect);
-	}
-	else
-	{
-		ui.actionConnect->setEnabled(false);
-		ui.actionDisconnect->setEnabled(false);
-		ui.actionAutoConnect->setEnabled(false);
-		ui.actionAutoConnect->setChecked(false);
-	}
-
+	//LocationItem *item = getLocationItem(ui.locationTree->currentItem());
 	actionTriggered(contextMenu->exec(ui.locationTree->mapToGlobal(pos)));
+}
+
+void LocationPane::createLocation(LocationItem *item)
+{
+	QTreeWidgetItem *treeItem = getTreeItem(item);
 }
 
 void LocationPane::updateProperties(QTreeWidgetItem *treeItem)
@@ -81,19 +69,12 @@ void LocationPane::actionTriggered(QAction *action)
 
 	if (action == 0)
 		return;
-
-	LocationItem *item = getLocationItem(ui.locationTree->currentItem());
-
-	if (item == 0)
-		return;
-
-	if (action == ui.actionAutoConnect)
-		item->autoConnect = ui.actionAutoConnect->isChecked();
-	else if (action == ui.actionConnect)
-		emit connectionRequested(item->id);
-	else if (action == ui.actionDisconnect)
-		emit disconnectionRequested(item->id);
-	else if (action == ui.actionProperties)
-		setPropertiesVisible(true);
+	if (action == ui.actionCreateLocation)
+		handleCreateLocation();
 }
 
+void LocationPane::handleCreateLocation()
+{
+	LocationCreateDialog *dialog = new LocationCreateDialog(this);
+	dialog->exec();
+}

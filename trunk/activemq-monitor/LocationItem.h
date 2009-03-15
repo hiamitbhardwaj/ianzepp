@@ -17,16 +17,69 @@ public:
 	LocationItem(QObject *parent = 0);
 	virtual ~LocationItem();
 
+	QString getRemoteUri(bool complete = true);
+	QString getSubscription();
+	QString getDisplayText();
+
+	inline bool isAutomatic()
+	{
+		return automatic;
+	}
+	inline bool isConnected()
+	{
+		return connected;
+	}
+
+	inline bool isRemoteHost()
+	{
+		return getSubscription().isEmpty();
+	}
+	inline bool isSubscription()
+	{
+		return false == getSubscription().isEmpty();
+	}
+
+	inline bool isStomp()
+	{
+		return protocol.toLower() == "stomp";
+	}
+	inline bool isOpenWire()
+	{
+		return protocol.toLower() == "openwire";
+	}
+	inline bool isHttp()
+	{
+		return protocol.toLower() == "http";
+	}
+
+	inline bool isTopic()
+	{
+		return channelType.toLower() == "topic" && false == channel.isEmpty();
+	}
+	inline bool isQueue()
+	{
+		return channelType.toLower() == "queue" && false == channel.isEmpty();
+	}
+
+	inline void incrementMessages(quint32 num = 1)
+	{
+		messages += num;
+	}
+	inline void incrementBytes(quint32 num = 1)
+	{
+		bytes += num;
+	}
+
 public:
-	QString id;
-	QString name;
-	QString remoteHost;
+	QString protocol;
+	QString hostname;
+	quint16 port;
 	QString channelType;
 	QString channel;
 	quint32 messages;
 	quint32 bytes;
 	bool connected;
-	bool autoConnect;
+	bool automatic;
 };
 
 #endif /* LOCATIONITEM_H_ */
