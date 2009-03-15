@@ -14,16 +14,31 @@
 class LocationItem: public QObject
 {
 public:
+	static const quint16 StompPort = 61613;
+	static const quint16 OpenWirePort = 61616;
+	static const quint16 HttpPort = 80;
+	static const quint16 HttpsPort = 443;
+
+	enum IdType
+	{
+		Full, Hostname, Subscription
+	};
+
+public:
 	LocationItem(QObject *parent = 0);
 	virtual ~LocationItem();
 
-	QString getRemoteUri(bool complete = true);
+	QString getId(IdType = Full);
+	QString getHostnameUri();
 	QString getSubscription();
-	QString getToolTip ();
 
-	inline bool isAutomatic()
+	inline bool isAutomaticConnection()
 	{
-		return automatic;
+		return hostnameAuto;
+	}
+	inline bool isAutomaticSubscription()
+	{
+		return hostnameAuto;
 	}
 	inline bool isConnected()
 	{
@@ -41,15 +56,15 @@ public:
 
 	inline bool isStomp()
 	{
-		return protocol.toLower() == "stomp";
+		return port == QString::number(StompPort);
 	}
 	inline bool isOpenWire()
 	{
-		return protocol.toLower() == "openwire";
+		return port == QString::number(OpenWirePort);
 	}
 	inline bool isHttp()
 	{
-		return protocol.toLower() == "http";
+		return port == QString::number(HttpPort);
 	}
 
 	inline bool isTopic()
@@ -72,15 +87,15 @@ public:
 
 public:
 	QString display;
-	QString protocol;
 	QString hostname;
+	bool hostnameAuto;
 	QString port;
-	QString channelType;
 	QString channel;
+	QString channelType;
+	bool channelAuto;
 	quint32 messages;
 	quint32 bytes;
 	bool connected;
-	bool automatic;
 };
 
 #endif /* LOCATIONITEM_H_ */

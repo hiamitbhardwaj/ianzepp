@@ -111,7 +111,58 @@
   </layout>
   <action name="actionCreateLocation">
    <property name="text">
-    <string>Create Location ...</string>
+    <string>Create Location...</string>
+   </property>
+  </action>
+  <action name="actionCreateChannel">
+   <property name="text">
+    <string>Create Channel...</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionChannelAuto">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Subscribe Automatically</string>
+   </property>
+  </action>
+  <action name="actionHostnameAuto">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Connect Automatically</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionSubscribe">
+   <property name="text">
+    <string>Subscribe</string>
+   </property>
+  </action>
+  <action name="actionUnsubscribe">
+   <property name="text">
+    <string>Unsubscribe</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit...</string>
    </property>
   </action>
  </widget>
