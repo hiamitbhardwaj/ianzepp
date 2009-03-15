@@ -203,7 +203,6 @@ void LocationPane::actionEdit()
 {
 	LocationCreateDialog *dialog = new LocationCreateDialog(this);
 	dialog->setParentItem(getSelectedItem());
-	dialog->setAcceptSignal(LocationCreateDialog::Update);
 	dialog->exec();
 }
 

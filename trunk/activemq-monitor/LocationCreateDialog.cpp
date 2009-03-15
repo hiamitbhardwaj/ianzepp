@@ -1,7 +1,7 @@
 #include "LocationCreateDialog.h"
 
 LocationCreateDialog::LocationCreateDialog(QWidget *parent) :
-	QDialog(parent), acceptSignal(LocationCreateDialog::Create)
+	QDialog(parent)
 {
 	ui.setupUi(this);
 	ui.display->setFocus();
@@ -15,44 +15,43 @@ LocationCreateDialog::~LocationCreateDialog()
 {
 }
 
-void LocationCreateDialog::exec()
+int LocationCreateDialog::exec()
 {
-	if (locationItem == 0)
-		return;
-
-	bool isRemoteHost = locationItem->isRemoteHost();
-	bool isSubscription = locationItem->isSubscription();
+	bool isRemoteHost = parentItem->isRemoteHost();
+	bool isSubscription = parentItem->isSubscription();
 
 	if (isRemoteHost || isSubscription)
 	{
-		ui.display->setText(locationItem->getDisplayText());
-		ui.hostname->setText(locationItem->getRemoteHost());
-		ui.hostnameAuto->setChecked(locationItem->getAutoConnection());
+		ui.display->setText(parentItem->getDisplayText());
+		ui.hostname->setText(parentItem->getRemoteHost());
+		ui.hostnameAuto->setChecked(parentItem->getAutoConnection());
 
-		if (locationItem->isStomp())
+		if (parentItem->isStomp())
 			ui.port->setCurrentIndex(StompIndex);
-		else if (locationItem->isOpenWire())
+		else if (parentItem->isOpenWire())
 			ui.port->setCurrentIndex(OpenWireIndex);
-		else if (locationItem->isHttp())
+		else if (parentItem->isHttp())
 			ui.port->setCurrentIndex(HttpIndex);
 		else
-			ui.port->setEditText(locationItem->getRemotePort());
+			ui.port->setEditText(parentItem->getRemotePort());
 	}
 
 	if (isSubscription)
 	{
-		if (locationItem->isTopic())
+		if (parentItem->isTopic())
 			ui.channelType->setCurrentIndex(TopicIndex);
-		else if (locationItem->isQueue())
+		else if (parentItem->isQueue())
 			ui.channelType->setCurrentIndex(QueueIndex);
 
-		ui.channel->setText(locationItem->getSubscription());
-		ui.channelAuto->setCheckable(locationItem->getAutoSubscription());
+		ui.channel->setText(parentItem->getSubscription());
+		ui.channelAuto->setCheckable(parentItem->getAutoSubscription());
 	}
+
+	return QDialog::exec();
 }
 void LocationCreateDialog::accept()
 {
-	LocationItem *item = new LocationItem();
+	LocationItem *item = new LocationItem(parentItem);
 
 	// Basic remote items
 	item->setRemoteHost(ui.hostname->text());
@@ -77,11 +76,9 @@ void LocationCreateDialog::accept()
 	item->setSubscription(ui.channel->text());
 	item->setAutoSubscription(ui.channelAuto->isChecked());
 
-	// Send out
-	if (getAcceptSignal() == Create)
-		emit createLocation(item);
-	else if (getAcceptSignal() == Update)
-		emit updateLocation(item);
+	// Set the visible data
+	item->setData(LocationItem::DescriptionColumn, Qt::DisplayRole, item->getDisplayText());
+	item->setData(LocationItem::IdColumn, Qt::DisplayRole, item->getId());
 
 	// Accept the dialog
 	QDialog::accept();

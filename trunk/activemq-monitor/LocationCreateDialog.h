@@ -24,34 +24,16 @@ public:
 		TopicIndex, QueueIndex
 	};
 
-	enum AcceptSignal
-	{
-		Create, Update
-	};
-
-signals:
-	void createLocation(LocationItem *item);
-	void updateLocation(LocationItem *item);
-
 public:
-	inline AcceptSignal getAcceptSignal() const
-	{
-		return acceptSignal;
-	}
-	inline void setAcceptSignal(AcceptSignal acceptSignal)
-	{
-		this->acceptSignal = acceptSignal;
-	}
 	inline void setParentItem(LocationItem *item)
 	{
-		locationItem = item;
+		parentItem = item;
 	}
 
-	virtual void exec();
+	virtual int exec();
 
 public slots:
 	virtual void accept();
-	void populate(LocationItem *item);
 	void validateLocation();
 	void setLocationEnabled(bool enabled);
 	void setChannelEnabled(bool enabled);
@@ -60,8 +42,7 @@ public slots:
 
 private:
 	Ui::LocationCreateDialogClass ui;
-	AcceptSignal acceptSignal;
-	LocationItem *locationItem;
+	LocationItem *parentItem;
 };
 
 #endif // LOCATIONCREATEDIALOG_H
