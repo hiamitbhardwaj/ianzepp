@@ -109,30 +109,9 @@
     </layout>
    </item>
   </layout>
-  <action name="actionConnect">
+  <action name="actionCreateLocation">
    <property name="text">
-    <string>Connect</string>
-   </property>
-  </action>
-  <action name="actionDisconnect">
-   <property name="text">
-    <string>Disconnect</string>
-   </property>
-  </action>
-  <action name="actionAutoConnect">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Auto-Connect</string>
-   </property>
-   <property name="toolTip">
-    <string>Auto-Connect</string>
-   </property>
-  </action>
-  <action name="actionProperties">
-   <property name="text">
-    <string>Properties</string>
+    <string>Create Location ...</string>
    </property>
   </action>
  </widget>

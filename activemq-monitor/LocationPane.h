@@ -10,6 +10,7 @@
 
 #include "ui_LocationPane.h"
 #include "LocationItem.h"
+#include "LocationCreateDialog.h"
 
 class LocationPane: public QWidget
 {
@@ -24,12 +25,9 @@ public:
 		DescriptionColumn, IdColumn
 	};
 
-signals:
-	void connectionRequested(const QString &registeredKey);
-	void disconnectionRequested(const QString &registeredKey);
-
 public slots:
 	void contextMenuRequested(const QPoint &pos);
+	void createLocation(LocationItem *item);
 	void insertItemClicked();
 	void removeItemClicked();
 	void setPropertiesVisible(bool visible);
@@ -52,6 +50,21 @@ private:
 	{
 		return treeItem ? getLocationItem(treeItem->text(IdColumn)) : 0;
 	}
+
+	inline QList<QTreeWidgetItem *> *getTreeItemList(LocationItem *item) const
+	{
+		if (item)
+			return ui.locationTree->findItems(item->getRemoteUri(), Qt::MatchExactly, IdColumn);
+		else
+			return QList<QTreeWidgetItem *> ();
+	}
+	inline QTreeWidgetItem *getTreeItem(LocationItem *item) const
+	{
+		QList<QTreeWidgetItem *> *itemList = getTreeItemsList(item);
+		return itemList->isEmpty() ? 0 : itemList->first();
+	}
+
+	void handleCreateLocation();
 
 private:
 	Ui::LocationPaneClass ui;

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LocationCreateDialogClass</class>
+ <widget class="QDialog" name="LocationCreateDialogClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>401</width>
+    <height>95</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LocationCreateDialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QComboBox" name="protocol">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>stomp</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>openwire</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>http</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="hostname">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="port">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="inputMask">
+      <string>99999; </string>
+     </property>
+     <property name="text">
+      <string>61613</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="automatic">
+     <property name="text">
+      <string>Automatic connection</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="create">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Create</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>protocol</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>LocationCreateDialogClass</receiver>
+   <slot>validateLocation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>33</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hostname</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>LocationCreateDialogClass</receiver>
+   <slot>validateLocation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>166</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>165</x>
+     <y>-6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>port</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>LocationCreateDialogClass</receiver>
+   <slot>validateLocation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>308</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>-12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>LocationCreateDialogClass</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>471</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>create</sender>
+   <signal>clicked()</signal>
+   <receiver>LocationCreateDialogClass</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>209</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>validateLocation()</slot>
+  <slot>createClicked()</slot>
+  <slot>cancelClicked()</slot>
+ </slots>
+</ui>

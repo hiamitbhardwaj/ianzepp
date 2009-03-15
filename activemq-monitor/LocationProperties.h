@@ -14,6 +14,11 @@ public:
 	LocationProperties(QWidget *parent = 0);
 	~LocationProperties();
 
+	enum ChannelTypes
+	{
+		TopicColumn, QueueColumn
+	};
+
 public slots:
 	void updateProperties(LocationItem *item, bool editable = false);
 
