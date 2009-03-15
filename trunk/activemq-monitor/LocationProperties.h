@@ -1,0 +1,19 @@
+#ifndef LOCATIONPROPERTIES_H
+#define LOCATIONPROPERTIES_H
+
+#include <QtGui/QWidget>
+#include "ui_LocationProperties.h"
+
+class LocationProperties : public QWidget
+{
+    Q_OBJECT
+
+public:
+    LocationProperties(QWidget *parent = 0);
+    ~LocationProperties();
+
+private:
+    Ui::LocationPropertiesClass ui;
+};
+
+#endif // LOCATIONPROPERTIES_H
