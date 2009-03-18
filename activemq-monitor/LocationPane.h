@@ -11,7 +11,9 @@
 
 #include "ui_LocationPane.h"
 #include "LocationItem.h"
-#include "LocationCreateDialog.h"
+#include "LocationContextDialog.h"
+#include "RemoteBroker.h"
+#include "RemoteFrame.h"
 
 class LocationPane: public QWidget
 {
@@ -22,41 +24,30 @@ public:
 	~LocationPane();
 
 public slots:
-	//	void createLocation(LocationItem *item);
-	//	void updateLocation(LocationItem *item);
-	//	void updateProperties(QTreeWidgetItem *treeItem);
-
+	// Context menu management
 	void contextMenuRequested(const QPoint &pos);
-	void insertItemClicked();
-	void removeItemClicked();
+	void addingRemoteHost(LocationItem *item);
+	void addingSubscription(LocationItem *item);
 	void setPropertiesVisible(bool visible);
 
-private:
-	inline void registerLocationItem(const QString &locationId, LocationItem *item)
+	// Remote broker management
+	void connectionCreated(RemoteBroker *broker);
+	void connectionEstablished(RemoteBroker *broker);
+	void connectionClosed(RemoteBroker *broker);
+	void connectionError(RemoteBroker *broker, RemoteBroker::SocketError &socketError);
+	void frameReceived(RemoteBroker *broker, RemoteFrame *frame);
+	void frameSent(RemoteBroker *broker, RemoteFrame *frame);
+
+public:
+	inline QTreeWidget *getTreeWidget() const
 	{
-		locationHash.insert(locationId, item);
-	}
-	inline void unregisterLocationItem(const QString &locationId)
-	{
-		locationHash.remove(locationId);
-	}
-	inline LocationItem *getLocationItem(const QString &locationId) const
-	{
-		return locationHash.value(locationId);
+		return ui.locationTree;
 	}
 
-	inline QList<QTreeWidgetItem *> getTreeItemList(const QString &locationId) const
+private:
+	inline LocationContextDialog *getContextDialog() const
 	{
-		return ui.locationTree->findItems(locationId, Qt::MatchExactly, LocationItem::IdColumn);
-	}
-	inline QTreeWidgetItem *getTreeItem(const QString &locationId) const
-	{
-		QList<QTreeWidgetItem *> itemList = getTreeItemList(locationId);
-		return itemList.isEmpty() ? 0 : itemList.first();
-	}
-	inline QTreeWidgetItem *getTreeItem(LocationItem *item) const
-	{
-		return item ? getTreeItem(item->getId()) : 0;
+		return contextDialog;
 	}
 
 	inline QTreeWidgetItem *getSelectedTreeItem() const
@@ -64,6 +55,7 @@ private:
 		QList<QTreeWidgetItem *> itemList = ui.locationTree->selectedItems();
 		return itemList.isEmpty() ? 0 : itemList.first();
 	}
+
 	inline LocationItem *getSelectedItem() const
 	{
 		return (LocationItem *) getSelectedTreeItem();
@@ -74,7 +66,32 @@ private:
 		return rootItem;
 	}
 
+	inline RemoteBroker *getBroker(const QString &itemId) const
+	{
+		return brokerMap.value(itemId);
+	}
+
+	inline void insertBroker(const QString &itemId, RemoteBroker *broker)
+	{
+		brokerMap.insert(itemId, broker);
+	}
+
+	inline void removeBroker(const QString &itemId)
+	{
+		brokerMap.remove(itemId);
+	}
+
 private:
+	void initializeContextMenu();
+	void initializeContextDialog();
+
+	// Menus
+	QMenu *getRootMenu();
+	QMenu *getRemoteHostMenu();
+	QMenu *getSubscriptionMenu();
+	QMenu *getMessageMenu();
+
+	// Actions
 	void action(QAction *action);
 	void actionAddRemoteHost();
 	void actionAddSubscription();
@@ -89,9 +106,10 @@ private:
 
 private:
 	Ui::LocationPaneClass ui;
-	QMenu *contextMenu;
-	QHash<QString, LocationItem *> locationHash;
 	LocationItem *rootItem;
+	LocationContextDialog *contextDialog;
+	QMenu *contextMenu;
+	QHash<QString, RemoteBroker *> brokerMap;
 };
 
 #endif // LOCATIONPANE_H

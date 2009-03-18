@@ -7,20 +7,24 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += LocationCreateDialog.h \
-    LocationItem.h \
+HEADERS += RemoteFrame.h \
+    RemoteBroker.h \
+    LocationContextDialog.h \
     DetailsPane.h \
+    LocationItem.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += LocationCreateDialog.cpp \
-    LocationItem.cpp \
+SOURCES += RemoteFrame.cpp \
+    RemoteBroker.cpp \
+    LocationContextDialog.cpp \
     DetailsPane.cpp \
+    LocationItem.cpp \
     LocationPane.cpp \
     LocationProperties.cpp \
-    main.cpp \
-    ActiveMQMonitor.cpp
-FORMS += LocationCreateDialog.ui \
+    ActiveMQMonitor.cpp \
+    main.cpp
+FORMS += LocationContextDialog.ui \
     DetailsPane.ui \
     LocationPane.ui \
     LocationProperties.ui \
