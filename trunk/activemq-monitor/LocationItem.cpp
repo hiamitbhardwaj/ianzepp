@@ -10,20 +10,20 @@
 LocationItem::LocationItem() :
 	QTreeWidgetItem()
 {
+	setText(IdColumn, QUuid::createUuid().toString());
+
 }
 
-LocationItem::LocationItem(QTreeWidget *parent, int type) :
+LocationItem::LocationItem(LocationItem *parent, int type) :
 	QTreeWidgetItem(parent, type)
 {
-}
-
-LocationItem::LocationItem(QTreeWidgetItem *parent, int type) :
-	QTreeWidgetItem(parent, type)
-{
+	setText(IdColumn, QUuid::createUuid().toString());
 }
 
 LocationItem::~LocationItem()
 {
+	if (remoteBroker && isSubscription())
+		remoteBroker->setSubscribed(getSubscription(), false);
 }
 
 QString LocationItem::getDisplayText() const
@@ -38,10 +38,8 @@ QString LocationItem::getDisplayText() const
 		return QString("openwire://" + getRemoteHost());
 	else if (isHost && isStomp())
 		return QString("stomp://" + getRemoteHost());
-	else if (isTopic())
-		return QString("/topic/" + subscription);
-	else if (isQueue())
-		return QString("/queue/" + subscription);
+	else if (isSubscription())
+		return QString(subscription);
 	else
 		return QString::null;
 }

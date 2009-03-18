@@ -10,7 +10,9 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QUuid>
 #include <QtGui/QTreeWidget>
+#include "RemoteBroker.h"
 
 class LocationItem: public QTreeWidgetItem
 {
@@ -27,162 +29,167 @@ public:
 
 public:
 	LocationItem();
-	LocationItem(QTreeWidget * parent, int type = Type);
-	LocationItem(QTreeWidgetItem * parent, int type = Type);
+	LocationItem(LocationItem *parent, int type = Type);
 	virtual ~LocationItem();
 
+	QString getDisplayText() const;
+
 public:
-	bool isHttp() const
-	{
-		return remotePort == QString::number(Http);
-	}
-	bool isHttps() const
-	{
-		return remotePort == QString::number(Https);
-	}
-	bool isOpenWire() const
-	{
-		return remotePort == QString::number(OpenWire);
-	}
-	bool isQueue() const
-	{
-		return type.toLower() == "queue" && !subscription.isEmpty();
-	}
-	bool isRemoteHost() const
-	{
-		return !isSubscription() && !remoteHost.isEmpty() && !remotePort.isEmpty();
-	}
-	bool isStomp() const
-	{
-		return remotePort == QString::number(Stomp);
-	}
-	bool isSubscription() const
-	{
-		return !subscription.isEmpty() && !type.isEmpty();
-	}
-	bool isTopic() const
-	{
-		return type.toLower() == "topic" && !subscription.isEmpty();
-	}
-
-	void incrementMessages(quint32 num = 1)
-	{
-		messages += num;
-	}
-	void incrementBytes(quint32 num = 1)
-	{
-		bytes += num;
-	}
-
-	bool getAutoConnection() const
+	inline bool isAutoConnection() const
 	{
 		return autoConnection;
 	}
 
-	bool getAutoSubscription() const
+	inline bool isAutoSubscription() const
 	{
 		return autoSubscription;
 	}
 
-	quint32 getBytes() const
+	inline bool isHttp() const
+	{
+		return remotePort == QString::number(Http);
+	}
+
+	inline bool isHttps() const
+	{
+		return remotePort == QString::number(Https);
+	}
+
+	inline bool isOpenWire() const
+	{
+		return remotePort == QString::number(OpenWire);
+	}
+
+	inline bool isQueue() const
+	{
+		return QRegExp("^/queue/").indexIn(getSubscription());
+	}
+
+	inline bool isRemoteHost() const
+	{
+		return !isSubscription() && !remoteHost.isEmpty() && !remotePort.isEmpty();
+	}
+
+	inline bool isStomp() const
+	{
+		return remotePort == QString::number(Stomp);
+	}
+
+	inline bool isSubscription() const
+	{
+		return !subscription.isEmpty();
+	}
+
+	inline bool isTopic() const
+	{
+		return QRegExp("^/topic/").indexIn(getSubscription());
+	}
+
+	inline void incrementMessages(quint32 num = 1)
+	{
+		messages += num;
+	}
+
+	inline void incrementBytes(quint32 num = 1)
+	{
+		bytes += num;
+	}
+
+	inline quint32 getBytes() const
 	{
 		return bytes;
 	}
 
-	bool getConnected() const
-	{
-		return connected;
-	}
-
-	QString getDisplayText() const;
-
-	QString getId() const
+	inline QString getId() const
 	{
 		return text(IdColumn);
 	}
 
-	quint32 getMessages() const
+	inline quint32 getMessages() const
 	{
 		return messages;
 	}
 
-	QString getRemoteHost() const
+	inline QString getParentId() const
+	{
+		return getParentItem()->text(IdColumn);
+	}
+
+	inline LocationItem *getParentItem() const
+	{
+		return (LocationItem *) parent();
+	}
+
+	inline RemoteBroker *getRemoteBroker () const
+	{
+		return remoteBroker;
+	}
+
+	inline QString getRemoteHost() const
 	{
 		return remoteHost;
 	}
 
-	QString getRemotePort() const
+	inline QString getRemotePort() const
 	{
 		return remotePort;
 	}
 
-	QString getSubscription() const
+	inline QString getSubscription() const
 	{
 		return subscription;
 	}
 
-	QString getType() const
-	{
-		return type;
-	}
-
-	void setAutoConnection(bool autoConnection)
+	inline void setAutoConnection(bool autoConnection)
 	{
 		this->autoConnection = autoConnection;
 	}
 
-	void setAutoSubscription(bool autoSubscription)
+	inline void setAutoSubscription(bool autoSubscription)
 	{
 		this->autoSubscription = autoSubscription;
 	}
 
-	void setBytes(quint32 bytes)
+	inline void setBytes(quint32 bytes)
 	{
 		this->bytes = bytes;
 	}
 
-	void setConnected(bool connected)
-	{
-		this->connected = connected;
-	}
-
-	void setMessages(quint32 messages)
+	inline void setMessages(quint32 messages)
 	{
 		this->messages = messages;
 	}
 
-	void setRemoteHost(QString remoteHost)
+	inline void setRemoteBroker (RemoteBroker *remoteBroker)
+	{
+		this->remoteBroker = remoteBroker;
+	}
+
+	inline void setRemoteHost(QString remoteHost)
 	{
 		this->remoteHost = remoteHost;
 	}
 
-	void setRemotePort(QString remotePort)
+	inline void setRemotePort(QString remotePort)
 	{
 		this->remotePort = remotePort;
 	}
 
-	void setSubscription(QString subscription)
+	inline void setSubscription(QString subscription)
 	{
 		this->subscription = subscription;
-	}
-
-	void setType(QString type)
-	{
-		this->type = type;
 	}
 
 private:
 	// Internal data
 	QString remoteHost;
 	QString remotePort;
-	QString type;
 	QString subscription;
 	quint32 messages;
 	quint32 bytes;
 	bool autoConnection;
 	bool autoSubscription;
-	bool connected;
-
+	RemoteBroker *remoteBroker;
 };
 
 #endif /* LOCATIONITEM_H_ */

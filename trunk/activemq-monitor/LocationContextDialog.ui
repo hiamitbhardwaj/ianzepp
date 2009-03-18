@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LocationCreateDialogClass</class>
- <widget class="QDialog" name="LocationCreateDialogClass">
+ <class>LocationContextDialogClass</class>
+ <widget class="QDialog" name="LocationContextDialogClass">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -26,31 +26,12 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>LocationCreateDialog</string>
+   <string>LocationContextDialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Display Name:</string>
-       </property>
-       <property name="margin">
-        <number>0</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QLineEdit" name="display"/>
-     </item>
-     <item row="2" column="0">
       <widget class="QLabel" name="label">
        <property name="font">
         <font>
@@ -63,7 +44,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="0" column="1">
       <widget class="QLabel" name="label_3">
        <property name="font">
         <font>
@@ -76,8 +57,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLineEdit" name="hostname">
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="remoteHost">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -86,8 +67,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="port">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="remotePort">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -119,8 +100,8 @@
        </item>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QCheckBox" name="hostnameAuto">
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="autoConnection">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -132,7 +113,7 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0" colspan="2">
+     <item row="3" column="0" colspan="2">
       <widget class="Line" name="channelBreak">
        <property name="minimumSize">
         <size>
@@ -151,7 +132,7 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="channelLabel">
        <property name="font">
         <font>
@@ -167,7 +148,7 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="4" column="1">
       <widget class="QLabel" name="channelTypeLabel">
        <property name="font">
         <font>
@@ -180,8 +161,8 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
-      <widget class="QLineEdit" name="channel">
+     <item row="5" column="0">
+      <widget class="QLineEdit" name="subscription">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -190,8 +171,8 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="QComboBox" name="channelType">
+     <item row="5" column="1">
+      <widget class="QComboBox" name="subscriptionType">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -210,8 +191,8 @@
        </item>
       </widget>
      </item>
-     <item row="8" column="0">
-      <widget class="QCheckBox" name="channelAuto">
+     <item row="6" column="0">
+      <widget class="QCheckBox" name="autoSubscription">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -291,46 +272,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>port</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>LocationCreateDialogClass</receiver>
-   <slot>validateLocation()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>32</x>
-     <y>18</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>33</x>
-     <y>-6</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hostname</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>LocationCreateDialogClass</receiver>
-   <slot>validateLocation()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>166</x>
-     <y>19</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>165</x>
-     <y>-6</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>cancel</sender>
    <signal>clicked()</signal>
-   <receiver>LocationCreateDialogClass</receiver>
+   <receiver>LocationContextDialogClass</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>342</x>
-     <y>69</y>
+     <x>245</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>471</x>
@@ -341,12 +290,12 @@
   <connection>
    <sender>create</sender>
    <signal>clicked()</signal>
-   <receiver>LocationCreateDialogClass</receiver>
+   <receiver>LocationContextDialogClass</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>76</y>
+     <x>162</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>209</x>
@@ -354,9 +303,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>remoteHost</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>LocationContextDialogClass</receiver>
+   <slot>updateAcceptable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>38</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>subscription</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>LocationContextDialogClass</receiver>
+   <slot>updateAcceptable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>368</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>validateLocation()</slot>
+  <slot>updateAcceptable()</slot>
   <slot>createClicked()</slot>
   <slot>cancelClicked()</slot>
  </slots>
