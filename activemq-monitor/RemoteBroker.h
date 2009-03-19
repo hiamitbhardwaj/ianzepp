@@ -12,7 +12,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
-#include <QtCore/QVector>
 #include <QtNetwork/QTcpSocket>
 #include "RemoteFrame.h"
 
@@ -42,9 +41,14 @@ public:
 		return QTcpSocket::isOpen() && authenticated;
 	}
 
-	inline bool isSubscribed(const QString &subscription) const
+	inline QString getItemId() const
 	{
-		return subscription.contains(subscription);
+		return itemId;
+	}
+
+	inline void setItemId(const QString &itemId)
+	{
+		this->itemId = itemId;
 	}
 
 	inline void setRemoteHost(const QString &remoteHost)
@@ -99,7 +103,7 @@ private:
 		return remoteFrame;
 	}
 
-signals:
+	signals:
 	void connectionCreated(RemoteBroker *);
 	void connectionEstablished(RemoteBroker *);
 	void connectionError(RemoteBroker *, RemoteBroker::SocketError &);
@@ -117,9 +121,9 @@ private slots:
 private:
 	QByteArray *readBuffer;
 	QTimer *readTimer;
+	QString itemId;
 	QString remoteHost;
 	QString remotePort;
-	QVector<QString> subscriptions;
 	bool authenticated;
 };
 
