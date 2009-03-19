@@ -27,12 +27,18 @@ public:
 		DescriptionColumn, IdColumn
 	};
 
+	enum ConnectionMode
+	{
+		Attempting, Created, Established, Closed, Error
+	};
+
 public:
 	LocationItem();
 	LocationItem(LocationItem *parent, int type = Type);
 	virtual ~LocationItem();
 
 	QString getDisplayText() const;
+	void setConnectionMode(ConnectionMode mode);
 
 public:
 	inline bool isAutoConnection() const
@@ -43,6 +49,11 @@ public:
 	inline bool isAutoSubscription() const
 	{
 		return autoSubscription;
+	}
+
+	inline bool isConnected() const
+	{
+		return remoteBroker ? remoteBroker->isConnectionEstablished() : false;
 	}
 
 	inline bool isHttp() const
@@ -120,7 +131,7 @@ public:
 		return (LocationItem *) parent();
 	}
 
-	inline RemoteBroker *getRemoteBroker () const
+	inline RemoteBroker *getRemoteBroker() const
 	{
 		return remoteBroker;
 	}
@@ -160,7 +171,7 @@ public:
 		this->messages = messages;
 	}
 
-	inline void setRemoteBroker (RemoteBroker *remoteBroker)
+	inline void setRemoteBroker(RemoteBroker *remoteBroker)
 	{
 		this->remoteBroker = remoteBroker;
 	}

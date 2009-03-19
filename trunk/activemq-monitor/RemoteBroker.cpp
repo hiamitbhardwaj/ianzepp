@@ -8,11 +8,13 @@
 #include "RemoteBroker.h"
 
 RemoteBroker::RemoteBroker(QObject *parent) :
-	QTcpSocket(parent)
+	QTcpSocket(parent), authenticated(false)
 {
+	qDebug() << "RemoteBroker::RemoteBroker(QObject *parent)";
+
 	QObject::connect(this, SIGNAL(connected()), this, SLOT(socketCreated()));
 	QObject::connect(this, SIGNAL(disconnected()), this, SLOT(socketClosed()));
-	QObject::connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+	QObject::connect(this, SIGNAL(error(QAbstractSocket::SocketError &)), this, SLOT(socketError(QAbstractSocket::SocketError &)));
 	QObject::connect(this, SIGNAL(readyRead()), this, SLOT(socketReadable()));
 
 	// Setup the read buffer
@@ -26,6 +28,10 @@ RemoteBroker::RemoteBroker(QObject *parent) :
 
 RemoteBroker::~RemoteBroker()
 {
+	qDebug() << "RemoteBroker::~RemoteBroker()";
+	qDebug() << "\t Connection Created:" << isConnectionCreated();
+	qDebug() << "\t Connection Established:" << isConnectionEstablished();
+
 	if (isConnectionEstablished())
 		sendFrame(newDisconnectFrame());
 	if (isConnectionCreated())
@@ -36,60 +42,121 @@ RemoteBroker::~RemoteBroker()
 
 quint64 RemoteBroker::sendFrame(RemoteFrame frame)
 {
-	emit frameSent(this, frame);
-	return QTcpSocket::write(frame.toFrame());
+	qDebug() << "quint64 RemoteBroker::sendFrame(RemoteFrame frame)";
+	qDebug() << "\t Connection Created:" << isConnectionCreated();
+	qDebug() << "\t Connection Established:" << isConnectionEstablished();
+	qDebug() << "\t Remote Host: " << remoteHost;
+	qDebug() << "\t Remote Port: " << remotePort;
+	qDebug() << "\t Frame Command & Contents:" << frame.toFrame();
+
+	quint64 bytesWritten = 0;
+
+	if (isConnectionCreated())
+	{
+		emit frameSent(this, frame);
+		bytesWritten = QTcpSocket::write(frame.toFrame());
+	}
+
+	qDebug() << "\t Bytes Written: " << bytesWritten;
+	return bytesWritten;
 }
 
 void RemoteBroker::setSubscribed(const QString &subscription, bool wantsSubscription)
 {
-	if (isConnectionEstablished() == false)
-		return;
+	qDebug() << "void RemoteBroker::setSubscribed(const QString &subscription, bool wantsSubscription)";
+	qDebug() << "\t Connection Created:" << isConnectionCreated();
+	qDebug() << "\t Connection Established:" << isConnectionEstablished();
+	qDebug() << "\t Remote Host:" << remoteHost;
+	qDebug() << "\t Remote Port:" << remotePort;
+	qDebug() << "\t Subscription:" << subscription;
+	qDebug() << "\t Wants:" << wantsSubscription;
 
-	bool alreadySubscribed = isSubscribed(subscription);
-
-	if (wantsSubscription && !alreadySubscribed)
+	if (false == isConnectionEstablished())
+		qDebug() << "\t Cannot send subscription frame if not authenticated";
+	else if (wantsSubscription)
 		sendFrame(newSubscriptionFrame(subscription));
-	else if (!wantsSubscription && alreadySubscribed)
+	else
 		sendFrame(newUnsubscriptionFrame(subscription));
 }
 
-void RemoteBroker::socketCreated ()
+void RemoteBroker::socketCreated()
 {
-	emit connectionCreated (this);
+	qDebug() << "void RemoteBroker::socketCreated()";
+	qDebug() << "\t Remote Host:" << remoteHost;
+	qDebug() << "\t Remote Port:" << remotePort;
+
+	emit
+	connectionCreated(this);
+
+	sendFrame(newConnectFrame());
 }
 
-void RemoteBroker::socketClosed ()
+void RemoteBroker::socketClosed()
 {
-	emit connectionClosed (this);
-	readTimer->stop ();
-	readBuffer->clear ();
+	qDebug() << "void RemoteBroker::socketClosed()";
+	qDebug() << "\t Remote Host:" << remoteHost;
+	qDebug() << "\t Remote Port:" << remotePort;
+
+	emit
+	connectionClosed(this);
+	readTimer->stop();
+	readBuffer->clear();
+	authenticated = false;
 }
 
-void RemoteBroker::socketError (QAbstractSocket::SocketError &socketError)
+void RemoteBroker::socketError(QAbstractSocket::SocketError &socketError)
 {
-	emit connectionError (this, socketError);
-	readTimer->stop ();
-	readBuffer->clear ();
+	qDebug() << "void RemoteBroker::socketError(QAbstractSocket::SocketError &socketError)";
+
+	emit
+	connectionError(this, socketError);
+	readTimer->stop();
+	readBuffer->clear();
+	authenticated = false;
 }
 
-void RemoteBroker::socketReadable ()
+void RemoteBroker::socketReadable()
 {
-	readTimer->start ();
-	readBuffer->append (QTcpSocket::readAll ());
+	qDebug() << "void RemoteBroker::socketReadable()";
+	qDebug() << "\t Remote Host:" << remoteHost;
+	qDebug() << "\t Remote Port:" << remotePort;
+
+	readTimer->start();
+	readBuffer->append(QTcpSocket::readAll());
 }
 
-void RemoteBroker::processSocketBuffer ()
+void RemoteBroker::processSocketBuffer()
 {
-	if (!readBuffer->contains ('\0')) {
-		return readTimer->stop ();
+	qDebug() << "void RemoteBroker::processSocketBuffer()";
+	qDebug() << "\t Remote Host:" << remoteHost;
+	qDebug() << "\t Remote Port:" << remotePort;
+
+	if (!readBuffer->contains('\0'))
+	{
+		qDebug() << "\t Missing NULL terminator, returning.";
+		return readTimer->stop();
 	}
 
 	// Find the message endpoint
-	int breakpoint = readBuffer->indexOf ('\0');
+	int breakpoint = readBuffer->indexOf('\0');
+
+	qDebug() << "\t Found terminator at offset:" << breakpoint;
+
+	// Extract the frame
+	RemoteFrame frame(readBuffer->left(breakpoint));
+
+	qDebug() << "\t Frame Command & Contents: " << frame.toFrame();
 
 	// Parse the incoming frame
-	emit frameReceived (this, RemoteFrame (readBuffer->left (breakpoint)));
+	if (frame.getCommand() == "CONNECTED")
+	{
+		authenticated = true;
+		emit connectionEstablished(this);
+	}
+
+	// Always send out the frame
+	emit frameReceived(this, frame);
 
 	// Clean up the read buffer: The stomp server sends back \0\n instead of just \0
-	readBuffer->remove (0, breakpoint + 2);
+	readBuffer->remove(0, breakpoint + 2);
 }

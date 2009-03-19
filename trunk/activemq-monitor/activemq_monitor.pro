@@ -1,3 +1,5 @@
+CONFIG += qt \
+    debug
 TEMPLATE = app
 TARGET = activemq_monitor
 QT += core \
@@ -7,7 +9,11 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += RemoteFrame.h \
+HEADERS += LocationActionSubscribe.h \
+    LocationActionDelete.h \
+    LocationActionAddSubscription.h \
+    LocationActionAddRemoteHost.h \
+    RemoteFrame.h \
     RemoteBroker.h \
     LocationContextDialog.h \
     DetailsPane.h \
@@ -15,7 +21,11 @@ HEADERS += RemoteFrame.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += RemoteFrame.cpp \
+SOURCES += LocationActionSubscribe.cpp \
+    LocationActionDelete.cpp \
+    LocationActionAddSubscription.cpp \
+    LocationActionAddRemoteHost.cpp \
+    RemoteFrame.cpp \
     RemoteBroker.cpp \
     LocationContextDialog.cpp \
     DetailsPane.cpp \

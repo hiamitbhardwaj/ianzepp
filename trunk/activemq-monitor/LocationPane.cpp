@@ -1,4 +1,7 @@
 #include "LocationPane.h"
+#include "LocationActionAddRemoteHost.h"
+#include "LocationActionAddSubscription.h"
+#include "LocationActionDelete.h"
 
 LocationPane::LocationPane(QWidget *parent) :
 	QWidget(parent), rootItem(0), contextDialog(0), contextMenu(0)
@@ -17,7 +20,9 @@ LocationPane::LocationPane(QWidget *parent) :
 	ui.locationTree->addTopLevelItem(rootItem);
 
 	// Tweak the tree
+#ifdef QT_NO_DEBUG
 	ui.locationTree->setColumnHidden(LocationItem::IdColumn, true);
+#endif
 }
 
 LocationPane::~LocationPane()
@@ -42,54 +47,17 @@ void LocationPane::contextMenuRequested(const QPoint &pos)
 	action(menu->exec(ui.locationTree->mapToGlobal(pos)));
 }
 
-void LocationPane::addingRemoteHost(LocationItem *item)
-{
-
-}
-
-void LocationPane::addingSubscription(LocationItem *item)
-{
-
-}
-
 void LocationPane::setPropertiesVisible(bool visible)
 {
+	qDebug() << "LocationPane::setPropertiesVisible(bool visible)";
 	ui.propertiesVisible->setChecked(visible);
 	ui.propertiesWidget->setVisible(visible);
 }
 
-void LocationPane::connectionCreated(RemoteBroker *broker)
-{
-
-}
-
-void LocationPane::connectionEstablished(RemoteBroker *broker)
-{
-
-}
-
-void LocationPane::connectionError(RemoteBroker *broker, RemoteBroker::SocketError &socketError)
-{
-
-}
-
-void LocationPane::connectionClosed(RemoteBroker *broker)
-{
-
-}
-
-void LocationPane::frameReceived(RemoteBroker *broker, RemoteFrame *frame)
-{
-
-}
-
-void LocationPane::frameSent(RemoteBroker *broker, RemoteFrame *frame)
-{
-
-}
-
 void LocationPane::initializeContextMenu()
 {
+	qDebug() << "LocationPane::initializeContextMenu()";
+
 	contextMenu = new QMenu(this);
 
 	contextMenu->addAction(ui.actionAddRemoteHost);
@@ -110,16 +78,18 @@ void LocationPane::initializeContextMenu()
 
 void LocationPane::initializeContextDialog()
 {
+	qDebug() << "LocationPane::initializeContextDialog()";
+
 	contextDialog = new LocationContextDialog(this);
 
 	// Connect to dialog's signals
-	connect(contextDialog, SIGNAL(createLocation(LocationItem *)), this, SLOT(createLocation(LocationItem *)));
-	connect(contextDialog, SIGNAL(updateLocation(LocationItem *)), this, SLOT(updateLocation(LocationItem *)));
+	QObject::connect(contextDialog, SIGNAL(createLocation(LocationItem *)), this, SLOT(createLocation(LocationItem *)));
+	QObject::connect(contextDialog, SIGNAL(updateLocation(LocationItem *)), this, SLOT(updateLocation(LocationItem *)));
 }
 
 QMenu *LocationPane::getRootMenu()
 {
-	// QMessageBox::information(this, "Debug", "LocationPane::getRootMenu()");
+	qDebug() << "LocationPane::getRootMenu()";
 
 	ui.actionAddRemoteHost->setEnabled(true);
 	ui.actionAddSubscription->setEnabled(false);
@@ -142,7 +112,7 @@ QMenu *LocationPane::getRootMenu()
 
 QMenu *LocationPane::getRemoteHostMenu()
 {
-	// QMessageBox::information(this, "Debug", "LocationPane::getRemoteHostMenu()");
+	qDebug() << "LocationPane::getRemoteHostMenu()";
 
 	// Current selection
 	LocationItem *item = getSelectedItem();
@@ -174,12 +144,11 @@ QMenu *LocationPane::getRemoteHostMenu()
 
 QMenu *LocationPane::getSubscriptionMenu()
 {
+	qDebug() << "LocationPane::getSubscriptionMenu()";
+
 	// Current selection
 	LocationItem *item = getSelectedItem();
 	RemoteBroker *broker = getBroker(item->getParentId());
-
-	// Predetermine
-	bool isSubscribed = broker->isSubscribed(item->getSubscription());
 
 	// Enabled? Root level options
 	ui.actionAddRemoteHost->setEnabled(false);
@@ -196,8 +165,8 @@ QMenu *LocationPane::getSubscriptionMenu()
 	// Enabled? : Subscription Menu
 	ui.actionAutoSubscription->setEnabled(true);
 	ui.actionAutoSubscription->setChecked(item->isAutoSubscription());
-	ui.actionSubscribe->setEnabled(isSubscribed == false);
-	ui.actionUnsubscribe->setEnabled(isSubscribed);
+	ui.actionSubscribe->setEnabled(true);
+	ui.actionUnsubscribe->setEnabled(true);
 
 	// Done.
 	return contextMenu;
@@ -205,6 +174,8 @@ QMenu *LocationPane::getSubscriptionMenu()
 
 QMenu *LocationPane::getMessageMenu()
 {
+	qDebug() << "LocationPane::getMessageMenu()";
+
 	return contextMenu;
 }
 
@@ -216,136 +187,122 @@ void LocationPane::action(QAction *action)
 		return;
 
 	if (action == ui.actionAddRemoteHost)
-		actionAddRemoteHost();
+	{
+		LocationActionAddRemoteHost(this);
+	}
 	else if (action == ui.actionAddSubscription)
-		actionAddSubscription();
-	else if (action == ui.actionEdit)
-		actionEdit();
+	{
+		LocationActionAddSubscription(this);
+	}
 	else if (action == ui.actionDelete)
-		actionDelete();
+	{
+		LocationActionDelete(this);
+	}
 	else if (action == ui.actionConnect)
-		actionConnect();
+	{
+		LocationItem *item = getSelectedItem();
+		Q_CHECK_PTR(item);
+		Q_CHECK_PTR(item->getRemoteBroker());
+
+		item->setConnectionMode(LocationItem::Attempting);
+		item->getRemoteBroker()->connectToHost();
+
+		qDebug() << "\t Attempting connection...";
+	}
 	else if (action == ui.actionDisconnect)
-		actionDisconnect();
+	{
+		LocationItem *item = getSelectedItem();
+		Q_CHECK_PTR(item);
+		Q_CHECK_PTR(item->getRemoteBroker());
+
+		item->setConnectionMode(LocationItem::Closed);
+		item->getRemoteBroker()->disconnectFromHost();
+		item->getRemoteBroker()->close();
+
+		qDebug() << "\t Disconnecting...";
+	}
 	else if (action == ui.actionSubscribe)
-		actionSubscribe();
+	{
+	}
 	else if (action == ui.actionUnsubscribe)
-		actionUnsubscribe();
+	{
+	}
 }
 
-void LocationPane::actionAddRemoteHost()
+void LocationPane::connectionCreated(RemoteBroker *remoteBroker)
 {
-	getContextDialog()->setRootItem(getRootItem());
-	getContextDialog()->setRemoteHostItem(0);
-	getContextDialog()->setSubscriptionItem(0);
-	getContextDialog()->setManagementRole(LocationContextDialog::AddRemoteHost);
+	qDebug() << "LocationPane::connectionCreated(RemoteBroker *broker)";
+	qDebug() << "\t With Broker:" << remoteBroker;
+	qDebug() << "\t Associated Item Id:" << remoteBroker->getItemId();
 
-	// Add the remote host
-	LocationItem *item = getContextDialog()->exec();
+	Q_CHECK_PTR(remoteBroker);
+	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
 
-	// If there was no response object, the item doesn't need to be created
-	if (item == 0)
-		return;
-
-	// Does this name already exist in the tree?
-	// TODO
-
-	// Create a new network connection
-	RemoteBroker *remoteBroker = new RemoteBroker(this);
-	remoteBroker->setRemoteHost(item->getRemoteHost());
-	remoteBroker->setRemotePort(item->getRemotePort());
-
-	// Register
-	insertBroker(item->getId(), remoteBroker);
-
-	// Save the broker in the item
-	item->setRemoteBroker(remoteBroker);
-
-	// Add to tree
-	getRootItem()->addChild(item);
-
-	// Expand the node
-	ui.locationTree->expandItem(getRootItem());
+	getItemById(remoteBroker->getItemId())->setConnectionMode(LocationItem::Created);
 }
 
-void LocationPane::actionAddSubscription()
+void LocationPane::connectionEstablished(RemoteBroker *remoteBroker)
 {
-	getContextDialog()->setRootItem(getRootItem());
-	getContextDialog()->setRemoteHostItem(getSelectedItem());
-	getContextDialog()->setSubscriptionItem(0);
-	getContextDialog()->setManagementRole(LocationContextDialog::AddSubscription);
+	Q_CHECK_PTR(remoteBroker);
+	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
 
-	// Add the subscription
-	LocationItem *item = getContextDialog()->exec();
+	qDebug() << "LocationPane::connectionEstablished(RemoteBroker *remoteBroker)";
+	qDebug() << "\t With Broker:" << remoteBroker;
+	qDebug() << "\t Associated Item Id:" << remoteBroker->getItemId();
 
-	// If there was no response object, the item doesn't need to be created
-	if (item == 0)
-		return;
+	LocationItem *childItem = 0;
+	LocationItem *selectedItem = getItemById(remoteBroker->getItemId());
+	selectedItem->setConnectionMode(LocationItem::Established);
 
-	// Does this name already exist in the tree?
-	// TODO
+	// Find all of the auto-subscribe items
+	for (int index = 0; index < selectedItem->childCount(); ++index)
+	{
+		childItem = (LocationItem *) selectedItem->child(index);
 
-	// Save the broker in the item
-	item->setRemoteBroker(getSelectedItem()->getRemoteBroker());
+		Q_CHECK_PTR(childItem);
 
-	// Add to tree
-	getSelectedItem()->addChild(item);
+		qDebug() << "\t Child Item:";
+		qDebug() << "\t\t Item Id:" << childItem->getId();
+		qDebug() << "\t\t Is Subscription:" << childItem->isSubscription();
+		qDebug() << "\t\t Is Auto Subscription:" << childItem->isAutoSubscription();
+		qDebug() << "\t\t Subscription:" << childItem->getSubscription();
 
-	// Expand the node
-	ui.locationTree->expandItem(getRootItem());
-	ui.locationTree->expandItem(getSelectedItem());
+		if (false == childItem->isSubscription() || false == childItem->isAutoSubscription())
+			qDebug() << "\t\t Skipping subscription attempt.";
+		else
+			remoteBroker->setSubscribed(childItem->getSubscription(), true);
+	}
 }
 
-void LocationPane::actionEdit()
+void LocationPane::connectionClosed(RemoteBroker *remoteBroker)
 {
+	qDebug() << "LocationPane::connectionClosed(RemoteBroker *remoteBroker)";
+	qDebug() << "\t With Broker:" << remoteBroker;
+	qDebug() << "\t Associated Item Id: " << remoteBroker->getItemId();
+
+	Q_CHECK_PTR(remoteBroker);
+	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
+
+	getItemById(remoteBroker->getItemId())->setConnectionMode(LocationItem::Closed);
 }
 
-void LocationPane::actionDelete()
+void LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError &socketError)
 {
-	LocationItem *item = getSelectedItem();
-	RemoteBroker *broker = item->getRemoteBroker();
-	bool isRemoteHost = item->isRemoteHost();
+	qDebug() << "LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError &socketError)";
 
-	// Questions
-	QString title = "Delete " + item->getDisplayText() + "?";
-	QString message = "Are you sure?";
+	Q_CHECK_PTR(remoteBroker);
+	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
 
-	if (QMessageBox::question(this, title, message) != QMessageBox::Ok)
-		return;
-
-	// If a remote host, remove from the broker list
-	if (isRemoteHost)
-		removeBroker(item->getId());
-
-	// Delete the item, this will auto-unsubscribe if a subscription
-	delete item;
-
-	// Delete the broker, this will auto-disconnect (now that final messages have been sent)
-	if (isRemoteHost)
-		delete broker;
+	getItemById(remoteBroker->getItemId())->setConnectionMode(LocationItem::Error);
 }
 
-void LocationPane::actionConnect()
+void LocationPane::frameReceived(RemoteBroker *broker, RemoteFrame frame)
 {
+	qDebug() << "LocationPane::frameReceived(RemoteBroker *remoteBroker, RemoteFrame frame)";
 }
 
-void LocationPane::actionDisconnect()
+void LocationPane::frameSent(RemoteBroker *broker, RemoteFrame frame)
 {
-}
+	qDebug() << "LocationPane::frameSent(RemoteBroker *remoteBroker, RemoteFrame frame)";
 
-void LocationPane::actionSubscribe()
-{
 }
-
-void LocationPane::actionUnsubscribe()
-{
-}
-
-void LocationPane::actionAutoConnection(bool checked)
-{
-}
-
-void LocationPane::actionAutoSubscription(bool checked)
-{
-}
-

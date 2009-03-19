@@ -10,14 +10,15 @@
 LocationItem::LocationItem() :
 	QTreeWidgetItem()
 {
-	setText(IdColumn, QUuid::createUuid().toString());
+	setData(IdColumn, Qt::DisplayRole, QUuid::createUuid().toString());
+	setConnectionMode(Closed);
 
 }
 
 LocationItem::LocationItem(LocationItem *parent, int type) :
 	QTreeWidgetItem(parent, type)
 {
-	setText(IdColumn, QUuid::createUuid().toString());
+	setData(IdColumn, Qt::DisplayRole, QUuid::createUuid().toString());
 }
 
 LocationItem::~LocationItem()
@@ -42,4 +43,40 @@ QString LocationItem::getDisplayText() const
 		return QString(subscription);
 	else
 		return QString::null;
+}
+
+void LocationItem::setConnectionMode(ConnectionMode mode)
+{
+	switch (mode)
+	{
+	case Attempting:
+		font(LocationItem::DescriptionColumn).setStyle(QFont::StyleItalic);
+		font(LocationItem::DescriptionColumn).setWeight(QFont::Normal);
+		setToolTip(LocationItem::DescriptionColumn, "Attempting to open connection to " + getRemoteHost());
+		break;
+
+	case Created:
+		font(LocationItem::DescriptionColumn).setStyle(QFont::StyleItalic);
+		font(LocationItem::DescriptionColumn).setWeight(QFont::Normal);
+		setToolTip(LocationItem::DescriptionColumn, "Connection created, requesting authorization...");
+		break;
+
+	case Established:
+		font(LocationItem::DescriptionColumn).setStyle(QFont::StyleNormal);
+		font(LocationItem::DescriptionColumn).setWeight(QFont::Bold);
+		setToolTip(LocationItem::DescriptionColumn, "Connection established.");
+		break;
+
+	case Closed:
+		font(LocationItem::DescriptionColumn).setStyle(QFont::StyleNormal);
+		font(LocationItem::DescriptionColumn).setWeight(QFont::Normal);
+		setToolTip(LocationItem::DescriptionColumn, "Not currently connected.");
+		break;
+
+	case Error:
+		font(LocationItem::DescriptionColumn).setStyle(QFont::StyleNormal);
+		font(LocationItem::DescriptionColumn).setWeight(QFont::Normal);
+		setToolTip(LocationItem::DescriptionColumn, "Not currently connection: socket error!");
+		break;
+	}
 }

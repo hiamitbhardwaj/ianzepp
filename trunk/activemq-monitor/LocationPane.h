@@ -26,8 +26,6 @@ public:
 public slots:
 	// Context menu management
 	void contextMenuRequested(const QPoint &pos);
-	void addingRemoteHost(LocationItem *item);
-	void addingSubscription(LocationItem *item);
 	void setPropertiesVisible(bool visible);
 
 	// Remote broker management
@@ -35,8 +33,8 @@ public slots:
 	void connectionEstablished(RemoteBroker *broker);
 	void connectionClosed(RemoteBroker *broker);
 	void connectionError(RemoteBroker *broker, RemoteBroker::SocketError &socketError);
-	void frameReceived(RemoteBroker *broker, RemoteFrame *frame);
-	void frameSent(RemoteBroker *broker, RemoteFrame *frame);
+	void frameReceived(RemoteBroker *broker, RemoteFrame frame);
+	void frameSent(RemoteBroker *broker, RemoteFrame frame);
 
 public:
 	inline QTreeWidget *getTreeWidget() const
@@ -44,21 +42,27 @@ public:
 		return ui.locationTree;
 	}
 
-private:
 	inline LocationContextDialog *getContextDialog() const
 	{
 		return contextDialog;
 	}
 
-	inline QTreeWidgetItem *getSelectedTreeItem() const
+	inline LocationItem *getItemById(const QString &itemId) const
 	{
-		QList<QTreeWidgetItem *> itemList = ui.locationTree->selectedItems();
-		return itemList.isEmpty() ? 0 : itemList.first();
+		qDebug() << "LocationItem *LocationPane::getItemById(const QString &itemId) const";
+		qDebug() << "\t Item Id: " << itemId;
+		Qt::MatchFlags flags = Qt::MatchExactly | Qt::MatchRecursive;
+		QList<QTreeWidgetItem *> itemList = ui.locationTree->findItems(itemId, flags, LocationItem::IdColumn);
+		qDebug() << "\t Result Count: " << itemList.size();
+		return itemList.isEmpty() ? 0 : (LocationItem *) itemList.first();
 	}
 
 	inline LocationItem *getSelectedItem() const
 	{
-		return (LocationItem *) getSelectedTreeItem();
+		qDebug() << "LocationItem *LocationPane::getSelectedItem() const";
+		QList<QTreeWidgetItem *> itemList = ui.locationTree->selectedItems();
+		qDebug() << "\t Result Count: " << itemList.size();
+		return itemList.isEmpty() ? 0 : (LocationItem *) itemList.first();
 	}
 
 	inline LocationItem *getRootItem() const
@@ -68,18 +72,28 @@ private:
 
 	inline RemoteBroker *getBroker(const QString &itemId) const
 	{
+		qDebug() << "RemoteBroker *LocationPane::getBroker(const QString &itemId) const";
+		qDebug() << "\t Item Id:" << itemId;
 		return brokerMap.value(itemId);
 	}
 
 	inline void insertBroker(const QString &itemId, RemoteBroker *broker)
 	{
+		Q_CHECK_PTR(broker);
+		qDebug() << "void LocationPane::insertBroker(const QString &itemId, RemoteBroker *broker)";
+		qDebug() << "\t Item Id:" << itemId;
 		brokerMap.insert(itemId, broker);
 	}
 
 	inline void removeBroker(const QString &itemId)
 	{
+		qDebug() << "void LocationPane::removeBroker(const QString &itemId)";
+		qDebug() << "\t Item Id:" << itemId;
 		brokerMap.remove(itemId);
 	}
+
+	signals:
+	void debug(const QString &);
 
 private:
 	void initializeContextMenu();
@@ -93,16 +107,6 @@ private:
 
 	// Actions
 	void action(QAction *action);
-	void actionAddRemoteHost();
-	void actionAddSubscription();
-	void actionEdit();
-	void actionDelete();
-	void actionConnect();
-	void actionDisconnect();
-	void actionSubscribe();
-	void actionUnsubscribe();
-	void actionAutoConnection(bool checked);
-	void actionAutoSubscription(bool checked);
 
 private:
 	Ui::LocationPaneClass ui;
