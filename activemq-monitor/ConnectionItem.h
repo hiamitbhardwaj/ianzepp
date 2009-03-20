@@ -172,7 +172,7 @@ public:
 		this->remotePort = remotePort;
 	}
 
-signals:
+Q_SIGNALS:
 	void stateChanged(ConnectionItem::State previous, ConnectionItem::State current);
 	void messageReceived(ConnectionItem::Frame frame);
 	void messageSent(ConnectionItem::Frame frame);

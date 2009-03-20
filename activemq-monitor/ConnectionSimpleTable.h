@@ -28,11 +28,6 @@ public:
 	ConnectionSimpleTable(QWidget *parent, ConnectionItem *item);
 	virtual ~ConnectionSimpleTable();
 
-	ConnectionItem *getConnectionItem() const
-	{
-		return connectionItem;
-	}
-
 	QTableWidgetItem *getItem(QString subscription) const
 	{
 		QList<QTableWidgetItem *> items = findItems(subscription, Qt::MatchFixedString);
@@ -48,9 +43,6 @@ public slots:
 protected:
 	void incrementItemAt(int row, int column, int incrementBy = 1);
 	uint insertSubscription(QString subscription);
-
-private:
-	ConnectionItem *connectionItem;
 };
 
 #endif /* CONNECTIONSIMPLETABLE_H_ */

@@ -9,7 +9,8 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += ConnectionSimpleTable.h \
+HEADERS += dialogs/AddConnectionWizard/TestPage.h \
+    ConnectionSimpleTable.h \
     SubscriptionItem.h \
     ConnectionItem.h \
     LocationActionSubscribe.h \
@@ -24,7 +25,8 @@ HEADERS += ConnectionSimpleTable.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += ConnectionSimpleTable.cpp \
+SOURCES += dialogs/AddConnectionWizard/TestPage.cpp \
+    ConnectionSimpleTable.cpp \
     SubscriptionItem.cpp \
     ConnectionItem.cpp \
     LocationActionSubscribe.cpp \
@@ -40,7 +42,8 @@ SOURCES += ConnectionSimpleTable.cpp \
     LocationProperties.cpp \
     ActiveMQMonitor.cpp \
     main.cpp
-FORMS += LocationContextDialog.ui \
+FORMS += dialogs/AddConnectionWizard/TestPage.ui \
+    LocationContextDialog.ui \
     DetailsPane.ui \
     LocationPane.ui \
     LocationProperties.ui \
