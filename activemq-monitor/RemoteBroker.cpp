@@ -14,7 +14,7 @@ RemoteBroker::RemoteBroker(QObject *parent) :
 
 	QObject::connect(this, SIGNAL(connected()), this, SLOT(socketCreated()));
 	QObject::connect(this, SIGNAL(disconnected()), this, SLOT(socketClosed()));
-	QObject::connect(this, SIGNAL(error(QAbstractSocket::SocketError &)), this, SLOT(socketError(QAbstractSocket::SocketError &)));
+	QObject::connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
 	QObject::connect(this, SIGNAL(readyRead()), this, SLOT(socketReadable()));
 
 	// Setup the read buffer
@@ -104,9 +104,9 @@ void RemoteBroker::socketClosed()
 	authenticated = false;
 }
 
-void RemoteBroker::socketError(QAbstractSocket::SocketError &socketError)
+void RemoteBroker::socketError(QAbstractSocket::SocketError socketError)
 {
-	qDebug() << "void RemoteBroker::socketError(QAbstractSocket::SocketError &socketError)";
+	qDebug() << "void RemoteBroker::socketError(QAbstractSocket::SocketError socketError)";
 
 	emit
 	connectionError(this, socketError);

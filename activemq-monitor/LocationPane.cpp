@@ -8,21 +8,11 @@ LocationPane::LocationPane(QWidget *parent) :
 {
 	ui.setupUi(this);
 	ui.propertiesWidget->setVisible(ui.propertiesVisible->isChecked());
+    ui.locationTree->setColumnHidden(LocationItem::IdColumn, true);
 
 	initializeContextDialog();
 	initializeContextMenu();
-
-	// Initialize the root location item
-	rootItem = new LocationItem();
-	rootItem->setData(LocationItem::DescriptionColumn, Qt::DisplayRole, "Remote Host Connections");
-	rootItem->setData(LocationItem::DescriptionColumn, Qt::ToolTipRole, "Right-click to manage connections");
-	rootItem->setData(LocationItem::IdColumn, Qt::DisplayRole, "<root>");
-	ui.locationTree->addTopLevelItem(rootItem);
-
-	// Tweak the tree
-#ifdef QT_NO_DEBUG
-	ui.locationTree->setColumnHidden(LocationItem::IdColumn, true);
-#endif
+    initializeRootItem();
 }
 
 LocationPane::~LocationPane()
@@ -31,7 +21,7 @@ LocationPane::~LocationPane()
 
 void LocationPane::contextMenuRequested(const QPoint &pos)
 {
-	qDebug() << "LocationPane::contextMenuRequested(const QPoint &pos)";
+	qDebug() << "void LocationPane::contextMenuRequested(const QPoint &pos)";
 
 	QMenu *menu = 0;
 	LocationItem *item = getSelectedItem();
@@ -49,14 +39,14 @@ void LocationPane::contextMenuRequested(const QPoint &pos)
 
 void LocationPane::setPropertiesVisible(bool visible)
 {
-	qDebug() << "LocationPane::setPropertiesVisible(bool visible)";
+	qDebug() << "void LocationPane::setPropertiesVisible(bool visible)";
 	ui.propertiesVisible->setChecked(visible);
 	ui.propertiesWidget->setVisible(visible);
 }
 
 void LocationPane::initializeContextMenu()
 {
-	qDebug() << "LocationPane::initializeContextMenu()";
+	qDebug() << "void LocationPane::initializeContextMenu()";
 
 	contextMenu = new QMenu(this);
 
@@ -78,18 +68,26 @@ void LocationPane::initializeContextMenu()
 
 void LocationPane::initializeContextDialog()
 {
-	qDebug() << "LocationPane::initializeContextDialog()";
+	qDebug() << "void LocationPane::initializeContextDialog()";
 
 	contextDialog = new LocationContextDialog(this);
+}
 
-	// Connect to dialog's signals
-	QObject::connect(contextDialog, SIGNAL(createLocation(LocationItem *)), this, SLOT(createLocation(LocationItem *)));
-	QObject::connect(contextDialog, SIGNAL(updateLocation(LocationItem *)), this, SLOT(updateLocation(LocationItem *)));
+void LocationPane::initializeRootItem()
+{
+	qDebug() << "void LocationPane::initializeRootItem()";
+
+    rootItem = new LocationItem();
+    rootItem->setData(LocationItem::DescriptionColumn, Qt::DisplayRole, "Remote Host Connections");
+    rootItem->setData(LocationItem::DescriptionColumn, Qt::ToolTipRole, "Right-click to manage connections");
+    rootItem->setIcon(LocationItem::DescriptionColumn, QIcon(":/resources/icons/entry_dc.gif"));
+    rootItem->setData(LocationItem::IdColumn, Qt::DisplayRole, "<root>");
+    ui.locationTree->addTopLevelItem(rootItem);
 }
 
 QMenu *LocationPane::getRootMenu()
 {
-	qDebug() << "LocationPane::getRootMenu()";
+	qDebug() << "QMenu *LocationPane::getRootMenu()";
 
 	ui.actionAddRemoteHost->setEnabled(true);
 	ui.actionAddSubscription->setEnabled(false);
@@ -112,7 +110,7 @@ QMenu *LocationPane::getRootMenu()
 
 QMenu *LocationPane::getRemoteHostMenu()
 {
-	qDebug() << "LocationPane::getRemoteHostMenu()";
+	qDebug() << "QMenu *LocationPane::getRemoteHostMenu()";
 
 	// Current selection
 	LocationItem *item = getSelectedItem();
@@ -144,7 +142,7 @@ QMenu *LocationPane::getRemoteHostMenu()
 
 QMenu *LocationPane::getSubscriptionMenu()
 {
-	qDebug() << "LocationPane::getSubscriptionMenu()";
+	qDebug() << "QMenu *LocationPane::getSubscriptionMenu()";
 
 	// Current selection
 	LocationItem *item = getSelectedItem();
@@ -174,14 +172,14 @@ QMenu *LocationPane::getSubscriptionMenu()
 
 QMenu *LocationPane::getMessageMenu()
 {
-	qDebug() << "LocationPane::getMessageMenu()";
+	qDebug() << "QMenu *LocationPane::getMessageMenu()";
 
 	return contextMenu;
 }
 
 void LocationPane::action(QAction *action)
 {
-	qDebug() << "LocationPane::action(QAction *action)";
+	qDebug() << "void LocationPane::action(QAction *action)";
 
 	if (action == 0)
 		return;
@@ -231,7 +229,7 @@ void LocationPane::action(QAction *action)
 
 void LocationPane::connectionCreated(RemoteBroker *remoteBroker)
 {
-	qDebug() << "LocationPane::connectionCreated(RemoteBroker *broker)";
+	qDebug() << "void LocationPane::connectionCreated(RemoteBroker *broker)";
 	qDebug() << "\t With Broker:" << remoteBroker;
 	qDebug() << "\t Associated Item Id:" << remoteBroker->getItemId();
 
@@ -246,7 +244,7 @@ void LocationPane::connectionEstablished(RemoteBroker *remoteBroker)
 	Q_CHECK_PTR(remoteBroker);
 	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
 
-	qDebug() << "LocationPane::connectionEstablished(RemoteBroker *remoteBroker)";
+	qDebug() << "void LocationPane::connectionEstablished(RemoteBroker *remoteBroker)";
 	qDebug() << "\t With Broker:" << remoteBroker;
 	qDebug() << "\t Associated Item Id:" << remoteBroker->getItemId();
 
@@ -276,33 +274,33 @@ void LocationPane::connectionEstablished(RemoteBroker *remoteBroker)
 
 void LocationPane::connectionClosed(RemoteBroker *remoteBroker)
 {
-	qDebug() << "LocationPane::connectionClosed(RemoteBroker *remoteBroker)";
-	qDebug() << "\t With Broker:" << remoteBroker;
-	qDebug() << "\t Associated Item Id: " << remoteBroker->getItemId();
-
 	Q_CHECK_PTR(remoteBroker);
 	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
+
+	qDebug() << "void LocationPane::connectionClosed(RemoteBroker *remoteBroker)";
+	qDebug() << "\t With Broker:" << remoteBroker;
+	qDebug() << "\t Associated Item Id: " << remoteBroker->getItemId();
 
 	getItemById(remoteBroker->getItemId())->setConnectionMode(LocationItem::Closed);
 }
 
-void LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError &socketError)
+void LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError socketError)
 {
-	qDebug() << "LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError &socketError)";
-
 	Q_CHECK_PTR(remoteBroker);
 	Q_CHECK_PTR(getItemById(remoteBroker->getItemId()));
+
+	qDebug() << "void LocationPane::connectionError(RemoteBroker *remoteBroker, RemoteBroker::SocketError socketError)";
 
 	getItemById(remoteBroker->getItemId())->setConnectionMode(LocationItem::Error);
 }
 
 void LocationPane::frameReceived(RemoteBroker *broker, RemoteFrame frame)
 {
-	qDebug() << "LocationPane::frameReceived(RemoteBroker *remoteBroker, RemoteFrame frame)";
+	qDebug() << "void LocationPane::frameReceived(RemoteBroker *remoteBroker, RemoteFrame frame)";
 }
 
 void LocationPane::frameSent(RemoteBroker *broker, RemoteFrame frame)
 {
-	qDebug() << "LocationPane::frameSent(RemoteBroker *remoteBroker, RemoteFrame frame)";
+	qDebug() << "void LocationPane::frameSent(RemoteBroker *remoteBroker, RemoteFrame frame)";
 
 }

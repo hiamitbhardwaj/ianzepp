@@ -9,7 +9,9 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += LocationActionSubscribe.h \
+HEADERS += SubscriptionItem.h \
+    ConnectionItem.h \
+    LocationActionSubscribe.h \
     LocationActionDelete.h \
     LocationActionAddSubscription.h \
     LocationActionAddRemoteHost.h \
@@ -21,7 +23,9 @@ HEADERS += LocationActionSubscribe.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += LocationActionSubscribe.cpp \
+SOURCES += SubscriptionItem.cpp \
+    ConnectionItem.cpp \
+    LocationActionSubscribe.cpp \
     LocationActionDelete.cpp \
     LocationActionAddSubscription.cpp \
     LocationActionAddRemoteHost.cpp \
@@ -39,4 +43,4 @@ FORMS += LocationContextDialog.ui \
     LocationPane.ui \
     LocationProperties.ui \
     ActiveMQMonitor.ui
-RESOURCES += 
+RESOURCES += activemq_monitor.qrc

@@ -76,10 +76,12 @@ LocationActionAddRemoteHost::LocationActionAddRemoteHost(LocationPane *locationP
 
 	// Register
 	returnedItem->setRemoteBroker(remoteBroker);
+	returnedItem->setIcon(LocationItem::DescriptionColumn, QIcon(":/resources/icons/bookmark.gif"));
 	locationPane->insertBroker(returnedItem->getId(), remoteBroker);
 
 	// Add to tree
 	rootItem->addChild(returnedItem);
+	rootItem->treeWidget()->expandItem(rootItem);
 }
 
 LocationActionAddRemoteHost::~LocationActionAddRemoteHost()

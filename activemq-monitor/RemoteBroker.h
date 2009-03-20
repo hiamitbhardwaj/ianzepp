@@ -106,14 +106,14 @@ private:
 	signals:
 	void connectionCreated(RemoteBroker *);
 	void connectionEstablished(RemoteBroker *);
-	void connectionError(RemoteBroker *, RemoteBroker::SocketError &);
+	void connectionError(RemoteBroker *, RemoteBroker::SocketError);
 	void connectionClosed(RemoteBroker *);
 	void frameReceived(RemoteBroker *, RemoteFrame);
 	void frameSent(RemoteBroker *, RemoteFrame);
 
 private slots:
 	void socketCreated();
-	void socketError(QAbstractSocket::SocketError &socketError);
+	void socketError(QAbstractSocket::SocketError socketError);
 	void socketClosed();
 	void socketReadable();
 	void processSocketBuffer();
