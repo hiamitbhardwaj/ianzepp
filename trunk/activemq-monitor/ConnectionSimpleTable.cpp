@@ -8,16 +8,12 @@
 #include "ConnectionSimpleTable.h"
 
 ConnectionSimpleTable::ConnectionSimpleTable(QWidget *parent, ConnectionItem *item) :
-	QTableWidget(parent), connectionItem(item)
+	QTableWidget(parent)
 {
-	// Save connection item
-	this->connectionItem = item;
-
 	// Connect to connectionItem
 	QObject::connect(item, SIGNAL(messageReceived(ConnectionItem::Frame)), this, SLOT(messageReceived(ConnectionItem::Frame)));
 	QObject::connect(item, SIGNAL(messageSent(ConnectionItem::Frame)), this, SLOT(messageSent(ConnectionItem::Frame)));
-	QObject::connect(item, SIGNAL(stateChanged(ConnectionItem::State, ConnectionItem::State)), this,
-			SLOT(stateChanged(ConnectionItem::State, ConnectionItem::State)));
+	QObject::connect(item, SIGNAL(stateChanged(ConnectionItem::State, ConnectionItem::State)), this, SLOT(stateChanged(ConnectionItem::State, ConnectionItem::State)));
 	QObject::connect(item, SIGNAL(subscriptionChanged(QString, bool)), this, SLOT(subscriptionChanged(QString, bool)));
 
 	// Update UI with columns
