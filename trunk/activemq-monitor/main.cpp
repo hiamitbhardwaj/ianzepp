@@ -3,23 +3,23 @@
 #include <QtCore/QTime>
 #include <QtGui>
 #include <QtGui/QApplication>
-#include "iostream.h"
+#include <iostream>
 
 void DebugOutputHandler(QtMsgType type, const char *msg)
 {
 	switch (type)
 	{
 	case QtDebugMsg:
-		cerr << "[DEBUG]   : " << msg << "\n";
+		std::cerr << "[DEBUG]   : " << msg << std::endl;
 		break;
 	case QtWarningMsg:
-		cerr << "[WARNING] : " << msg << "\n";
+		std::cerr << "[WARNING] : " << msg << std::endl;
 		break;
 	case QtSystemMsg:
-		cerr << "[SYSTEM]  : " << msg << "\n";
+		std::cerr << "[SYSTEM]  : " << msg << std::endl;
 		break;
 	case QtFatalMsg:
-		cerr << "[FATAL]   : " << msg << "\n";
+		std::cerr << "[FATAL]   : " << msg << std::endl;
 		abort(); // dump core on purpose
 	}
 }

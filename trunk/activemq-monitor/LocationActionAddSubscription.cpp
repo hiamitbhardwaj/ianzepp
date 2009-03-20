@@ -40,12 +40,15 @@ LocationActionAddSubscription::LocationActionAddSubscription(LocationPane *locat
 	// Save the remote broker
 	Q_CHECK_PTR(selectedItem->getRemoteBroker());
 	returnedItem->setRemoteBroker(selectedItem->getRemoteBroker());
+	returnedItem->setIcon(LocationItem::DescriptionColumn, QIcon(":/resources/icons/entry_org.gif"));
 
 	// Does this name already exist in the tree?
 	// TODO
 
 	// Add to tree and expand
 	selectedItem->addChild(returnedItem);
+	selectedItem->treeWidget()->expandItem(rootItem);
+	selectedItem->treeWidget()->expandItem(selectedItem);
 	// TODO ui.locationTree->expandItem(rootItem);
 	// TODO ui.locationTree->expandItem(selectedItem);
 

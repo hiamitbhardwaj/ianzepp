@@ -32,7 +32,7 @@ public slots:
 	void connectionCreated(RemoteBroker *broker);
 	void connectionEstablished(RemoteBroker *broker);
 	void connectionClosed(RemoteBroker *broker);
-	void connectionError(RemoteBroker *broker, RemoteBroker::SocketError &socketError);
+	void connectionError(RemoteBroker *broker, RemoteBroker::SocketError socketError);
 	void frameReceived(RemoteBroker *broker, RemoteFrame frame);
 	void frameSent(RemoteBroker *broker, RemoteFrame frame);
 
@@ -98,6 +98,7 @@ public:
 private:
 	void initializeContextMenu();
 	void initializeContextDialog();
+	void initializeRootItem();
 
 	// Menus
 	QMenu *getRootMenu();
