@@ -12,6 +12,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QUuid>
 #include <QtGui/QTreeWidgetItem>
 #include "ConnectionItem.h"
 
@@ -31,6 +32,11 @@ public:
 	QString getDestination() const
 	{
 		return destination;
+	}
+
+	QString getId() const
+	{
+		return id;
 	}
 
 	bool isConnected()
@@ -58,7 +64,8 @@ public:
 		this->automatic = automatic;
 	}
 
-	void setSubscribed(bool subscribed) {
+	void setSubscribed(bool subscribed)
+	{
 		getConnectionItem()->setSubscribed(getDestination(), subscribed);
 
 	}
@@ -74,6 +81,7 @@ protected slots:
 	void updateDisplayData();
 
 private:
+	QString id;
 	QString destination;
 	bool automatic;
 };

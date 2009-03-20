@@ -9,7 +9,8 @@ QT += core \
     network \
     opengl \
     webkit
-HEADERS += SubscriptionItem.h \
+HEADERS += ConnectionSimpleTable.h \
+    SubscriptionItem.h \
     ConnectionItem.h \
     LocationActionSubscribe.h \
     LocationActionDelete.h \
@@ -23,7 +24,8 @@ HEADERS += SubscriptionItem.h \
     LocationPane.h \
     LocationProperties.h \
     ActiveMQMonitor.h
-SOURCES += SubscriptionItem.cpp \
+SOURCES += ConnectionSimpleTable.cpp \
+    SubscriptionItem.cpp \
     ConnectionItem.cpp \
     LocationActionSubscribe.cpp \
     LocationActionDelete.cpp \
