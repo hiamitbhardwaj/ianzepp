@@ -13,6 +13,9 @@ ConnectionItem::ConnectionItem(QTreeWidgetItem *parent) :
 	// Initialize buffers
 	buffer = new QByteArray();
 
+	// Initialize ID
+	id = QUuid::createUuid().toString();
+
 	// Initialize socket
 	socket = new QTcpSocket(this);
 	QObject::connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));

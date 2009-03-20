@@ -15,6 +15,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QVariant>
+#include <QtCore/QUuid>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTreeWidgetItem>
 #include <QtNetwork/QTcpSocket>
@@ -35,6 +36,11 @@ public:
 		void setCommand(QString command)
 		{
 			this->command = command;
+		}
+
+		QString getDestination() const
+		{
+			return getHeader("destination");
 		}
 
 		QString getHeader(QString name) const
@@ -58,6 +64,16 @@ public:
 		void setPayload(const QByteArray &payload)
 		{
 			this->payload = payload;
+		}
+
+		QString getSessionId() const
+		{
+			return getHeader("session-id");
+		}
+
+		quint32 getSize() const
+		{
+			return payload.size();
 		}
 
 		QByteArray toByteArray() const
@@ -114,6 +130,11 @@ public:
 	ConnectionItem::State getState()
 	{
 		return currentState;
+	}
+
+	QString getId() const
+	{
+		return id;
 	}
 
 	bool isConnected()
@@ -173,6 +194,7 @@ protected:
 	void setState(ConnectionItem::State state);
 
 private:
+	QString id;
 	ConnectionItem::State previousState;
 	ConnectionItem::State currentState;
 	QTcpSocket *socket;

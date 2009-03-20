@@ -13,6 +13,9 @@ SubscriptionItem::SubscriptionItem(ConnectionItem *parent, QString destination) 
 	// Save destination
 	this->destination = destination;
 
+	// Initialize ID
+	this->id = QUuid::createUuid().toString();
+
 	// Connect to parent
 	QObject::connect(parent, SIGNAL(messageReceived(ConnectionItem::Frame)), this, SLOT(messageReceived(ConnectionItem::Frame)));
 	QObject::connect(parent, SIGNAL(messageSent(ConnectionItem::Frame)), this, SLOT(messageSent(ConnectionItem::Frame)));
