@@ -23,6 +23,7 @@ public:
 	virtual ~AMQSubscription();
 
 	void setSubscribed(bool subscribed);
+	void send(QString message);
 
 public:
 	bool getAutomatic() const

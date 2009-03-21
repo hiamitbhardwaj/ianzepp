@@ -53,14 +53,13 @@ public:
 	AMQSubscription *findSubscription(QString destination, QString selector);
 
 Q_SIGNALS:
-	void stateChanged(ConnectionState);
+	void stateChanged(AMQConnection::ConnectionState);
 	void receivedFrame(AMQConnectionFrame);
 	void sentFrame(AMQConnectionFrame);
 
 public Q_SLOTS:
 	void connectToHost();
 	void sendFrame(AMQConnectionFrame);
-	void sendFrameData(QByteArray);
 	void receiveFrame(AMQConnectionFrame);
 
 private Q_SLOTS:

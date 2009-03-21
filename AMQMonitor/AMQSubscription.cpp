@@ -42,9 +42,12 @@ void AMQSubscription::setSubscribed(bool subscribed)
 	else
 		frame.setCommandType(AMQConnectionFrame::Unsubscribe);
 
-	frame.setId(getId());
+	if (false == getId().isEmpty())
+		frame.setId(getId());
+	if (false == getSelector().isEmpty())
+		frame.setSelector(getSelector());
+
 	frame.setDestination(getDestination());
-	frame.setSelector(getSelector());
 	frame.setReceiptRequired(true);
 
 	// Save the receipt token
@@ -54,24 +57,23 @@ void AMQSubscription::setSubscribed(bool subscribed)
 	frame.send();
 }
 
-void AMQSubscription::stateChanged(AMQConnection::ConnectionState)
+void AMQSubscription::send(QString message)
 {
+	AMQConnectionFrame frame(getConnection());
+	frame.setCommandType(AMQConnectionFrame::Send);
+	frame.setDestination(getDestination());
+	frame.setPayload(message.toUtf8());
+	frame.send();
+}
 
+void AMQSubscription::stateChanged(AMQConnection::ConnectionState state)
+{
+	if (state == AMQConnection::Authenticated && getAutomatic())
+		setSubscribed(true);
 }
 
 void AMQSubscription::receivedFrame(AMQConnectionFrame frame)
 {
-	if (frame.getDestination() != getDestination())
-		return;
-	if (frame.getSelector() != getSelector())
-		return;
-
-	qDebug() << "void AMQSubscription::setSubscribed(bool)";
-	qDebug() << "\t Id:" << frame.getId();
-	qDebug() << "\t Destination:" << frame.getDestination();
-	qDebug() << "\t Selector:" << frame.getSelector();
-	qDebug() << "\t Acknowledged:" << frame.getAcknowledged();
-
 	// TODO message processing
 	switch (frame.getCommandType())
 	{
@@ -86,10 +88,6 @@ void AMQSubscription::receivedFrame(AMQConnectionFrame frame)
 	default:
 		break;
 	}
-
-	// Acknowledge the message?
-	if (getAcknowledged())
-		frame.acknowledge();
 }
 
 void AMQSubscription::sentFrame(AMQConnectionFrame frame)
@@ -109,16 +107,29 @@ void AMQSubscription::sentFrame(AMQConnectionFrame frame)
 
 void AMQSubscription::receivedReceiptFrame(AMQConnectionFrame frame)
 {
+	if (frame.getReceipt() != getSubscriptionReceipt())
+		return;
+
 	qDebug() << "void AMQSubscription::receivedReceiptFrame(AMQConnectionFrame)";
 	qDebug() << "\t Receipt:" << frame.getReceipt();
 	qDebug() << "\t Expected Receipt:" << getSubscriptionReceipt();
+	qDebug() << "\t Subscribed To:" << getDestination();
 
 	// Only mark subscribed once the subscription receipt comes back
-	if (frame.getReceipt() == getSubscriptionReceipt())
-		subscribed = true;
+	subscribed = true;
+
+	// Send a message
+	send("Hello World!");
 }
 
-void AMQSubscription::receivedMessageFrame(AMQConnectionFrame)
+void AMQSubscription::receivedMessageFrame(AMQConnectionFrame frame)
 {
+	if (frame.getDestination() != getDestination())
+		return;
+
+	qDebug() << "void AMQSubscription::receivedMessageFrame(AMQConnectionFrame)";
+	qDebug() << "\t Subscribed To:" << frame.getDestination();
+	qDebug() << "\t Message Id:" << frame.getMessageId();
+
 }
 
