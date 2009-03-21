@@ -10,12 +10,17 @@
 
 #include <QtCore/QByteArray>
 #include <QtCore/QDebug>
+#include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QRegExp>
 #include <QtCore/QTimer>
 #include <QtNetwork/QTcpSocket>
 
+// Required for slots
 #include "AMQConnectionFrame.h"
+
+// Forward declarations
+class AMQSubscription;
 
 class AMQConnection: public QObject
 {
@@ -41,16 +46,22 @@ public:
 	AMQConnection(QObject *parent);
 	virtual ~AMQConnection();
 
+	AMQSubscription *createSubscription(QString destination);
+	AMQSubscription *createSubscription(QString destination, QString selector);
+	AMQSubscription *findSubscriptionById(QString id);
+	AMQSubscription *findSubscription(QString destination);
+	AMQSubscription *findSubscription(QString destination, QString selector);
+
 Q_SIGNALS:
+	void stateChanged(ConnectionState);
 	void receivedFrame(AMQConnectionFrame);
 	void sentFrame(AMQConnectionFrame);
 
 public Q_SLOTS:
 	void connectToHost();
 	void sendFrame(AMQConnectionFrame);
+	void sendFrameData(QByteArray);
 	void receiveFrame(AMQConnectionFrame);
-	void setSubscribed(QString destination, bool subscribed);
-	void setSubscribed(QString destination, QString selector, bool subscribed);
 
 private Q_SLOTS:
 	void socketConnected();
@@ -59,6 +70,7 @@ private Q_SLOTS:
 	void socketProcessBuffer();
 
 private:
+	QList<AMQSubscription *> subscriptions;
 	QString remoteHost;
 	QString remotePort;
 	QTcpSocket *socket;

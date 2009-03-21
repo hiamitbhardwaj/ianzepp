@@ -67,14 +67,23 @@ QByteArray AMQConnectionFrame::toFrame()
 	return data;
 }
 
-void AMQConnectionFrame::sendResponse(AMQConnectionFrame responseFrame)
+void AMQConnectionFrame::acknowledge()
 {
-	getConnection()->sendFrame(responseFrame);
+	if (getCommandType() != Message)
+		return; // must be a message type to acknowledge
+	if (getMessageId().isEmpty())
+		return; // must have a message id
+
+	AMQConnectionFrame frame(getConnection());
+	frame.setCommandType(AMQConnectionFrame::Acknowledge);
+	frame.setMessageId(getMessageId());
+	frame.setTransactionId(getTransactionId());
+	frame.send();
 }
 
-void AMQConnectionFrame::sendCorrelatedResponse(AMQConnectionFrame responseFrame)
+void AMQConnectionFrame::send()
 {
-	responseFrame.setCorrelationId(getCorrelationId());
-	getConnection()->sendFrame(responseFrame);
+	getConnection()->sendFrameData(toFrame());
 }
+
 

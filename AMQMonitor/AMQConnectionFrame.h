@@ -22,7 +22,7 @@ class AMQConnectionFrame
 public:
 	enum CommandType
 	{
-		Connect, Subscribe, Unsubscribe, Disconnect
+		Connect, Connected, Subscribe, Unsubscribe, Acknowledge, Error, Message, Receipt, Disconnect, Unknown
 	};
 
 	enum Priority
@@ -35,8 +35,8 @@ public:
 	virtual ~AMQConnectionFrame();
 
 	QByteArray toFrame();
-	void sendResponse(AMQConnectionFrame responseFrame);
-	void sendCorrelatedResponse(AMQConnectionFrame responseFrame);
+	void acknowledge();
+	void send();
 
 public:
 	AMQConnection *getConnection() const
@@ -54,15 +54,30 @@ public:
 		setHeader("ack", acknowledged ? "client" : "auto");
 	}
 
-	QString getCommand() const
+	CommandType getCommandType() const
 	{
-		return command;
-	}
+		QString command = getCommand();
 
-	void setCommand(QString command)
-	{
-		this->command = command;
-		this->resetCachedFrame();
+		if (command == "CONNECT")
+			return Connect;
+		else if (command == "DISCONNECT")
+			return Disconnect;
+		else if (command == "SUBSCRIBE")
+			return Subscribe;
+		else if (command == "UNSUBSCRIBE")
+			return Unsubscribe;
+		else if (command == "ACK")
+			return Acknowledge;
+		else if (command == "MESSAGE")
+			return Message;
+		else if (command == "RECEIPT")
+			return Receipt;
+		else if (command == "CONNECTED")
+			return Connected;
+		else if (command == "ERROR")
+			return Error;
+		else
+			return Unknown;
 	}
 
 	void setCommandType(CommandType commandType)
@@ -83,6 +98,26 @@ public:
 
 		case Unsubscribe:
 			setCommand("UNSUBSCRIBE");
+			break;
+
+		case Acknowledge:
+			setCommand("ACK");
+			break;
+
+		case Message:
+			setCommand("MESSAGE");
+			break;
+
+		case Receipt:
+			setCommand("RECEIPT");
+			break;
+
+		case Connected:
+			setCommand("CONNECTED");
+			break;
+
+		case Error:
+			setCommand("Error");
 			break;
 
 		default:
@@ -197,14 +232,17 @@ public:
 		setHeader("priority", QString::number(priority));
 	}
 
-	QString getReceiptToken() const
+	QString getReceipt() const
 	{
-		return getHeader("receipt");
+		if (getCommandType() == Receipt)
+			return getHeader("receipt-id");
+		else
+			return getHeader("receipt");
 	}
 
 	bool getReceiptRequired() const
 	{
-		return false == getReceiptToken().isEmpty();
+		return false == getReceipt().isEmpty();
 	}
 
 	void setReceiptRequired(bool receiptRequired)
@@ -256,6 +294,17 @@ protected:
 	void resetCachedFrame()
 	{
 		this->cachedFrame = QByteArray();
+	}
+
+	QString getCommand() const
+	{
+		return command;
+	}
+
+	void setCommand(QString command)
+	{
+		this->command = command;
+		this->resetCachedFrame();
 	}
 
 	QString getHeader(QString key) const
