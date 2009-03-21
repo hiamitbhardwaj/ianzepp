@@ -42,9 +42,9 @@ void AMQSubscription::setSubscribed(bool subscribed)
 	else
 		frame.setCommandType(AMQConnectionFrame::Unsubscribe);
 
-	if (false == getId().isEmpty())
+	if (!getId().isEmpty())
 		frame.setId(getId());
-	if (false == getSelector().isEmpty())
+	if (!getSelector().isEmpty())
 		frame.setSelector(getSelector());
 
 	frame.setDestination(getDestination());
@@ -57,12 +57,13 @@ void AMQSubscription::setSubscribed(bool subscribed)
 	frame.send();
 }
 
-void AMQSubscription::send(QString message)
+void AMQSubscription::send(QString message, AMQConnectionFrame::Priority priority)
 {
 	AMQConnectionFrame frame(getConnection());
 	frame.setCommandType(AMQConnectionFrame::Send);
 	frame.setDestination(getDestination());
 	frame.setPayload(message.toUtf8());
+	frame.setPriority(priority);
 	frame.send();
 }
 
@@ -119,17 +120,19 @@ void AMQSubscription::receivedReceiptFrame(AMQConnectionFrame frame)
 	subscribed = true;
 
 	// Send a message
-	send("Hello World!");
+	send("<root><child1>Hi!</child1><child2/></root>");
 }
 
 void AMQSubscription::receivedMessageFrame(AMQConnectionFrame frame)
 {
-	if (frame.getDestination() != getDestination())
+	if (!getId().isEmpty() && getId() != frame.getSubscriptionId())
+		return;
+	else if (frame.getDestination() != getDestination())
 		return;
 
 	qDebug() << "void AMQSubscription::receivedMessageFrame(AMQConnectionFrame)";
 	qDebug() << "\t Subscribed To:" << frame.getDestination();
-	qDebug() << "\t Message Id:" << frame.getMessageId();
-
+	qDebug() << "\t Selector:" << frame.getSelector();
+	qDebug() << "\t Payload:" << QString(frame.getPayload());
 }
 
