@@ -10,6 +10,7 @@
 
 #include <QtCore/QByteArray>
 #include <QtCore/QDateTime>
+#include <QtCore/QDebug>
 #include <QtCore/QHash>
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
@@ -218,14 +219,26 @@ public:
 		return payload;
 	}
 
-	QDomDocument getPayloadDocument() const
+	QDomDocument getPayloadDocument()
 	{
-		QDomDocument document;
-
-		if (document.setContent(getPayload(), true))
-			return document;
+		if (!cachedDocument.isNull())
+			return cachedDocument;
 		else
-			return QDomDocument();
+			qDebug() << "\t Generating XML DomDocument from payload data";
+
+		QString error;
+		int line, column;
+
+		if (!cachedDocument.setContent(getPayload(), true, &error, &line, &column))
+		{
+			qDebug() << "\t Error processing QDomDocument:";
+			qDebug() << "\t\t Message:" << error;
+			qDebug() << "\t\t Line:" << line;
+			qDebug() << "\t\t Column:" << column;
+			cachedDocument = QDomDocument();
+		}
+
+		return cachedDocument;
 	}
 
 	void setPayload(QByteArray payload)
@@ -283,6 +296,16 @@ public:
 		setHeader("selector", selector);
 	}
 
+	QString getSubscriptionId() const
+	{
+		return getHeader("subscription");
+	}
+
+	void setSubscriptionId(QString id)
+	{
+		setHeader("subscription", id);
+	}
+
 	QString getTransactionId() const
 	{
 		return getHeader("transaction");
@@ -317,6 +340,7 @@ protected:
 	void resetCachedFrame()
 	{
 		this->cachedFrame = QByteArray();
+		this->cachedDocument = QDomDocument();
 	}
 
 	void setCommand(QString command)
@@ -350,6 +374,7 @@ private:
 	QHash<QString, QString> headers;
 	QByteArray payload;
 	QByteArray cachedFrame;
+	QDomDocument cachedDocument;
 };
 
 #endif /* AMQCONNECTIONFRAME_H_ */

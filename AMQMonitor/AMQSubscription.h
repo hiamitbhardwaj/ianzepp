@@ -9,6 +9,7 @@
 #define AMQSUBSCRIPTION_H_
 
 #include <QtCore/QObject>
+#include <QtCore/QUuid>
 
 // Required for slots
 #include "AMQConnectionFrame.h"
@@ -23,7 +24,7 @@ public:
 	virtual ~AMQSubscription();
 
 	void setSubscribed(bool subscribed);
-	void send(QString message);
+	void send(QString message, AMQConnectionFrame::Priority priority = AMQConnectionFrame::Normal);
 
 public:
 	bool getAutomatic() const
@@ -59,6 +60,11 @@ public:
 	void setId(QString id)
 	{
 		this->id = id;
+	}
+
+	void setGeneratedId()
+	{
+		this->id = QUuid::createUuid().toString();
 	}
 
 	bool getAcknowledged() const

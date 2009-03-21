@@ -14,6 +14,7 @@ AMQMonitor::AMQMonitor(QWidget *parent) :
 	subscription = connection->createSubscription("/topic/test.1");
 	subscription->setAutomatic(true);
 	subscription->setAcknowledged(true);
+	subscription->setGeneratedId();
 
 	// Connect
 	connection->connectToHost();
