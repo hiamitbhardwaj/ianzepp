@@ -11,6 +11,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QDateTime>
 #include <QtCore/QHash>
+#include <QtCore/QRegExp>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
 #include <QtXml/QDomDocument>
@@ -22,7 +23,7 @@ class AMQConnectionFrame
 public:
 	enum CommandType
 	{
-		Connect, Connected, Subscribe, Unsubscribe, Acknowledge, Error, Message, Receipt, Disconnect, Unknown
+		Connect, Connected, Subscribe, Unsubscribe, Acknowledge, Error, Message, Send, Receipt, Disconnect, Unknown
 	};
 
 	enum Priority
@@ -34,9 +35,15 @@ public:
 	AMQConnectionFrame(AMQConnection *, QByteArray);
 	virtual ~AMQConnectionFrame();
 
+	// Convert to a byte array for sending
 	QByteArray toFrame();
+
+	// Connection shortcuts
 	void acknowledge();
 	void send();
+
+	// Copy contents
+	AMQConnectionFrame &operator=(const AMQConnectionFrame &);
 
 public:
 	AMQConnection *getConnection() const
@@ -52,6 +59,11 @@ public:
 	void setAcknowledged(bool acknowledged)
 	{
 		setHeader("ack", acknowledged ? "client" : "auto");
+	}
+
+	QString getCommand() const
+	{
+		return command;
 	}
 
 	CommandType getCommandType() const
@@ -70,6 +82,8 @@ public:
 			return Acknowledge;
 		else if (command == "MESSAGE")
 			return Message;
+		else if (command == "SEND")
+			return Send;
 		else if (command == "RECEIPT")
 			return Receipt;
 		else if (command == "CONNECTED")
@@ -106,6 +120,10 @@ public:
 
 		case Message:
 			setCommand("MESSAGE");
+			break;
+
+		case Send:
+			setCommand("SEND");
 			break;
 
 		case Receipt:
@@ -148,6 +166,11 @@ public:
 	void setDestination(QString destination)
 	{
 		setHeader("destination", destination);
+	}
+
+	const QHash<QString, QString> getHeaders() const
+	{
+		return headers;
 	}
 
 	QString getId() const
@@ -296,11 +319,6 @@ protected:
 		this->cachedFrame = QByteArray();
 	}
 
-	QString getCommand() const
-	{
-		return command;
-	}
-
 	void setCommand(QString command)
 	{
 		this->command = command;
@@ -309,18 +327,15 @@ protected:
 
 	QString getHeader(QString key) const
 	{
-		return getHeaders().value(key);
+		return headers.value(key);
 	}
 
 	void setHeader(QString key, QString value)
 	{
-		getHeaders().insert(key, value);
+		if (headers.contains(key))
+			headers.remove(key);
+		headers.insert(key, value);
 		resetCachedFrame();
-	}
-
-	QHash<QString, QString> getHeaders() const
-	{
-		return headers;
 	}
 
 	void setHeaders(QHash<QString, QString> headers)

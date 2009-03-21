@@ -112,8 +112,13 @@ void AMQConnection::socketError(QTcpSocket::SocketError)
 
 void AMQConnection::socketProcessBuffer()
 {
+	qDebug() << "void AMQConnection::socketProcessBuffer()";
+	qDebug() << "\t Buffer Size Before Read:" << buffer.size();
+
 	// Pull in available data
 	buffer += socket->readAll();
+
+	qDebug() << "\t Buffer Size Now:" << buffer.size();
 
 	// Setup the content length regex
 	QRegExp matcher("content-length:\\s*(\\d+)\n");
@@ -123,45 +128,67 @@ void AMQConnection::socketProcessBuffer()
 	{
 		// Have we already checked for the required minimum frame length?
 		if (frameSize && buffer.size() < frameSize)
+		{
+			qDebug() << "\t Waiting for minimum buffer size";
+			qDebug() << "\t Expected Frame Size:" << frameSize;
+			return;
+		}
+
+		// If the buffer is simply empty, return without an error message
+		if (buffer.isEmpty())
 			return;
 
 		// Is there at least one null byte?
 		if (false == buffer.contains('\0'))
+		{
+			qDebug() << "\t Buffer does not contain at least one NULL byte";
 			return;
+		}
 
 		// Are at least all of the headers present?
 		if (false == buffer.contains("\n\n"))
+		{
+			qDebug() << "\t Buffer does not contain a header/payload breakpoint";
 			return;
+		}
 
 		// Determine the frame size
 		if (matcher.indexIn(QString(buffer)) == -1)
-			frameSize = buffer.indexOf('\0') + 1;
+			frameSize = buffer.indexOf('\0');
 		else
-			frameSize = buffer.indexOf("\n\n") + 2 + matcher.cap(1).toInt() + 1;
+			frameSize = buffer.indexOf("\n\n") + 2 + matcher.cap(1).toInt();
+
+		qDebug() << "\t Required Frame Size:" << frameSize << "+ 2";
 
 		// Do we have that much data available?
 		if (frameSize > buffer.size())
+		{
+			qDebug() << "\t Buffer is not large enough for full read";
 			return;
+		}
 
 		// Update the state
 		emit
 		stateChanged(ReceivingFrame);
 
 		// Initialize the frame
-		AMQConnectionFrame frame(this, buffer.left(frameSize));
+		QByteArray frameBuffer = buffer.left(frameSize);
 
 		// Trim the buffer data
-		buffer.remove(0, frameSize);
+		buffer.remove(0, frameSize + 2);
+
+		qDebug() << "\t Buffer Size After Frame Read:" << buffer.size();
 
 		// Reset the frame size
 		frameSize = 0;
 
 		// Send out the message
 		emit
-		receivedFrame(frame);
+		receivedFrame(AMQConnectionFrame(this, frameBuffer));
 
 		// Update the state
-		emit stateChanged(ReceivedFrame);
+		emit
+		stateChanged(ReceivedFrame);
 
 		// Done with this frame
 	} while (true);
@@ -176,26 +203,52 @@ void AMQConnection::connectToHost()
 void AMQConnection::sendFrame(AMQConnectionFrame frame)
 {
 	qDebug() << "void AMQConnection::sendFrame(AMQConnectionFrame)";
+	qDebug() << "\t Command:" << frame.getCommand();
 
-	sendFrameData(frame.toFrame());
-	emit sentFrame(frame);
+	QHashIterator<QString, QString> it(frame.getHeaders());
 
-}
+	while (it.hasNext())
+	{
+		it.next();
+		qDebug() << "\t Header:" << it.key() << "=>" << it.value();
+	}
 
-void AMQConnection::sendFrameData(QByteArray frameData)
-{
-	qDebug() << "void AMQConnection::sendFrameData(QByteArray)";
-	qDebug() << "\t Frame Data:\n" << frameData;
+	// Show payload
+	qDebug() << "\t Payload:" << QString(frame.getPayload());
 
+	// Start send
 	emit
 	stateChanged(SendingFrame);
-	socket->write(frameData);
-	emit stateChanged(SentFrame);
+
+	// Do Send
+	socket->write(frame.toFrame());
+
+	// End send, emit frame
+	emit
+	stateChanged(SentFrame);
+	emit sentFrame(frame);
+
 }
 
 void AMQConnection::receiveFrame(AMQConnectionFrame frame)
 {
 	qDebug() << "void AMQConnection::receiveFrame(AMQConnectionFrame)";
-	qDebug() << "\t Frame Data:\n" << frame.toFrame();
+	qDebug() << "\t Command:" << frame.getCommand();
+
+	QHashIterator<QString, QString> it(frame.getHeaders());
+
+	// Show headers
+	while (it.hasNext())
+	{
+		it.next();
+		qDebug() << "\t Header:" << it.key() << "=>" << it.value();
+	}
+
+	// Show payload
+	qDebug() << "\t Payload:" << QString(frame.getPayload());
+
+	// Update state if connected
+	if (frame.getCommandType() == AMQConnectionFrame::Connected)
+		emit stateChanged(Authenticated);
 }
 
