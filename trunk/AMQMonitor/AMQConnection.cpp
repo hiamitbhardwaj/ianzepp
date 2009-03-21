@@ -6,6 +6,7 @@
  */
 
 #include "AMQConnection.h"
+#include "AMQSubscription.h"
 
 AMQConnection::AMQConnection(QObject *parent) :
 	QObject(parent), frameSize(0)
@@ -19,17 +20,78 @@ AMQConnection::AMQConnection(QObject *parent) :
 
 	// Initialize loopback
 	QObject::connect(this, SIGNAL(receivedFrame(AMQConnectionFrame)), this, SLOT(receiveFrame(AMQConnectionFrame)));
+
+	// Startup offline
+	emit stateChanged(Disconnected);
 }
 
 AMQConnection::~AMQConnection()
 {
 	if (socket->isOpen())
 		socket->disconnectFromHost();
+	emit stateChanged(Disconnected);
+}
+
+AMQSubscription *AMQConnection::createSubscription(QString destination)
+{
+	return createSubscription(destination, QString::null);
+}
+
+AMQSubscription *AMQConnection::createSubscription(QString destination, QString selector)
+{
+	AMQSubscription *subscription = new AMQSubscription(this);
+	subscription->setDestination(destination);
+	subscription->setSelector(selector);
+	return subscription;
+}
+
+AMQSubscription *AMQConnection::findSubscriptionById(QString id)
+{
+	QListIterator<AMQSubscription *> iterator(subscriptions);
+
+	while (iterator.hasNext())
+	{
+		AMQSubscription *item = iterator.next();
+
+		if (item->getId() != id)
+			continue;
+		return item;
+	}
+
+	return NULL;
+}
+
+AMQSubscription *AMQConnection::findSubscription(QString destination)
+{
+	return findSubscription(destination, QString::null);
+}
+
+AMQSubscription *AMQConnection::findSubscription(QString destination, QString selector)
+{
+	QListIterator<AMQSubscription *> iterator(subscriptions);
+
+	while (iterator.hasNext())
+	{
+		AMQSubscription *item = iterator.next();
+
+		if (item->getDestination() != destination)
+			continue;
+		if (item->getSelector() != selector)
+			continue;
+		return item;
+	}
+
+	return NULL;
 }
 
 void AMQConnection::socketConnected()
 {
 	qDebug() << "void AMQConnection::socketConnected()";
+
+	emit
+	stateChanged(Connected);
+	emit
+	stateChanged(Authenticating);
 
 	// Send the authorization frame
 	AMQConnectionFrame frame(this);
@@ -41,6 +103,7 @@ void AMQConnection::socketConnected()
 
 void AMQConnection::socketDisconnected()
 {
+	emit stateChanged(Disconnected);
 }
 
 void AMQConnection::socketError(QTcpSocket::SocketError)
@@ -80,6 +143,10 @@ void AMQConnection::socketProcessBuffer()
 		if (frameSize > buffer.size())
 			return;
 
+		// Update the state
+		emit
+		stateChanged(ReceivingFrame);
+
 		// Initialize the frame
 		AMQConnectionFrame frame(this, buffer.left(frameSize));
 
@@ -89,8 +156,12 @@ void AMQConnection::socketProcessBuffer()
 		// Reset the frame size
 		frameSize = 0;
 
-		// Change states & send out the message
-		emit receivedFrame(frame);
+		// Send out the message
+		emit
+		receivedFrame(frame);
+
+		// Update the state
+		emit stateChanged(ReceivedFrame);
 
 		// Done with this frame
 	} while (true);
@@ -98,47 +169,33 @@ void AMQConnection::socketProcessBuffer()
 
 void AMQConnection::connectToHost()
 {
+	emit stateChanged(Connecting);
 	socket->connectToHost("localhost", 61613);
 }
 
 void AMQConnection::sendFrame(AMQConnectionFrame frame)
 {
 	qDebug() << "void AMQConnection::sendFrame(AMQConnectionFrame)";
-	qDebug() << "\t Frame Data:\n" << frame.toFrame();
 
-	socket->write(frame.toFrame());
+	sendFrameData(frame.toFrame());
 	emit sentFrame(frame);
+
+}
+
+void AMQConnection::sendFrameData(QByteArray frameData)
+{
+	qDebug() << "void AMQConnection::sendFrameData(QByteArray)";
+	qDebug() << "\t Frame Data:\n" << frameData;
+
+	emit
+	stateChanged(SendingFrame);
+	socket->write(frameData);
+	emit stateChanged(SentFrame);
 }
 
 void AMQConnection::receiveFrame(AMQConnectionFrame frame)
 {
 	qDebug() << "void AMQConnection::receiveFrame(AMQConnectionFrame)";
 	qDebug() << "\t Frame Data:\n" << frame.toFrame();
-}
-
-void AMQConnection::setSubscribed(QString destination, bool subscribed)
-{
-	setSubscribed(destination, QString::null, subscribed);
-}
-
-void AMQConnection::setSubscribed(QString destination, QString selector, bool subscribed)
-{
-	qDebug() << "void AMQConnection::setSubscribed(QString, QString, bool)";
-	qDebug() << "\t Destination:" << destination;
-	qDebug() << "\t Selector:" << selector;
-	qDebug() << "\t Subscribed:" << subscribed;
-
-	AMQConnectionFrame frame(this);
-
-	if (subscribed)
-		frame.setCommandType(AMQConnectionFrame::Subscribe);
-	else
-		frame.setCommandType(AMQConnectionFrame::Unsubscribe);
-
-	frame.setDestination(destination);
-	frame.setSelector(selector);
-	frame.setReceiptRequired(true);
-
-	sendFrame(frame);
 }
 
