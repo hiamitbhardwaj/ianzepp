@@ -10,6 +10,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtXml/QDomDocument>
 
 // Required for slots
 #include "AMQConnectionFrame.h"
@@ -101,6 +102,9 @@ public:
 	{
 		this->subscriptionReceipt = subscriptionReceipt;
 	}
+
+Q_SIGNALS:
+	void subscriptionFrame(AMQConnectionFrame);
 
 private Q_SLOTS:
 	void stateChanged(AMQConnection::ConnectionState);

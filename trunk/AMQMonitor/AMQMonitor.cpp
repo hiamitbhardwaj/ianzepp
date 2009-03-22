@@ -1,6 +1,7 @@
 #include "AMQMonitor.h"
 #include "AMQConnection.h"
 #include "AMQSubscription.h"
+#include "AMQSubscriptionModel.h"
 
 AMQMonitor::AMQMonitor(QWidget *parent) :
 	QMainWindow(parent)
@@ -15,6 +16,9 @@ AMQMonitor::AMQMonitor(QWidget *parent) :
 	subscription->setAutomatic(true);
 	subscription->setAcknowledged(true);
 	subscription->setGeneratedId();
+
+	// Add model
+	ui.subscriptionView->setModel(new AMQSubscriptionModel(subscription));
 
 	// Connect
 	connection->connectToHost();

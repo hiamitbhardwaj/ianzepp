@@ -119,13 +119,15 @@ void AMQConnectionFrame::acknowledge()
 {
 	if (getCommandType() != Message)
 		return; // must be a message type to acknowledge
-	if (getMessageId().isEmpty())
-		return; // must have a message id
 
 	AMQConnectionFrame frame(getConnection());
 	frame.setCommandType(AMQConnectionFrame::Acknowledge);
-	frame.setMessageId(getMessageId());
-	frame.setTransactionId(getTransactionId());
+
+	if (getTransactionId().isEmpty())
+		frame.setMessageId(getMessageId());
+	else
+		frame.setTransactionId(getTransactionId());
+
 	frame.send();
 }
 

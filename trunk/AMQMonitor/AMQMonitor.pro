@@ -2,16 +2,22 @@ TEMPLATE = app
 TARGET = AMQMonitor
 QT += core \
     gui \
+    sql \
     xml \
-    network
-HEADERS += AMQSubscription.h \
+    network \
+    svg \
+    opengl \
+    webkit
+HEADERS += AMQSubscriptionModel.h \
+    AMQSubscription.h \
     AMQConnectionFrame.h \
     AMQConnection.h \
     AMQMonitor.h
-SOURCES += AMQSubscription.cpp \
+SOURCES += AMQSubscriptionModel.cpp \
+    AMQSubscription.cpp \
     AMQConnectionFrame.cpp \
     AMQConnection.cpp \
-    AMQMonitor.cpp \
-    main.cpp
+    main.cpp \
+    AMQMonitor.cpp
 FORMS += AMQMonitor.ui
 RESOURCES += 

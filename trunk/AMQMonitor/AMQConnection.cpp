@@ -21,6 +21,18 @@ AMQConnection::AMQConnection(QObject *parent) :
 	// Initialize loopback
 	QObject::connect(this, SIGNAL(receivedFrame(AMQConnectionFrame)), this, SLOT(receiveFrame(AMQConnectionFrame)));
 
+	// Initialize receive timer
+	receiveTimer = new QTimer(this);
+	receiveTimer->setInterval(0);
+
+	QObject::connect(receiveTimer, SIGNAL(timeout()), this, SLOT(receiveQueueTimeout()));
+
+	// Initialize send timer
+	sendTimer = new QTimer(this);
+	sendTimer->setInterval(0);
+
+	QObject::connect(sendTimer, SIGNAL(timeout()), this, SLOT(sendQueueTimeout()));
+
 	// Startup offline
 	emit stateChanged(Disconnected);
 }
@@ -112,7 +124,7 @@ void AMQConnection::socketError(QTcpSocket::SocketError)
 
 void AMQConnection::socketProcessBuffer()
 {
-	qDebug() << "void AMQConnection::socketProcessBuffer()";
+	qDebug() <<  "void AMQConnection::socketProcessBuffer()";
 	qDebug() << "\t Buffer Size Before Read:" << buffer.size();
 
 	// Pull in available data
@@ -182,13 +194,12 @@ void AMQConnection::socketProcessBuffer()
 		// Reset the frame size
 		frameSize = 0;
 
-		// Send out the message
-		emit
-		receivedFrame(AMQConnectionFrame(this, frameBuffer));
+		// Push onto the queue
+		receiveQueue.append(AMQConnectionFrame(this, frameBuffer));
+		receiveTimer->start();
 
 		// Update the state
-		emit
-		stateChanged(ReceivedFrame);
+		emit stateChanged(ReceivedFrame);
 
 		// Done with this frame
 	} while (true);
@@ -202,7 +213,13 @@ void AMQConnection::connectToHost()
 
 void AMQConnection::sendFrame(AMQConnectionFrame frame)
 {
-	qDebug() << "void AMQConnection::sendFrame(AMQConnectionFrame)";
+	sendQueue.append(frame);
+	sendTimer->start();
+}
+
+void AMQConnection::sendQueueFrame(AMQConnectionFrame frame)
+{
+	qDebug() << "void AMQConnection::sendQueueFrame(AMQConnectionFrame)";
 	qDebug() << "\t Command:" << frame.getCommand();
 
 	QHashIterator<QString, QString> it(frame.getHeaders());
@@ -227,7 +244,6 @@ void AMQConnection::sendFrame(AMQConnectionFrame frame)
 	emit
 	stateChanged(SentFrame);
 	emit sentFrame(frame);
-
 }
 
 void AMQConnection::receiveFrame(AMQConnectionFrame frame)
@@ -250,5 +266,31 @@ void AMQConnection::receiveFrame(AMQConnectionFrame frame)
 	// Update state if connected
 	if (frame.getCommandType() == AMQConnectionFrame::Connected)
 		emit stateChanged(Authenticated);
+}
+
+void AMQConnection::receiveQueueTimeout()
+{
+	if (receiveQueue.isEmpty())
+	{
+		receiveTimer->stop();
+	}
+	else
+	{
+		emit receivedFrame(receiveQueue.first());
+		receiveQueue.removeFirst();
+	}
+}
+
+void AMQConnection::sendQueueTimeout()
+{
+	if (sendQueue.isEmpty())
+	{
+		sendTimer->stop();
+	}
+	else
+	{
+		sendQueueFrame(sendQueue.first());
+		sendQueue.removeFirst();
+	}
 }
 

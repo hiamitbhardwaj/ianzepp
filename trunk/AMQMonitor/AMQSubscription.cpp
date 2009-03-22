@@ -49,6 +49,7 @@ void AMQSubscription::setSubscribed(bool subscribed)
 
 	frame.setDestination(getDestination());
 	frame.setReceiptRequired(true);
+	frame.setAcknowledged(getAcknowledged());
 
 	// Save the receipt token
 	setSubscriptionReceipt(frame.getReceipt());
@@ -119,8 +120,8 @@ void AMQSubscription::receivedReceiptFrame(AMQConnectionFrame frame)
 	// Only mark subscribed once the subscription receipt comes back
 	subscribed = true;
 
-	// Send a message
-	send("<root><child1>Hi!</child1><child2/></root>");
+	// Send a few messages
+	send("<welcome>Hello there!</welcome>");
 }
 
 void AMQSubscription::receivedMessageFrame(AMQConnectionFrame frame)
@@ -134,5 +135,11 @@ void AMQSubscription::receivedMessageFrame(AMQConnectionFrame frame)
 	qDebug() << "\t Subscribed To:" << frame.getDestination();
 	qDebug() << "\t Selector:" << frame.getSelector();
 	qDebug() << "\t Payload:" << QString(frame.getPayload());
+
+	emit
+	subscriptionFrame(frame);
+
+	if (getAcknowledged())
+		frame.acknowledge();
 }
 

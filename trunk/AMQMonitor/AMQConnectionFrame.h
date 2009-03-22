@@ -32,6 +32,11 @@ public:
 		Lowest = 0, Low = 1, Normal = 4, Expedited = 5, Highest = 9
 	};
 public:
+	inline AMQConnectionFrame() :
+		connection(NULL)
+	{
+	}
+
 	AMQConnectionFrame(AMQConnection *);
 	AMQConnectionFrame(AMQConnection *, QByteArray);
 	virtual ~AMQConnectionFrame();

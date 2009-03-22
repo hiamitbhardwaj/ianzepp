@@ -1,0 +1,12 @@
+INPUT(
+./debug\AMQSubscriptionModel.o
+./debug\AMQSubscription.o
+./debug\AMQConnectionFrame.o
+./debug\AMQConnection.o
+./debug\main.o
+./debug\AMQMonitor.o
+./debug\moc_AMQSubscriptionModel.o
+./debug\moc_AMQSubscription.o
+./debug\moc_AMQConnection.o
+./debug\moc_AMQMonitor.o
+);
