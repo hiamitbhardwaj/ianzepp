@@ -68,8 +68,16 @@ private Q_SLOTS:
 	void socketError(QTcpSocket::SocketError);
 	void socketProcessBuffer();
 
+	void receiveQueueTimeout();
+	void sendQueueTimeout();
+	void sendQueueFrame(AMQConnectionFrame);
+
 private:
 	QList<AMQSubscription *> subscriptions;
+	QList<AMQConnectionFrame> receiveQueue;
+	QList<AMQConnectionFrame> sendQueue;
+	QTimer *receiveTimer;
+	QTimer *sendTimer;
 	QString remoteHost;
 	QString remotePort;
 	QTcpSocket *socket;
