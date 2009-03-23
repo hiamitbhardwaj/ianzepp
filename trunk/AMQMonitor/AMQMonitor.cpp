@@ -2,6 +2,7 @@
 #include "AMQConnection.h"
 #include "AMQSubscription.h"
 #include "AMQSubscriptionModel.h"
+#include "AMQFrameProducer.h"
 
 AMQMonitor::AMQMonitor(QWidget *parent) :
 	QMainWindow(parent)
@@ -17,8 +18,10 @@ AMQMonitor::AMQMonitor(QWidget *parent) :
 	subscription->setAcknowledged(true);
 	subscription->setGeneratedId();
 
-	// Add model
-	ui.subscriptionView->setModel(new AMQSubscriptionModel(subscription));
+	// Producer
+	AMQFrameProducer *producer = new AMQFrameProducer(connection);
+	producer->setDestination("/topic/test.1");
+	producer->setPayload("Welcome to my world.");
 
 	// Connect
 	connection->connectToHost();
