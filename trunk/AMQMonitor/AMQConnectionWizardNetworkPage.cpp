@@ -18,13 +18,10 @@ AMQConnectionWizardNetworkPage::AMQConnectionWizardNetworkPage(QWidget *parent) 
 
 	// Set title and subtitle
 	setTitle(trUtf8("Network Connection Settings"));
-	setSubTitle(trUtf8("The next few pages will help you to set up a remote connection"
-		" to an ActiveMQ messaging server."));
 }
 
 AMQConnectionWizardNetworkPage::~AMQConnectionWizardNetworkPage()
 {
-
 }
 
 bool AMQConnectionWizardNetworkPage::isComplete() const

@@ -31,9 +31,9 @@ private Q_SLOTS:
 	void stateChanged(AMQConnection::ConnectionState);
 	void receivedFrame(AMQConnectionFrame);
 	void sentFrame(AMQConnectionFrame);
+	void loadConnection(QString connectionId);
 
 private:
-	void initializeConnection(QString connectionId);
 
 private:
 	AMQConnection *getConnection(QString connectionId) const

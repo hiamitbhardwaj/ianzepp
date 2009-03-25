@@ -22,7 +22,7 @@ AMQMonitor::AMQMonitor(QWidget *parent) :
 
 	while (it.hasNext())
 	{
-		initializeConnection(it.next());
+		loadConnection(it.next());
 	}
 
 }
@@ -35,7 +35,12 @@ AMQMonitor::~AMQMonitor()
 void AMQMonitor::triggeredNewConnection()
 {
 	qDebug() << "void AMQMonitor::triggeredNewConnection()";
-	(new AMQConnectionWizard(this))->show();
+
+	AMQConnectionWizard *wizard = new AMQConnectionWizard(this);
+
+	QObject::connect(wizard, SIGNAL(createdConnection(QString)), this, SLOT(loadConnection(QString)));
+
+	wizard->show();
 }
 
 void AMQMonitor::triggeredNewSubscription()
@@ -43,14 +48,13 @@ void AMQMonitor::triggeredNewSubscription()
 	qDebug() << "void AMQMonitor::triggeredNewSubscription()";
 }
 
-void AMQMonitor::initializeConnection(QString connectionId)
+void AMQMonitor::loadConnection(QString connectionId)
 {
 	AMQConnection *connection = new AMQConnection(this, connectionId);
 	connection->loadSettings();
 
 	// Initialize signals & slots
-	QObject::connect(connection, SIGNAL(stateChanged(AMQConnection::ConnectionState)), this,
-			SLOT(stateChanged(AMQConnection::ConnectionState)));
+	QObject::connect(connection, SIGNAL(stateChanged(AMQConnection::ConnectionState)), this, SLOT(stateChanged(AMQConnection::ConnectionState)));
 	QObject::connect(connection, SIGNAL(receivedFrame(AMQConnectionFrame)), this, SLOT(receivedFrame(AMQConnectionFrame)));
 	QObject::connect(connection, SIGNAL(sentFrame(AMQConnectionFrame)), this, SLOT(sentFrame(AMQConnectionFrame)));
 
