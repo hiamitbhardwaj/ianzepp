@@ -7,7 +7,7 @@ AMQConnectionWizardAuthenticationPage::AMQConnectionWizardAuthenticationPage(QWi
 
 	// Register option fields
 	registerField("authenticationType*", ui.authenticationType);
-	registerField("user", ui.user);
+	registerField("user", ui.user, "currentText");
 	registerField("password", ui.password);
 	registerField("storePassword", ui.storePassword);
 
@@ -18,6 +18,7 @@ AMQConnectionWizardAuthenticationPage::AMQConnectionWizardAuthenticationPage(QWi
 
 	// Set title and subtitle
 	setTitle(trUtf8("Authentication Settings"));
+
 }
 
 AMQConnectionWizardAuthenticationPage::~AMQConnectionWizardAuthenticationPage()

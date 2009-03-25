@@ -48,6 +48,37 @@ void AMQMonitor::triggeredNewSubscription()
 	qDebug() << "void AMQMonitor::triggeredNewSubscription()";
 }
 
+void AMQMonitor::triggeredDelete()
+{
+	qDebug() << "void AMQMonitor::triggeredDelete()";
+
+	// Get the current selected item
+	QTreeWidgetItem *item = getSelectedItem();
+
+	if (item == 0)
+		return;
+
+	QString itemId = getItemId(item);
+
+	if (hasConnection(itemId))
+	{
+		AMQConnection *connection = getConnection(itemId);
+
+		Q_CHECK_PTR(connection);
+		qDebug() << "\t Removing Connection:";
+		qDebug() << "\t\t Id:" << connection->getId();
+		qDebug() << "\t\t Remote Host:" << connection->getRemoteHost();
+		qDebug() << "\t\t Remote Port:" << connection->getRemotePort();
+
+		connection->removeSettings();
+		removeConnection(connection->getId());
+
+		delete connection;
+		delete item;
+	}
+
+}
+
 void AMQMonitor::loadConnection(QString connectionId)
 {
 	AMQConnection *connection = new AMQConnection(this, connectionId);
@@ -64,7 +95,19 @@ void AMQMonitor::loadConnection(QString connectionId)
 	item->setText(1, connection->getId());
 
 	// Add to the mapping
-	setConnection(connectionId, connection);
+	insertConnection(connectionId, connection);
+
+	// Add two monitoring test items
+	AMQSubscription *subscription = new AMQSubscription(connection, "test");
+	subscription->setDestination("/topic/com.beatport.content.delivery.notifications.aspera");
+	subscription->setAutomatic(true);
+
+	// Connect
+	connection->connectToHost();
+}
+
+void AMQMonitor::updateFileMenuContext()
+{
 }
 
 void AMQMonitor::stateChanged(AMQConnection::ConnectionState)

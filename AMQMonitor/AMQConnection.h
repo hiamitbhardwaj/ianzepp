@@ -61,6 +61,7 @@ public Q_SLOTS:
 
 	void loadSettings();
 	void saveSettings() const;
+	void removeSettings() const;
 
 public:
 	inline QString getId() const
