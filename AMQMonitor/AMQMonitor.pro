@@ -8,18 +8,23 @@ QT += core \
     svg \
     opengl \
     webkit
-HEADERS += AMQFrameProducer.h \
+HEADERS += AMQConnectionWizardNetworkPage.h \
+    AMQConnectionWizard.h \
+    AMQFrameProducer.h \
     AMQSubscriptionModel.h \
     AMQSubscription.h \
     AMQConnectionFrame.h \
     AMQConnection.h \
     AMQMonitor.h
-SOURCES += AMQFrameProducer.cpp \
+SOURCES += AMQConnectionWizardNetworkPage.cpp \
+    AMQConnectionWizard.cpp \
+    AMQFrameProducer.cpp \
     AMQSubscriptionModel.cpp \
     AMQSubscription.cpp \
     AMQConnectionFrame.cpp \
     AMQConnection.cpp \
     main.cpp \
     AMQMonitor.cpp
-FORMS += AMQMonitor.ui
+FORMS += AMQConnectionWizardNetworkPage.ui \
+    AMQMonitor.ui
 RESOURCES += 

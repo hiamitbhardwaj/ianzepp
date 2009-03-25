@@ -1,33 +1,80 @@
 #include "AMQMonitor.h"
 #include "AMQConnection.h"
+#include "AMQConnectionWizard.h"
+#include "AMQFrameProducer.h"
 #include "AMQSubscription.h"
 #include "AMQSubscriptionModel.h"
-#include "AMQFrameProducer.h"
 
 AMQMonitor::AMQMonitor(QWidget *parent) :
 	QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	AMQConnection *connection = new AMQConnection(this);
-	AMQSubscription *subscription;
+	// Initialize the settings
+	QCoreApplication::setOrganizationName("Zepp Software");
+	QCoreApplication::setOrganizationDomain("ianzepp.com");
+	QCoreApplication::setApplicationName("AMQMonitor");
 
-	// Create a few listeners
-	subscription = connection->createSubscription("/topic/test.1");
-	subscription->setAutomatic(true);
-	subscription->setAcknowledged(true);
-	subscription->setGeneratedId();
+	// Initialize the action signals
 
-	// Producer
-	AMQFrameProducer *producer = new AMQFrameProducer(connection);
-	producer->setDestination("/topic/test.1");
-	producer->setPayload("Welcome to my world.");
+	// Initialize connections from settings
+	QStringListIterator it(getConnectionIds());
 
-	// Connect
-	connection->connectToHost();
+	while (it.hasNext())
+	{
+		initializeConnection(it.next());
+	}
+
 }
 
 AMQMonitor::~AMQMonitor()
 {
 
 }
+
+void AMQMonitor::triggeredNewConnection()
+{
+	qDebug() << "void AMQMonitor::triggeredNewConnection()";
+	(new AMQConnectionWizard(this))->show();
+}
+
+void AMQMonitor::triggeredNewSubscription()
+{
+	qDebug() << "void AMQMonitor::triggeredNewSubscription()";
+}
+
+void AMQMonitor::initializeConnection(QString connectionId)
+{
+	AMQConnection *connection = new AMQConnection(this, connectionId);
+	connection->loadSettings();
+
+	// Initialize signals & slots
+	QObject::connect(connection, SIGNAL(stateChanged(AMQConnection::ConnectionState)), this,
+			SLOT(stateChanged(AMQConnection::ConnectionState)));
+	QObject::connect(connection, SIGNAL(receivedFrame(AMQConnectionFrame)), this, SLOT(receivedFrame(AMQConnectionFrame)));
+	QObject::connect(connection, SIGNAL(sentFrame(AMQConnectionFrame)), this, SLOT(sentFrame(AMQConnectionFrame)));
+
+	// Create the tree item
+	QTreeWidgetItem *item = new QTreeWidgetItem(ui.treeWidget);
+	item->setText(0, connection->getName());
+	item->setText(1, connection->getId());
+
+	// Add to the mapping
+	setConnection(connectionId, connection);
+}
+
+void AMQMonitor::stateChanged(AMQConnection::ConnectionState)
+{
+
+}
+
+void AMQMonitor::receivedFrame(AMQConnectionFrame)
+{
+
+}
+
+void AMQMonitor::sentFrame(AMQConnectionFrame)
+{
+
+}
+
