@@ -8,8 +8,8 @@
 #include "AMQConnection.h"
 #include "AMQSubscription.h"
 
-AMQConnection::AMQConnection(QObject *parent) :
-	QObject(parent), frameSize(0)
+AMQConnection::AMQConnection(QObject *parent, QString connectionId) :
+	QObject(parent), frameSize(0), id(connectionId)
 {
 	// Initialize socket
 	socket = new QTcpSocket(this);
@@ -44,56 +44,18 @@ AMQConnection::~AMQConnection()
 	emit stateChanged(Disconnected);
 }
 
-AMQSubscription *AMQConnection::createSubscription(QString destination)
+void AMQConnection::loadSettings()
 {
-	return createSubscription(destination, QString::null);
+	setName(getSetting("name").toString());
+	setRemoteHost(getSetting("remoteHost").toString());
+	setRemotePort(getSetting("remotePort").toUInt());
 }
 
-AMQSubscription *AMQConnection::createSubscription(QString destination, QString selector)
+void AMQConnection::saveSettings() const
 {
-	AMQSubscription *subscription = new AMQSubscription(this);
-	subscription->setDestination(destination);
-	subscription->setSelector(selector);
-	return subscription;
-}
-
-AMQSubscription *AMQConnection::findSubscriptionById(QString id)
-{
-	QListIterator<AMQSubscription *> iterator(subscriptions);
-
-	while (iterator.hasNext())
-	{
-		AMQSubscription *item = iterator.next();
-
-		if (item->getId() != id)
-			continue;
-		return item;
-	}
-
-	return NULL;
-}
-
-AMQSubscription *AMQConnection::findSubscription(QString destination)
-{
-	return findSubscription(destination, QString::null);
-}
-
-AMQSubscription *AMQConnection::findSubscription(QString destination, QString selector)
-{
-	QListIterator<AMQSubscription *> iterator(subscriptions);
-
-	while (iterator.hasNext())
-	{
-		AMQSubscription *item = iterator.next();
-
-		if (item->getDestination() != destination)
-			continue;
-		if (item->getSelector() != selector)
-			continue;
-		return item;
-	}
-
-	return NULL;
+	setSetting("name", getName());
+	setSetting("remoteHost", getRemoteHost());
+	setSetting("remotePort", getRemotePort());
 }
 
 void AMQConnection::socketConnected()
@@ -124,7 +86,7 @@ void AMQConnection::socketError(QTcpSocket::SocketError)
 
 void AMQConnection::socketProcessBuffer()
 {
-	qDebug() <<  "void AMQConnection::socketProcessBuffer()";
+	qDebug() << "void AMQConnection::socketProcessBuffer()";
 	qDebug() << "\t Buffer Size Before Read:" << buffer.size();
 
 	// Pull in available data

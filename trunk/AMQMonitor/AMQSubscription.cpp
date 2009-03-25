@@ -7,20 +7,36 @@
 
 #include "AMQSubscription.h"
 
-AMQSubscription::AMQSubscription(AMQConnection *parent) :
-	QObject(parent), automatic(false), subscribed(false), acknowledged(false)
+AMQSubscription::AMQSubscription(AMQConnection *parent, QString subscriptionId) :
+	QObject(parent), connection(parent), id(subscriptionId)
 {
-	// Initialize the parent connection
-	this->connection = parent;
-
 	QObject::connect(parent, SIGNAL(stateChanged(AMQConnection::ConnectionState)), this,
 			SLOT(stateChanged(AMQConnection::ConnectionState)));
 	QObject::connect(parent, SIGNAL(receivedFrame(AMQConnectionFrame)), this, SLOT(receivedFrame(AMQConnectionFrame)));
 	QObject::connect(parent, SIGNAL(sentFrame(AMQConnectionFrame)), this, SLOT(sentFrame(AMQConnectionFrame)));
+
+	// Load from settings
+	loadSettings();
 }
 
 AMQSubscription::~AMQSubscription()
 {
+}
+
+void AMQSubscription::loadSettings()
+{
+	setAcknowledged(getSetting("acknowledged", true).toBool());
+	setAutomatic(getSetting("automatic", false).toBool());
+	setDestination(getSetting("destination").toString());
+	setSelector(getSetting("selector").toString());
+}
+
+void AMQSubscription::saveSettings() const
+{
+	setSetting("acknowledged", getAcknowledged());
+	setSetting("automatic", getAutomatic());
+	setSetting("destination", getDestination());
+	setSetting("selector", getSelector());
 }
 
 void AMQSubscription::setSubscribed(bool subscribed)

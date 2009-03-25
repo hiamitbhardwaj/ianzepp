@@ -9,8 +9,9 @@
 #define AMQSUBSCRIPTION_H_
 
 #include <QtCore/QObject>
+#include <QtCore/QSettings>
+#include <QtCore/QString>
 #include <QtCore/QUuid>
-#include <QtXml/QDomDocument>
 
 // Required for slots
 #include "AMQConnectionFrame.h"
@@ -21,13 +22,26 @@ class AMQSubscription: public QObject
 Q_OBJECT
 
 public:
-	AMQSubscription(AMQConnection *parent);
+	AMQSubscription(AMQConnection *parent, QString subscriptionId);
 	virtual ~AMQSubscription();
 
-	void setSubscribed(bool subscribed);
+public Q_SLOTS:
+	void loadSettings();
+	void saveSettings() const;
 	void send(QString message, AMQConnectionFrame::Priority priority = AMQConnectionFrame::Normal);
+	void setSubscribed(bool subscribed);
 
 public:
+	bool getAcknowledged() const
+	{
+		return acknowledged;
+	}
+
+	void setAcknowledged(bool acknowledged)
+	{
+		this->acknowledged = acknowledged;
+	}
+
 	bool getAutomatic() const
 	{
 		return automatic;
@@ -41,6 +55,11 @@ public:
 	AMQConnection *getConnection() const
 	{
 		return connection;
+	}
+
+	QString getConnectionId() const
+	{
+		return getConnection()->getId();
 	}
 
 	QString getDestination() const
@@ -66,16 +85,6 @@ public:
 	void setGeneratedId()
 	{
 		this->id = QUuid::createUuid().toString();
-	}
-
-	bool getAcknowledged() const
-	{
-		return acknowledged;
-	}
-
-	void setAcknowledged(bool acknowledged)
-	{
-		this->acknowledged = acknowledged;
 	}
 
 	QString getSelector() const
@@ -112,6 +121,22 @@ private Q_SLOTS:
 	void receivedReceiptFrame(AMQConnectionFrame);
 	void receivedMessageFrame(AMQConnectionFrame);
 	void sentFrame(AMQConnectionFrame);
+
+private:
+	inline QString getSettingsGroup() const
+	{
+		return QString("connections/" + getConnectionId() + "/subscriptions/" + getId() + "/");
+	}
+
+	inline QVariant getSetting(QString key, QVariant defaultValue = QVariant()) const
+	{
+		return QSettings().value(getSettingsGroup() + key, defaultValue);
+	}
+
+	inline void setSetting(QString key, QVariant value) const
+	{
+		QSettings().setValue(getSettingsGroup() + key, value);
+	}
 
 private:
 	AMQConnection *connection;

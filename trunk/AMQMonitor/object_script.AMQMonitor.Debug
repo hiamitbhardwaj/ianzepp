@@ -1,4 +1,6 @@
 INPUT(
+./debug\AMQConnectionWizardNetworkPage.o
+./debug\AMQConnectionWizard.o
 ./debug\AMQFrameProducer.o
 ./debug\AMQSubscriptionModel.o
 ./debug\AMQSubscription.o
@@ -6,6 +8,8 @@ INPUT(
 ./debug\AMQConnection.o
 ./debug\main.o
 ./debug\AMQMonitor.o
+./debug\moc_AMQConnectionWizardNetworkPage.o
+./debug\moc_AMQConnectionWizard.o
 ./debug\moc_AMQFrameProducer.o
 ./debug\moc_AMQSubscriptionModel.o
 ./debug\moc_AMQSubscription.o

@@ -1,4 +1,6 @@
 INPUT(
+./release\AMQConnectionWizardNetworkPage.o
+./release\AMQConnectionWizard.o
 ./release\AMQFrameProducer.o
 ./release\AMQSubscriptionModel.o
 ./release\AMQSubscription.o
@@ -6,6 +8,8 @@ INPUT(
 ./release\AMQConnection.o
 ./release\main.o
 ./release\AMQMonitor.o
+./release\moc_AMQConnectionWizardNetworkPage.o
+./release\moc_AMQConnectionWizard.o
 ./release\moc_AMQFrameProducer.o
 ./release\moc_AMQSubscriptionModel.o
 ./release\moc_AMQSubscription.o
