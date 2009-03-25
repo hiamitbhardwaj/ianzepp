@@ -27,8 +27,19 @@ AMQConnectionWizard::AMQConnectionWizard(QWidget *parent) :
 
 void AMQConnectionWizard::accept()
 {
+	qDebug() << "void AMQConnectionWizard::accept()";
+
 	QSettings settings;
 	QString connectionId = QUuid::createUuid().toString();
+
+	qDebug() << "\t Connection Id:" << connectionId;
+	qDebug() << "\t\t Name:" << field("name");
+	qDebug() << "\t\t Remote Host:" << field("remoteHost");
+	qDebug() << "\t\t Remote Port:" << field("remotePort");
+	qDebug() << "\t\t Auth Type:" << field("authenticationType");
+	qDebug() << "\t\t Auth User:" << field("user");
+	qDebug() << "\t\t Auth Password:" << field("password");
+	qDebug() << "\t\t Password Is Saved?" << field("storePassword");
 
 	// Create the connection
 	settings.beginGroup("connections/" + connectionId);

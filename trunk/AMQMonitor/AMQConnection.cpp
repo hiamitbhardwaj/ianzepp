@@ -11,6 +11,8 @@
 AMQConnection::AMQConnection(QObject *parent, QString connectionId) :
 	QObject(parent), frameSize(0), id(connectionId)
 {
+	qDebug() << "AMQConnection::AMQConnection(QObject *, QString)";
+
 	// Initialize socket
 	socket = new QTcpSocket(this);
 
@@ -39,6 +41,8 @@ AMQConnection::AMQConnection(QObject *parent, QString connectionId) :
 
 AMQConnection::~AMQConnection()
 {
+	qDebug() << "AMQConnection::~AMQConnection()";
+
 	if (socket->isOpen())
 		socket->disconnectFromHost();
 	emit stateChanged(Disconnected);
@@ -46,16 +50,36 @@ AMQConnection::~AMQConnection()
 
 void AMQConnection::loadSettings()
 {
+	qDebug() << "void AMQConnection::loadSettings()";
+	qDebug() << "\t Id:" << getId();
+
 	setName(getSetting("name").toString());
 	setRemoteHost(getSetting("remoteHost").toString());
 	setRemotePort(getSetting("remotePort").toUInt());
+
+	qDebug() << "\t Name:" << getName();
+	qDebug() << "\t Remote Host:" << getRemoteHost();
+	qDebug() << "\t Remote Port:" << getRemotePort();
 }
 
 void AMQConnection::saveSettings() const
 {
+	qDebug() << "void AMQConnection::saveSettings()";
+	qDebug() << "\t Id:" << getId();
+	qDebug() << "\t Name:" << getName();
+	qDebug() << "\t Remote Host:" << getRemoteHost();
+	qDebug() << "\t Remote Port:" << getRemotePort();
+
 	setSetting("name", getName());
 	setSetting("remoteHost", getRemoteHost());
 	setSetting("remotePort", getRemotePort());
+}
+
+void AMQConnection::removeSettings() const
+{
+	qDebug() << "void AMQConnection::removeSettings()";
+
+	QSettings().remove(getSettingsGroup());
 }
 
 void AMQConnection::socketConnected()
@@ -63,8 +87,7 @@ void AMQConnection::socketConnected()
 	qDebug() << "void AMQConnection::socketConnected()";
 
 	emit
-	stateChanged(Connected);
-	emit
+	stateChanged(Connected);emit
 	stateChanged(Authenticating);
 
 	// Send the authorization frame
@@ -169,12 +192,19 @@ void AMQConnection::socketProcessBuffer()
 
 void AMQConnection::connectToHost()
 {
-	emit stateChanged(Connecting);
-	socket->connectToHost("localhost", 61613);
+	qDebug() << "void AMQConnection::connectToHost()";
+	qDebug() << "\t Remote Host:" << getRemoteHost();
+	qDebug() << "\t Remote Port:" << getRemotePort();
+
+	emit
+	stateChanged(Connecting);
+	socket->connectToHost(getRemoteHost(), getRemotePort());
 }
 
 void AMQConnection::sendFrame(AMQConnectionFrame frame)
 {
+	qDebug() << "void AMQConnection::sendFrame(AMQConnectionFrame)";
+
 	sendQueue.append(frame);
 	sendTimer->start();
 }

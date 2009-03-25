@@ -79,6 +79,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionClose"/>
     <addaction name="actionCloseAll"/>
+    <addaction name="actionDelete"/>
     <addaction name="separator"/>
     <addaction name="actionExportXML"/>
     <addaction name="separator"/>
@@ -139,6 +140,11 @@
     <string>Quit</string>
    </property>
   </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -174,9 +180,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDelete</sender>
+   <signal>triggered()</signal>
+   <receiver>AMQMonitorClass</receiver>
+   <slot>triggeredDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>triggeredNewConnection()</slot>
   <slot>triggeredNewSubscription()</slot>
+  <slot>triggeredDelete()</slot>
  </slots>
 </ui>

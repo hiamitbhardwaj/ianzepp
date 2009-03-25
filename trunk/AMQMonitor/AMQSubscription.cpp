@@ -135,9 +135,6 @@ void AMQSubscription::receivedReceiptFrame(AMQConnectionFrame frame)
 
 	// Only mark subscribed once the subscription receipt comes back
 	subscribed = true;
-
-	// Send a few messages
-	send("<welcome>Hello there!</welcome>");
 }
 
 void AMQSubscription::receivedMessageFrame(AMQConnectionFrame frame)

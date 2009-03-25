@@ -19,6 +19,12 @@ class AMQMonitor: public QMainWindow
 {
 Q_OBJECT
 
+private:
+	enum TreeColumn
+	{
+		Description, Id
+	};
+
 public:
 	AMQMonitor(QWidget *parent = 0);
 	~AMQMonitor();
@@ -26,6 +32,7 @@ public:
 public Q_SLOTS:
 	void triggeredNewConnection();
 	void triggeredNewSubscription();
+	void triggeredDelete();
 
 private Q_SLOTS:
 	void stateChanged(AMQConnection::ConnectionState);
@@ -33,9 +40,20 @@ private Q_SLOTS:
 	void sentFrame(AMQConnectionFrame);
 	void loadConnection(QString connectionId);
 
-private:
+	// Called by the menus
+	void updateFileMenuContext();
 
 private:
+	bool isConnectionSelected()
+	{
+		return hasConnection(getItemId(getSelectedItem()));
+	}
+
+	bool isSubscriptionSelected()
+	{
+		return hasSubscription(getItemId(getSelectedItem()));
+	}
+
 	AMQConnection *getConnection(QString connectionId) const
 	{
 		if (connections.contains(connectionId))
@@ -44,9 +62,19 @@ private:
 			return NULL;
 	}
 
-	void setConnection(QString connectionId, AMQConnection *connection)
+	bool hasConnection(QString connectionId) const
+	{
+		return connections.contains(connectionId);
+	}
+
+	void insertConnection(QString connectionId, AMQConnection *connection)
 	{
 		connections.insert(connectionId, connection);
+	}
+
+	void removeConnection(QString connectionId)
+	{
+		connections.remove(connectionId);
 	}
 
 	QStringList getConnectionIds() const
@@ -54,6 +82,12 @@ private:
 		QSettings settings;
 		settings.beginGroup("connections");
 		return settings.childGroups();
+	}
+
+	QTreeWidgetItem *getSelectedItem() const
+	{
+		QList<QTreeWidgetItem *> list = ui.treeWidget->selectedItems();
+		return list.isEmpty() ? NULL : list.first();
 	}
 
 	AMQSubscription *getSubscription(QString subscriptionId) const
@@ -64,9 +98,19 @@ private:
 			return NULL;
 	}
 
-	void setSubscription(QString subscriptionId, AMQSubscription *subscription)
+	bool hasSubscription(QString subscriptionId) const
+	{
+		return subscriptions.contains(subscriptionId);
+	}
+
+	void insertSubscription(QString subscriptionId, AMQSubscription *subscription)
 	{
 		subscriptions.insert(subscriptionId, subscription);
+	}
+
+	void removeSubscription(QString subscriptionId)
+	{
+		subscriptions.remove(subscriptionId);
 	}
 
 	QStringList getSubscriptionIds(QString connectionId) const
@@ -74,6 +118,11 @@ private:
 		QSettings settings;
 		settings.beginGroup("connections/" + connectionId + "/subscriptions");
 		return settings.childKeys();
+	}
+
+	QString getItemId(QTreeWidgetItem *item)
+	{
+		return item ? item->text(Id) : QString::null;
 	}
 
 private:

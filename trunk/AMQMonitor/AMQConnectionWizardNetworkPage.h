@@ -1,6 +1,9 @@
 #ifndef AMQCONNECTIONWIZARDNETWORKPAGE_H
 #define AMQCONNECTIONWIZARDNETWORKPAGE_H
 
+#include <QtCore/QDebug>
+#include <QtCore/QSet>
+#include <QtCore/QSettings>
 #include <QtGui/QWizardPage>
 #include "ui_AMQConnectionWizardNetworkPage.h"
 
