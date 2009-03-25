@@ -4,18 +4,18 @@
 #include <QtGui/QWizardPage>
 #include "ui_AMQConnectionWizardNetworkPage.h"
 
-class AMQConnectionWizardNetworkPage : public QWizardPage
+class AMQConnectionWizardNetworkPage: public QWizardPage
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
-    AMQConnectionWizardNetworkPage(QWidget *parent = 0);
-    ~AMQConnectionWizardNetworkPage();
+	AMQConnectionWizardNetworkPage(QWidget *parent = 0);
+	~AMQConnectionWizardNetworkPage();
 
-    virtual bool isComplete() const;
+	virtual bool isComplete() const;
 
 private:
-    Ui::AMQConnectionWizardNetworkPageClass ui;
+	Ui::AMQConnectionWizardNetworkPageClass ui;
 };
 
 #endif // AMQCONNECTIONWIZARDNETWORKPAGE_H

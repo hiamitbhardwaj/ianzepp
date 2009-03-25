@@ -10,6 +10,7 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
+#include <QtCore/QUuid>
 #include <QtGui/QWizard>
 
 class AMQConnectionWizard: public QWizard
@@ -23,10 +24,10 @@ public:
 	}
 
 public Q_SLOTS:
-	virtual void accept()
-	{
-		qDebug() << "Accepted";
-	}
+	virtual void accept();
+
+Q_SIGNALS:
+	void createdConnection(QString);
 
 private:
 	QWizardPage *createNetworkPage();

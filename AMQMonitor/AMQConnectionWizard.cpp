@@ -6,25 +6,49 @@
  */
 
 #include "AMQConnectionWizard.h"
+#include "AMQConnectionWizardAuthenticationPage.h"
 #include "AMQConnectionWizardNetworkPage.h"
 
 AMQConnectionWizard::AMQConnectionWizard(QWidget *parent) :
 	QWizard(parent)
 {
+	// Add intro page
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(trUtf8("Create a new connection"));
+	page->setSubTitle(trUtf8("The next few pages will help you to set up a remote connection"
+		" to an ActiveMQ messaging server."));
+	addPage(page);
+
+	// Add content pages
 	addPage(new AMQConnectionWizardNetworkPage(this));
-	addPage(createAuthorizationPage());
+	addPage(new AMQConnectionWizardAuthenticationPage(this));
 	setWindowTitle(trUtf8("Create a New Connection"));
 }
 
-QWizardPage *AMQConnectionWizard::createNetworkPage()
+void AMQConnectionWizard::accept()
 {
-	return NULL;
-}
+	QSettings settings;
+	QString connectionId = QUuid::createUuid().toString();
 
-QWizardPage *AMQConnectionWizard::createAuthorizationPage()
-{
-	QWizardPage *page = new QWizardPage(this);
-	page->setTitle(trUtf8("Authorization Settings"));
-	return page;
-}
+	// Create the connection
+	settings.beginGroup("connections/" + connectionId);
+	settings.setValue("name", field("name"));
+	settings.setValue("remoteHost", field("remoteHost"));
+	settings.setValue("remotePort", field("remotePort"));
 
+	// Connection authentication
+	settings.setValue("auth/type", field("authenticationType"));
+	settings.setValue("auth/user", field("user"));
+
+	if (field("storePassword").toBool())
+		settings.setValue("auth/password", field("password"));
+	else
+		settings.setValue("auth/password", "");
+
+	// Update window
+	emit
+	createdConnection(connectionId);
+
+	// Call the super
+	QWizard::accept();
+}
