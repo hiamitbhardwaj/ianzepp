@@ -23,9 +23,8 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<appendAssemblyId>false</appendAssemblyId>
 							<descriptors>
-								<descriptor>src/assembly/php-lib.xml</descriptor>
+								<descriptor>src/main/assembly/php-lib.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>

@@ -27,7 +27,8 @@
  * @package Appenda.Bundle.Account
  */
 
-abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoint {
+abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoint
+{
 	private $accounts;
 	private $addresses;
 	private $contacts;
@@ -36,61 +37,71 @@ abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoi
 	/**
 	 * @return Appenda_Bundle_Account_Model
 	 */
-	public function getAccounts () {
+	public function getAccounts ()
+	{
 		return $this->accounts;
 	}
 	
 	/**
 	 * @return Appenda_Bundle_Account_Model
 	 */
-	public function getAddresses () {
+	public function getAddresses ()
+	{
 		return $this->addresses;
 	}
 	
 	/**
 	 * @return Appenda_Bundle_Account_Model
 	 */
-	public function getContacts () {
+	public function getContacts ()
+	{
 		return $this->contacts;
 	}
 	
 	/**
 	 * @return Appenda_Bundle_Account_Model
 	 */
-	public function getPhones () {
+	public function getPhones ()
+	{
 		return $this->phones;
 	}
 	
 	/**
 	 * @param Appenda_Bundle_Account_Model $accounts
 	 */
-	public function setAccounts (Appenda_Bundle_Account_Model $accounts) {
+	public function setAccounts (Appenda_Bundle_Account_Model $accounts)
+	{
 		$this->accounts = $accounts;
 	}
 	
 	/**
 	 * @param Appenda_Bundle_Account_Model $addresses
 	 */
-	public function setAddresses (Appenda_Bundle_Account_Model $addresses) {
+	public function setAddresses (Appenda_Bundle_Account_Model $addresses)
+	{
 		$this->addresses = $addresses;
 	}
 	
 	/**
 	 * @param Appenda_Bundle_Account_Model $contacts
 	 */
-	public function setContacts (Appenda_Bundle_Account_Model $contacts) {
+	public function setContacts (Appenda_Bundle_Account_Model $contacts)
+	{
 		$this->contacts = $contacts;
 	}
 	
 	/**
 	 * @param Appenda_Bundle_Account_Model $phones
 	 */
-	public function setPhones (Appenda_Bundle_Account_Model $phones) {
+	public function setPhones (Appenda_Bundle_Account_Model $phones)
+	{
 		$this->phones = $phones;
 	}
-
+	
 	/**
 	 * Convert 
 	 */
-	public function convertAccountToXml (Appenda_Bundle_Account_Model_AccountRow $)
+	public function convertAccountToXml (Appenda_Bundle_Account_Model_AccountRow $foo)
+	{
+	}
 }

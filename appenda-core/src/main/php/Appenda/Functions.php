@@ -27,37 +27,38 @@
  * @package 
  */
 
-/**
- * Enter description here...
- *
- * @param mixed $var
- * @return bool
- */
-function boolval ($var) {
-	if ($var === true || $var === false) {
+function boolval ($var)
+{
+	if ($var === true || $var === false)
+	{
 		return $var;
 	}
-
-	if ($var === 1) {
+	
+	if ($var === 1)
+	{
 		return true;
 	}
-
-	if ($var === 0) {
+	
+	if ($var === 0)
+	{
 		return false;
 	}
-
-	if (is_string ($var)) {
+	
+	if (is_string ($var))
+	{
 		$cmp = strtolower ($var);
-
-		if ($cmp === 'true') {
+		
+		if ($cmp === 'true')
+		{
 			return true;
 		}
-
-		if ($cmp === 'false') {
+		
+		if ($cmp === 'false')
+		{
 			return false;
 		}
 	}
-
+	
 	// No matches
-	throw new Appenda_Exception ("Unable to convert to boolean: " . print_r($var, true))
+	throw new Appenda_Exception ("Unable to convert to boolean: " . print_r ($var, true));
 }
