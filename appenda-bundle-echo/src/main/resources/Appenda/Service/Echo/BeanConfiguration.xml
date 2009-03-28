@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Register the stream -->
+
+	<bean id="LoggingStream" class="Appenda_Stream_Logging">
+		<property name="registered" value="true" />
+		<property name="context" value="php://stderr" />
+	</bean>
+
+	<bean id="StompStream" class="Appenda_Stream_Stomp">
+		<property name="registered" value="true" />
+	</bean>
+
+	<!-- Simple project: single endpoint, single queue -->
+
+	<bean id="MessageProducer" class="Appenda_Endpoint_Producer">
+		<property name="context" value="stomp://localhost:61613/queue/service/echo" />
+		<property name="maximumMessages" value="5" />
+		<property name="maximumLifetime" value="60" />
+		<property name="primaryDelegate" ref="MessageEndpoint" />
+	</bean>
+
+	<bean id="MessageEndpoint" class="Appenda_Service_Echo_Endpoint" />
+</beans>
