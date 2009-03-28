@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.zend</groupId>
+	<artifactId>zend-framework</artifactId>
+	<version>1.7.7-minimal</version>
+	<developers>
+		<developer>
+			<id>ian.zepp@gmail.com</id>
+			<name>Ian Zepp</name>
+			<email>ian.zepp@gmail.com</email>
+			<url>http://www.ianzepp.com/engineering</url>
+			<organization>ianzepp.com</organization>
+			<organizationUrl>http://www.ianzepp.com/engineering</organizationUrl>
+			<timezone>MST</timezone>
+			<roles>
+				<role>Packager</role>
+			</roles>
+		</developer>
+	</developers>
+	<organization>
+		<name>Zend</name>
+		<url>http://www.zend.com</url>
+	</organization>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.phpmaven</groupId>
+				<artifactId>maven-php-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-project-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/php-lib.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.phpmaven</groupId>
+				<artifactId>maven-php-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
