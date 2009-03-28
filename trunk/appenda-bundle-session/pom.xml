@@ -12,9 +12,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.appenda</groupId>
+			<groupId>com.ianzepp.appenda</groupId>
 			<artifactId>appenda-core</artifactId>
 			<version>${parent.version}</version>
+			<classifier>php-lib</classifier>
 		</dependency>
 	</dependencies>
 

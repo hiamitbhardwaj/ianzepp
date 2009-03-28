@@ -7,9 +7,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.appenda</groupId>
+			<groupId>com.ianzepp.appenda</groupId>
 			<artifactId>appenda-core</artifactId>
 			<version>0.1-SNAPSHOT</version>
+			<classifier>php-lib</classifier>
 		</dependency>
 	</dependencies>
 	<parent>
