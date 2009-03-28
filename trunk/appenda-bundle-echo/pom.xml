@@ -3,14 +3,13 @@
 	<version>0.1-SNAPSHOT</version>
 	<parent>
 		<artifactId>appenda-base</artifactId>
-		<groupId>com.appenda</groupId>
+		<groupId>com.ianzepp.appenda</groupId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.appenda</groupId>
-	<artifactId>appenda-service-echo</artifactId>
-	<name>appenda-service-echo</name>
+	<groupId>com.ianzepp.appenda</groupId>
+	<artifactId>appenda-bundle-echo</artifactId>
 
 	<dependencies>
 		<dependency>
