@@ -38,7 +38,8 @@ import org.junit.Test;
  * 
  * @author izepp
  */
-public class RemoteAppenderSendTest {
+public class RemoteAppenderSendTest
+{
 	private static Logger LOG;
 
 	/**
@@ -47,7 +48,8 @@ public class RemoteAppenderSendTest {
 	 * 
 	 * @author izepp
 	 */
-	private class RemoteAppenderSendException extends Exception {
+	private class RemoteAppenderSendException extends Exception
+	{
 		private static final long serialVersionUID = 1L;
 	}
 
@@ -57,12 +59,13 @@ public class RemoteAppenderSendTest {
 	 * 
 	 * @return
 	 */
-	private static Appender newRemoteAppender() {
+	private static Appender newRemoteAppender ()
+	{
 		String conversionPattern = "[%d{MMM dd HH:mm:ss}] %-5p (%F:%L) - %m%n";
-		RemoteAppender remoteAppender = new RemoteAppender();
-		remoteAppender.setBrokerUri("tcp://localhost:61616");
-		remoteAppender.setQueueName("com.ianzepp.logging.events");
-		remoteAppender.setLayout(new org.apache.log4j.PatternLayout(conversionPattern));
+		RemoteAppender remoteAppender = new RemoteAppender ();
+		remoteAppender.setBrokerUri ("tcp://localhost:61616");
+		remoteAppender.setQueueName ("com.ianzepp.logging.events");
+		remoteAppender.setLayout (new org.apache.log4j.PatternLayout (conversionPattern));
 		return remoteAppender;
 	}
 
@@ -72,8 +75,9 @@ public class RemoteAppenderSendTest {
 	 * 
 	 * @return
 	 */
-	private Exception newRemoteAppenderSendException() {
-		return new RemoteAppenderSendException();
+	private Exception newRemoteAppenderSendException ()
+	{
+		return new RemoteAppenderSendException ();
 	}
 
 	/**
@@ -82,9 +86,10 @@ public class RemoteAppenderSendTest {
 	 * 
 	 */
 	@BeforeClass
-	public final static void setUpBeforeClass() {
-		LOG = Logger.getLogger(RemoteAppenderSendTest.class);
-		LOG.addAppender(newRemoteAppender());
+	public final static void setUpBeforeClass ()
+	{
+		LOG = Logger.getLogger (RemoteAppenderSendTest.class);
+		LOG.addAppender (newRemoteAppender ());
 	}
 
 	/**
@@ -93,7 +98,8 @@ public class RemoteAppenderSendTest {
 	 * 
 	 */
 	@AfterClass
-	public final static void tearDownAfterClass() {
+	public final static void tearDownAfterClass ()
+	{
 		LOG = null;
 	}
 
@@ -103,8 +109,9 @@ public class RemoteAppenderSendTest {
 	 * 
 	 */
 	@Test
-	public final void testSend() {
-		LOG.info("Sent from RemoteAppenderSendTest.testSend()");
+	public final void testSend ()
+	{
+		LOG.info ("Sent from RemoteAppenderSendTest.testSend()");
 	}
 
 	/**
@@ -113,7 +120,8 @@ public class RemoteAppenderSendTest {
 	 * 
 	 */
 	@Test
-	public final void testSendWithException() {
-		LOG.info("Sent from RemoteAppenderSendTest.testSendWithException()", newRemoteAppenderSendException());
+	public final void testSendWithException ()
+	{
+		LOG.info ("Sent from RemoteAppenderSendTest.testSendWithException()", newRemoteAppenderSendException ());
 	}
 }
