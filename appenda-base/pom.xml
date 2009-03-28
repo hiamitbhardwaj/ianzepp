@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.appenda</groupId>
+	<artifactId>appenda-base</artifactId>
+	<packaging>pom</packaging>
+	<name>appenda-base</name>
+	<version>0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
+		<maven-assembly-plugin.version>2.2-beta-3</maven-assembly-plugin.version>
+		<maven-assembly-plugin.type>php-lib</maven-assembly-plugin.type>
+		<phpunit.version>3.2.9-BETA-1</phpunit.version>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>izepp</id>
+			<name>Ian Zepp</name>
+			<email>ian.zepp@gmail.com</email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.zend</groupId>
+			<artifactId>zend-framework</artifactId>
+			<version>1.7.7-minimal</version>
+			<classifier>php-lib</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.phpmaven</groupId>
+				<artifactId>maven-php-plugin</artifactId>
+				<version>${maven-php-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- To use the report goals in your POM or parent POM -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.phpmaven</groupId>
+				<artifactId>maven-php-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
