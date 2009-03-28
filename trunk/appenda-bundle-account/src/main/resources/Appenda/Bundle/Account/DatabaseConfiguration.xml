@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="Adapter" class="Zend_Db_Adapter_Pdo_Mysql">
+		<constructor-arg>
+			<props>
+				<prop key="hostname">localhost</prop>
+				<prop key="username">root</prop>
+				<prop key="password">root</prop>
+				<prop key="dbname">sessions</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+	<bean id="AccountTable" class="Appenda_Db_Table">
+		<constructor-arg index="0">
+			<props>
+				<prop key="name">sessions</prop>
+				<prop key="schema">sessions</prop>
+				<prop key="primaryKey">id</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+		
+		<property name="dependentTables">
+			<props>
+				<prop key="0"></prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
