@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ianzepp.appenda</groupId>
   <artifactId>appenda-property</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <parent>
   	<artifactId>appenda-base</artifactId>
   	<groupId>com.ianzepp.appenda</groupId>
-  	<version>0.1-SNAPSHOT</version>
+  	<version>1.0</version>
   </parent>
 </project>
