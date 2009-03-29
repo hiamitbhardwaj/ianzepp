@@ -27,13 +27,20 @@
  * @package 
  */
 
-class Appenda_Exception extends Exception {
-	public function __construct ($message = null, $code = null) {
-		if (is_string ($message)) {
+class Appenda_Exception extends Exception
+{
+	public function __construct ($message = null, $code = null)
+	{
+		if (is_string ($message))
+		{
 			parent::__construct ($message, $code);
-		} else if (is_array ($message)) {
+		}
+		else if (is_array ($message))
+		{
 			parent::__construct (print_r ($message, true), $code);
-		} else {
+		}
+		else
+		{
 			parent::__construct ();
 		}
 	}

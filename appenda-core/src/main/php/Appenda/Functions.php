@@ -30,33 +30,23 @@
 function boolval ($var)
 {
 	if ($var === true || $var === false)
-	{
 		return $var;
-	}
 	
 	if ($var === 1)
-	{
 		return true;
-	}
 	
 	if ($var === 0)
-	{
 		return false;
-	}
 	
 	if (is_string ($var))
 	{
 		$cmp = strtolower ($var);
 		
 		if ($cmp === 'true')
-		{
 			return true;
-		}
 		
 		if ($cmp === 'false')
-		{
 			return false;
-		}
 	}
 	
 	// No matches

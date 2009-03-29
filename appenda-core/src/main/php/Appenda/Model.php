@@ -27,12 +27,14 @@
  * @package 
  */
 
-class Appenda_Db_Table extends Zend_Db_Table_Abstract {
+class Appenda_Model extends Zend_Db_Table_Abstract
+{
 	/**
 	 *
 	 * @return string
 	 */
-	public function __toString () {
+	public function __toString ()
+	{
 		return get_class ($this);
 	}
 	
@@ -42,24 +44,29 @@ class Appenda_Db_Table extends Zend_Db_Table_Abstract {
 	 * @param Zend_Config|array $config
 	 * @param Zend_Db_Adapter_Abstract $adapter
 	 */
-	public function __construct ($config, Zend_Db_Adapter_Abstract $adapter) {
+	public function __construct ($config, Zend_Db_Adapter_Abstract $adapter)
+	{
 		$adapterKey = Zend_Db_Table::ADAPTER;
 		
-		if (is_array ($config)) {
+		if (is_array ($config))
+		{
 			$config [$adapterKey] = $adapter;
-		} else if ($config instanceof Zend_Config) {
+		}
+		else if ($config instanceof Zend_Config)
+		{
 			$config->$adapterKey = $adapter;
 		}
 		
 		parent::__construct ($config);
 	}
-
+	
 	/**
 	 * Enter description here...
 	 *
 	 * @return string
 	 */
-	public static function newUUID () {
+	public static function newUuid ()
+	{
 		$seed = strtoupper (md5 (uniqid (rand (), true)));
 		
 		$guid = substr ($seed, 0, 8) . '-';

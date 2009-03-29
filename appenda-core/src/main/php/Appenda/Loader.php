@@ -29,50 +29,58 @@
 
 require_once "Zend/Loader.php";
 
-class Appenda_Loader extends Zend_Loader {
+class Appenda_Loader extends Zend_Loader
+{
 	/**
 	 *
 	 * @return string
 	 */
-	public function __toString () {
+	public function __toString ()
+	{
 		return get_class ($this);
 	}
-
+	
 	/**
 	 *
 	 * @param string $class
 	 * @param string|array(string) $dirs
 	 * @return void
 	 */
-	public static function loadClass ($class, $dirs = null) {
+	public static function loadClass ($class, $dirs = null)
+	{
 		parent::loadClass ($class, $dirs);
 	}
-
+	
 	/**
 	 *
 	 * @param string $class
 	 * @return object Instance of $class
 	 */
-	public static function autoload ($class) {
-		try {
+	public static function autoload ($class)
+	{
+		try
+		{
 			self::loadClass ($class);
 			return $class;
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$map ["message"] = "Caught exception during autoload attempt";
 			$map ["exception"] = $e;
 			$map ["className"] = $class;
 			file_put_contents ("php://stderr", print_r ($map, true));
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 *
 	 * @param bool $load
 	 * @return void
 	 */
-	public static function registerAutoload ($load = true) {
+	public static function registerAutoload ($load = true)
+	{
 		parent::registerAutoload ('Appenda_Loader', $load);
 	}
 }

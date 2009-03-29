@@ -27,7 +27,8 @@
  * @package 
  */
 
-class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
+class Appenda_Stream_Stomp extends Appenda_Stream_Abstract
+{
 	public $context; // why does this have to be public?
 	private $connection;
 	private $data;
@@ -42,7 +43,8 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 * @param unknown_type $opened_path
 	 * @return boolean
 	 */
-	public function stream_open ($path, $mode, $options, &$opened_path) {
+	public function stream_open ($path, $mode, $options, &$opened_path)
+	{
 		$this->setContext ($path);
 		return true;
 	}
@@ -53,19 +55,24 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 * @param string $incomingData
 	 * @return integer
 	 */
-	public function stream_write ($incomingData) {
+	public function stream_write ($incomingData)
+	{
 		$connection = $this->getConnection ();
 		
-		if (!$connection) {
+		if (!$connection)
+		{
 			$map ["message"] = "Connection object has not been properly injected";
 			$map ["incomingData"] = $incomingData;
 			$map ["this"] = $this;
 			throw new Appenda_Exception ($map);
 		}
 		
-		try {
+		try
+		{
 			$connection->sendMessage ($this->getChannel (), $incomingData);
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$map ["message"] = "Caught exception while sending outbound message";
 			$map ["exception"] = $e;
 			$map ["incomingData"] = $incomingData;
@@ -82,10 +89,12 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 * @param integer $count
 	 * @return string|boolean
 	 */
-	public function stream_read ($count) {
+	public function stream_read ($count)
+	{
 		$connection = $this->getConnection ();
 		
-		if (!$connection) {
+		if (!$connection)
+		{
 			$map ["message"] = "Connection object has not been properly injected";
 			$map ["incomingData"] = $incomingData;
 			$map ["this"] = $this;
@@ -93,12 +102,16 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 		}
 		
 		// If the data is null, then we haven't read in a frame yet
-		if (is_null ($this->data)) {
+		if (is_null ($this->data))
+		{
 			// Subscribe to the channel of interest
-			try {
+			try
+			{
 				$frame = $connection->newSubscriptionFrame ($this->getChannel ());
 				$connection->sendFrame ($frame);
-			} catch (Exception $e) {
+			}
+			catch (Exception $e)
+			{
 				$map ["message"] = "Caught exception while trying to subscribe to channel";
 				$map ["exception"] = $e;
 				$map ["frame"] = $frame;
@@ -107,9 +120,12 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 			}
 			
 			// Try to read a message from that channel
-			try {
+			try
+			{
 				$this->data = $connection->readFrame ()->getBody ();
-			} catch (Exception $e) {
+			}
+			catch (Exception $e)
+			{
 				// Save the data as an empty string for future reads
 				$this->data = '';
 				
@@ -123,7 +139,8 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 		}
 		
 		// If the data is empty, there is nothing to return
-		if (empty ($this->data)) {
+		if (empty ($this->data))
+		{
 			return '';
 		}
 		
@@ -139,7 +156,8 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 *
 	 * @return boolean
 	 */
-	public function stream_eof () {
+	public function stream_eof ()
+	{
 		return is_null ($this->data) || empty ($this->data);
 	}
 	
@@ -148,7 +166,8 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 *
 	 * @return integer
 	 */
-	public function stream_tell () {
+	public function stream_tell ()
+	{
 		return $this->tell;
 	}
 	
@@ -157,18 +176,21 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	 *
 	 * @return string
 	 */
-	public function getChannel () {
+	public function getChannel ()
+	{
 		return parse_url ($this->getContext (), PHP_URL_PATH);
 	}
 	
 	/**
 	 * @return Appenda_Stomp_Connection
 	 */
-	public function getConnection () {
-		if (!$this->connection) {
+	public function getConnection ()
+	{
+		if (!$this->connection)
+		{
 			$this->connection = new Appenda_Stomp_Connection ();
 			$this->connection->setBrokerUri ($this->getContext ());
-			$this->connection->setConnectionTimeout(10);			
+			$this->connection->setConnectionTimeout (10);
 			$this->connection->connect ();
 		}
 		
@@ -178,21 +200,24 @@ class Appenda_Stream_Stomp extends Appenda_Stream_Abstract {
 	/**
 	 * @param Appenda_Stomp_Connection $connection
 	 */
-	public function setConnection (Appenda_Stomp_Connection $connection) {
+	public function setConnection (Appenda_Stomp_Connection $connection)
+	{
 		$this->connection = $connection;
 	}
 	
 	/**
 	 * @return string
 	 */
-	public function getContext () {
+	public function getContext ()
+	{
 		return $this->context;
 	}
 	
 	/**
 	 * @param string $context
 	 */
-	public function setContext ($context) {
+	public function setContext ($context)
+	{
 		assert (is_string ($context));
 		$this->context = $context;
 	}
