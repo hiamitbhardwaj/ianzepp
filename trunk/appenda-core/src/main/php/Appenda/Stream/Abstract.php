@@ -27,31 +27,38 @@
  * @package 
  */
 
-abstract class Appenda_Stream_Abstract {
+abstract class Appenda_Stream_Abstract
+{
 	/**
 	 * Enter description here...
 	 *
 	 * @return boolean True always, unless an exception is thrown.
 	 */
-	public function setRegistered ($registered) {
+	public function setRegistered ($registered)
+	{
 		$className = get_class ($this);
 		$protocol = strtolower (array_pop (explode ('_', $className)));
 		
-		if ($registered === 'true' || (is_bool ($registered) && $registered)) {
+		if ($registered === 'true' || (is_bool ($registered) && $registered))
+		{
 			$success = stream_wrapper_register ($protocol, $className);
 		}
 		
-		if ($registered === 'false' || (is_bool ($registered) && !$registered)) {
+		if ($registered === 'false' || (is_bool ($registered) && !$registered))
+		{
 			$success = stream_wrapper_unregister ($protocol, $className);
 		}
 		
-		if (!$success) {
+		if (!$success)
+		{
 			$map ["message"] = "Registration / Unregistration error";
 			$map ["registered"] = $registered;
 			$map ["protocol"] = $protocol;
 			$map ["className"] = $className;
 			throw new Appenda_Exception ($map);
-		} else {
+		}
+		else
+		{
 			return true;
 		}
 	}
@@ -61,14 +68,17 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return void
 	 */
-	public function stream_close () {}
+	public function stream_close ()
+	{
+	}
 	
 	/**
 	 * This method does nothing.
 	 *
 	 * @return boolean True always.
 	 */
-	public function stream_flush () {
+	public function stream_flush ()
+	{
 		return true;
 	}
 	
@@ -77,7 +87,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return boolean True always.
 	 */
-	public function stream_eof () {
+	public function stream_eof ()
+	{
 		return true;
 	}
 	
@@ -105,7 +116,8 @@ abstract class Appenda_Stream_Abstract {
 	 * @param string &$opened_path
 	 * @return boolean
 	 */
-	public function stream_open ($path, $mode, $options, &$opened_path) {
+	public function stream_open ($path, $mode, $options, &$opened_path)
+	{
 		return true;
 	}
 	
@@ -115,7 +127,8 @@ abstract class Appenda_Stream_Abstract {
 	 * @param integer $count
 	 * @return string|boolean
 	 */
-	public function stream_read ($count) {
+	public function stream_read ($count)
+	{
 		return false;
 	}
 	
@@ -126,7 +139,8 @@ abstract class Appenda_Stream_Abstract {
 	 * @param integer $whence
 	 * @return boolean False always.
 	 */
-	public function stream_seek ($offset, $whence) {
+	public function stream_seek ($offset, $whence)
+	{
 		return false;
 	}
 	
@@ -135,7 +149,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return array
 	 */
-	public function stream_stat () {
+	public function stream_stat ()
+	{
 		// TODO add correct array structure
 		return array ();
 	}
@@ -145,7 +160,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return integer 0 always.
 	 */
-	public function stream_tell () {
+	public function stream_tell ()
+	{
 		return 0;
 	}
 	
@@ -164,7 +180,8 @@ abstract class Appenda_Stream_Abstract {
 	 * @param unknown_type $flags
 	 * @return unknown
 	 */
-	public function url_stat ($path, $flags) {
+	public function url_stat ($path, $flags)
+	{
 		// TODO add correct array structure
 		return array ();
 	}
@@ -174,7 +191,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return boolean
 	 */
-	public function dir_closedir () {
+	public function dir_closedir ()
+	{
 		return false;
 	}
 	
@@ -185,7 +203,8 @@ abstract class Appenda_Stream_Abstract {
 	 * @param unknown_type $options
 	 * @return unknown
 	 */
-	public function dir_opendir ($path, $options) {
+	public function dir_opendir ($path, $options)
+	{
 		return false;
 	}
 	
@@ -194,7 +213,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return unknown
 	 */
-	public function dir_readdir () {
+	public function dir_readdir ()
+	{
 		return false;
 	}
 	
@@ -203,7 +223,8 @@ abstract class Appenda_Stream_Abstract {
 	 *
 	 * @return unknown
 	 */
-	public function dir_rewinddir () {
+	public function dir_rewinddir ()
+	{
 		return false;
 	}
 }

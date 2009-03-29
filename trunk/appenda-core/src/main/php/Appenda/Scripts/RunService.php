@@ -36,12 +36,12 @@ global $_ARGUMENTS;
 
 if (!$_ARGUMENTS ["beanConfig"])
 {
-	exit("Missing required argument: --beanConfig");
+	exit ("Missing required argument: --beanConfig");
 }
 
 if (!$_ARGUMENTS ["bean"])
 {
-	exit("Missing required argument: --bean");
+	exit ("Missing required argument: --bean");
 }
 
 /** Load the beans */

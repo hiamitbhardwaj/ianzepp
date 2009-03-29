@@ -27,11 +27,12 @@
  * @package 
  */
 
-interface Appenda_Singleton {
+interface Appenda_Singleton
+{
 	/**
 	 * Enter description here...
 	 *
 	 * @return Appenda_Singleton
 	 */
-	public function getInstance();
+	public function getInstance ();
 }

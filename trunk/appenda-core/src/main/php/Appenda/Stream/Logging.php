@@ -27,18 +27,19 @@
  * @package 
  */
 
-class Appenda_Stream_Logging extends Appenda_Stream_Abstract {
+class Appenda_Stream_Logging extends Appenda_Stream_Abstract
+{
 	public static $context = "php://stdout";
 	private $level;
 	private $path;
-
+	
 	/**
 	 * TODO Put this to use.
 	 *
 	 * @var string
 	 */
 	const REGEX_EXCEPTION = "/^exception '(.+?)' with message '(.+)' in (.+?):(.+?)\nStack trace:\n(.+)$/";
-
+	
 	/**
 	 * @see Appenda_Stream_Abstract::stream_open()
 	 *
@@ -48,75 +49,86 @@ class Appenda_Stream_Logging extends Appenda_Stream_Abstract {
 	 * @param unknown_type $opened_path
 	 * @return boolean
 	 */
-	public function stream_open ($path, $mode, $options, &$opened_path) {
+	public function stream_open ($path, $mode, $options, &$opened_path)
+	{
 		$this->setLevel (parse_url ($path, PHP_URL_HOST));
 		$this->setPath (parse_url ($path, PHP_URL_PATH));
 		return true;
 	}
-
+	
 	/**
 	 * @see Appenda_Stream_Abstract::stream_write()
 	 *
 	 * @param string $incomingData
 	 * @return integer
 	 */
-	public function stream_write ($incomingData) {
-		if ($this->getPath ()) {
+	public function stream_write ($incomingData)
+	{
+		if ($this->getPath ())
+		{
 			$context = $this->getContext () . $this->getPath ();
-		} else {
+		}
+		else
+		{
 			$context = $this->getContext ();
 		}
-
+		
 		// Build a message
 		$xml = simplexml_load_string ("<insertEvent />");
 		$xml->{"created_at"} = time ();
 		$xml->{"level"} = $this->getLevel ();
 		$xml->{"message"} = $incomingData;
-
+		
 		// Send the message
 		file_put_contents ($context, $xml->asXML (), FILE_USE_INCLUDE_PATH | FILE_APPEND);
 		return strlen ($incomingData);
 	}
-
+	
 	/**
 	 * @return string
 	 */
-	public static function getContext () {
+	public static function getContext ()
+	{
 		return self::$context;
 	}
-
+	
 	/**
 	 * @return string
 	 */
-	public function getLevel () {
+	public function getLevel ()
+	{
 		return $this->level;
 	}
-
+	
 	/**
 	 * @param string $context
 	 */
-	public static function setContext ($context) {
+	public static function setContext ($context)
+	{
 		self::$context = $context;
 	}
-
+	
 	/**
 	 * @param string $level
 	 */
-	public function setLevel ($level) {
+	public function setLevel ($level)
+	{
 		$this->level = strtoupper ($level);
 	}
-
+	
 	/**
 	 * @return string
 	 */
-	public function getPath () {
+	public function getPath ()
+	{
 		return $this->path;
 	}
-
+	
 	/**
 	 * @param string $path
 	 */
-	public function setPath ($path) {
+	public function setPath ($path)
+	{
 		$this->path = $path;
 	}
 

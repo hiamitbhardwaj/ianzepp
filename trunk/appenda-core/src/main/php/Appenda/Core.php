@@ -33,7 +33,6 @@ require_once "Appenda/Exception.php";
 require_once "Appenda/Functions.php";
 require_once "Appenda/Bean.php";
 require_once "Appenda/BeanContainer.php";
-require_once "Appenda/Stream/Logging.php";
 
 /** Assertations enabled by default, disable for production */
 assert_options (ASSERT_ACTIVE, true);
