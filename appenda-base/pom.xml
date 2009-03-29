@@ -4,7 +4,7 @@
 	<groupId>com.ianzepp.appenda</groupId>
 	<artifactId>appenda-base</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.0</version>
 
 	<properties>
 		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
@@ -15,9 +15,18 @@
 
 	<developers>
 		<developer>
-			<id>izepp</id>
+			<id>ian.zepp@gmail.com</id>
 			<name>Ian Zepp</name>
 			<email>ian.zepp@gmail.com</email>
+			<url>http://www.ianzepp.com/engineering</url>
+			<organization>ianzepp.com</organization>
+			<organizationUrl>http://www.ianzepp.com/engineering</organizationUrl>
+			<timezone>MST</timezone>
+			<roles>
+				<role>Software Architect</role>
+				<role>Software Engineer</role>
+				<role>Project Manager</role>
+			</roles>
 		</developer>
 	</developers>
 
@@ -29,6 +38,10 @@
 			<classifier>php-lib</classifier>
 		</dependency>
 	</dependencies>
+	<organization>
+		<name>ianzepp.com</name>
+		<url>http://www.ianzepp.com/engineering</url>
+	</organization>
 
 	<build>
 		<plugins>
