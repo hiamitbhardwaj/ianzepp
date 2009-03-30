@@ -26,7 +26,7 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Bundle_Session_Endpoint_Remove implements Appenda_Message_Endpoint
+class Appenda_Bundle_Session_Endpoint_Remove implements Appenda_Service_Session_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml
