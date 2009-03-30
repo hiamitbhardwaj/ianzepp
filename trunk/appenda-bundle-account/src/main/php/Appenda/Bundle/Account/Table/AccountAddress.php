@@ -24,17 +24,15 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package Appenda.Bundle.Account 
  */
 
-class Appenda_Bundle_Account_Model_Contacts extends Appenda_Bundle_Account_Model {
-	protected $_name = "contacts";
-	protected $_primary = "contact_id";
+class Appenda_Bundle_Account_Table_AccountAddress extends Appenda_Bundle_Account_Table
+{
+	protected $_name = "accounts_addresses";
+	protected $_primary = "account_address_id";
 	protected $_sequence = false;
-	protected $_rowClass = self::ContactsRow;
-	protected $_dependentTables = array (
-		self::ContactsAddresses, 
-		self::ContactsPhones);
-		
-		
+	protected $_referenceMap = array (
+		"Account" => array ("columns" => "account_id", "refTableClass" => self::Account, "refColumns" => "account_id"), 
+		"Address" => array ("columns" => "address_id", "refTableClass" => self::Address, "refColumns" => "address_id"));
 }

@@ -27,57 +27,20 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Model_AccountsRow extends Appenda_Bundle_Account_ModelRow {
+class Appenda_Bundle_Account_TableRow_Phone extends Appenda_Bundle_Account_TableRow
+{
 	/**
 	 * Enter description here...
 	 *
-	 * @return Zend_Db_Table_Rowset_Abstract
-	 */
-	public function findAddresses () {
-		return $this->findManyToManyRowset (self::Accounts, self::Addresses);
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @return Zend_Db_Table_Rowset_Abstract
-	 */
-	public function findContacts () {
-		return $this->findManyToManyRowset (self::Accounts, self::Contacts);
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @return Zend_Db_Table_Rowset_Abstract
-	 */
-	public function findPhones () {
-		return $this->findManyToManyRowset (self::Accounts, self::Phones);
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
+	 * @param SimpleXMLElement $rootXml
 	 * @return SimpleXMLElement
 	 */
-	public function toXml (SimpleXMLElement $xml) {
-		$xml->{"id"} = $this->{"account_id"};
-		$xml->{"name"} = $this->{"name"};
-		$xml->{"type"} = $this->{"type"};
-
-		foreach ($this->findContacts () as $contact) {
-			$contact->toXml ($xml->{"contacts"}->addChild ("contact"));
-		}
-
-		foreach ($this->findAddresses () as $address) {
-			$address->toXml ($xml->{"addresses"}->addChild ("address"));
-		}
-
-		foreach ($this->findPhones () as $phone) {
-			$phone->toXml ($xml->{"phones"}->addChild ("phone"));
-		}
-
+	public function toXml (SimpleXMLElement $xml)
+	{
+		$xml->{"prefix"} = $this->{"prefix"};
+		$xml->{"areaCode"} = $this->{"areaCode"};
+		$xml->{"number"} = $this->{"number"};
+		$xml->{"extension"} = $this->{"extension"};
 		return $xml;
 	}
 }

@@ -27,19 +27,12 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_GetAccount extends Appenda_Bundle_Account_Endpoint {
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
-	 */
-	public function processMessage (SimpleXMLElement $xml) {
-		$row = $this->getAccounts ()->find ((string) $xml);
-		
-		if ($row) {
-			return $this->getAccountAsXml ($row, $this->getResponseXml ($xml));
-		} else {
-			return $this->getResponseXml ($xml, "InvalidAccountException");
-		}
-	}
+class Appenda_Bundle_Account_Table_ContactPhone extends Appenda_Bundle_Account_Table
+{
+	protected $_name = "contacts_phones";
+	protected $_primary = "contact_phone_id";
+	protected $_sequence = false;
+	protected $_referenceMap = array (
+		"Contact" => array ("columns" => "contact_id", "refTableClass" => self::Contact, "refColumns" => "contact_id"), 
+		"Phone" => array ("columns" => "phone_id", "refTableClass" => self::Phone, "refColumns" => "phone_id"));
 }

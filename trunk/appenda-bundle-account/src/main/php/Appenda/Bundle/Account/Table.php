@@ -27,13 +27,16 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_UnsetContactAddress extends Appenda_Bundle_Account_Endpoint {
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
-	 */
-	public function processMessage (SimpleXMLElement $xml) {}
+class Appenda_Bundle_Account_Table extends Zend_Db_Table_Abstract
+{
+	const Account = "Appenda_Bundle_Account_Table_Account";
+	const AccountAddress = "Appenda_Bundle_Account_Table_AccountAddress";
+	const AccountContact = "Appenda_Bundle_Account_Table_AccountContact";
+	const AccountPhone = "Appenda_Bundle_Account_Table_AccountPhone";
+	const Address = "Appenda_Bundle_Account_Table_Address";
+	const Contact = "Appenda_Bundle_Account_Table_Contact";
+	const ContactAddress = "Appenda_Bundle_Account_Table_ContactAddress";
+	const ContactPhone = "Appenda_Bundle_Account_Table_ContactPhone";
+	const Phone = "Appenda_Bundle_Account_Table_Phone";
 }
-	
-	
+

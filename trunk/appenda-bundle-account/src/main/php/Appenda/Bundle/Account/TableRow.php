@@ -24,20 +24,10 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account 
+ * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Model_AccountsAddresses extends Appenda_Bundle_Account_Model {
-	protected $_name = "accounts_addresses";
-	protected $_primary = "account_address_id";
-	protected $_sequence = false;
-	protected $_referenceMap = array (
-		"Account" => array (
-			"columns" => "account_id", 
-			"refTableClass" => self::Accounts, 
-			"refColumns" => "account_id"), 
-		"Address" => array (
-			"columns" => "address_id", 
-			"refTableClass" => self::Addresses, 
-			"refColumns" => "address_id"));
+class Appenda_Bundle_Account_TableRow extends Zend_Db_Table_Row_Abstract
+{
 }
+

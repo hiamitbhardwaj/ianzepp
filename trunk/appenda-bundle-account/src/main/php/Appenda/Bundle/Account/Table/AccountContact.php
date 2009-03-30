@@ -27,13 +27,12 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_UnsetContactPhone extends Appenda_Bundle_Account_Endpoint {
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
-	 */
-	public function processMessage (SimpleXMLElement $xml) {}
+class Appenda_Bundle_Account_Table_AccountContact extends Appenda_Bundle_Account_Table
+{
+	protected $_name = "accounts_contacts";
+	protected $_primary = "account_contact_id";
+	protected $_sequence = false;
+	protected $_referenceMap = array (
+		"Account" => array ("columns" => "account_id", "refTableClass" => self::Account, "refColumns" => "account_id"), 
+		"Contact" => array ("columns" => "contact_id", "refTableClass" => self::Contact, "refColumns" => "contact_id"));
 }
-	
-	

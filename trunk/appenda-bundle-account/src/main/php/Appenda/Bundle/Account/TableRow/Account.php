@@ -27,65 +27,65 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Model_ContactsRow extends Appenda_Bundle_Account_ModelRow {
+class Appenda_Bundle_Account_TableRow_Account extends Appenda_Bundle_Account_TableRow
+{
 	/**
 	 * Enter description here...
 	 *
 	 * @return Zend_Db_Table_Rowset_Abstract
 	 */
-	public function findAccounts () {
-		return $this->findManyToManyRowset (self::Contacts, self::Account);
+	public function findAddresses ()
+	{
+		return $this->findManyToManyRowset ("Appenda_Bundle_Account_Table_Account", "Appenda_Bundle_Account_Table_Address");
 	}
-
+	
 	/**
 	 * Enter description here...
 	 *
 	 * @return Zend_Db_Table_Rowset_Abstract
 	 */
-	public function findAddresses () {
-		return $this->findManyToManyRowset (self::Contacts, self::Addresses);
+	public function findContacts ()
+	{
+		return $this->findManyToManyRowset ("Appenda_Bundle_Account_Table_Account", "Appenda_Bundle_Account_Table_Contact");
 	}
-
+	
 	/**
 	 * Enter description here...
 	 *
 	 * @return Zend_Db_Table_Rowset_Abstract
 	 */
-	public function findPhones () {
-		return $this->findManyToManyRowset (self::Contacts, self::Phones);
+	public function findPhones ()
+	{
+		return $this->findManyToManyRowset ("Appenda_Bundle_Account_Table_Account", "Appenda_Bundle_Account_Table_Phone");
 	}
-
+	
 	/**
 	 * Enter description here...
 	 *
-	 * @param SimpleXMLElement $rootXml
+	 * @param SimpleXMLElement $xml
 	 * @return SimpleXMLElement
 	 */
-	public function toXml (SimpleXMLElement $xml, $recursive = false) {
-		$xml->{"id"} = $this->{"contact_id"};
-		$xml->{"firstName"} = $this->{"first_name"};
-		$xml->{"middleName"} = $this->{"middle_name"};
-		$xml->{"lastName"} = $this->{"last_name"};
-		$xml->{"salutation"} = $this->{"salutation"};
-		$xml->{"suffix"} = $this->{"suffix"};
-
-		foreach ($this->findAddresses () as $address) {
+	public function toXml (SimpleXMLElement $xml)
+	{
+		$xml->{"id"} = $this->{"account_id"};
+		$xml->{"name"} = $this->{"name"};
+		$xml->{"type"} = $this->{"type"};
+		
+		foreach ($this->findContacts () as $contact )
+		{
+			$contact->toXml ($xml->{"contacts"}->addChild ("contact"));
+		}
+		
+		foreach ($this->findAddresses () as $address )
+		{
 			$address->toXml ($xml->{"addresses"}->addChild ("address"));
 		}
-
-		foreach ($this->findPhones () as $phone) {
+		
+		foreach ($this->findPhones () as $phone )
+		{
 			$phone->toXml ($xml->{"phones"}->addChild ("phone"));
 		}
-
-		// Only add accounts if recurse is true.
-		if (!$recurse) {
-			return $xml;
-		}
-
-		foreach ($this->findAccounts () as $account) {
-			$account->toXml ($xml->{"accounts"}->addChild ("account"));
-		}
-
+		
 		return $xml;
 	}
 }
