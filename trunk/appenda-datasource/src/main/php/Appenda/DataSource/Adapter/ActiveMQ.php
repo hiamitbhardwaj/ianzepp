@@ -26,12 +26,7 @@
  * @author Ian Zepp
  * @package
  */
-interface Appenda_DataSource
+class Appenda_DataSource_Adapter_ActiveMQ implements Appenda_DataSource_Adapter
 {
-	/**
-	 * Enter description here...
-	 *
-	 * @return Appenda_DataSource_Factory
-	 */
-	public function getFactory ();
+	private $internalAdapter;
 }
