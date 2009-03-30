@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<!-- Define the source JMS queue -->
+
+	<bean id="MessageSource" class="Appenda_Endpoint_ActiveMQ_Listener">
+		<property name="broker" value="${bundle.account.activemq.broker}" />
+		<property name="subscription" value="${bundle.account.activemq.subscription}" />
+		<property name="delegate" ref="MessageMapper" />
+	</bean>
+
 	<!-- Define the endpoint mapping -->
 
 	<bean id="MessageMapper" class="Appenda_Endpoint_Filtering">
