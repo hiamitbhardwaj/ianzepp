@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package Appenda_Bundle_Account
  */
 
 class Appenda_Bundle_Account_Model_Phone extends Appenda_Bundle_Account_Model
