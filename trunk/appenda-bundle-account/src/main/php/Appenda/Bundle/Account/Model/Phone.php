@@ -27,6 +27,8 @@
  * @package Appenda_Bundle_Account
  */
 
+require_once "Appenda/Bundle/Account/Model.php";
+
 class Appenda_Bundle_Account_Model_Phone extends Appenda_Bundle_Account_Model
 {
 	/**

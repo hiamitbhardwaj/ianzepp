@@ -27,6 +27,8 @@
  * @package Appenda_Bundle_Account
  */
 
+require_once "Appenda/Bundle/Account/Endpoint.php";
+
 class Appenda_Bundle_Account_Endpoint_RemoveAccount extends Appenda_Bundle_Account_Endpoint
 {
 	/**

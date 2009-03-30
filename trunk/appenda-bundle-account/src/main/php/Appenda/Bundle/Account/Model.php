@@ -27,7 +27,9 @@
  * @package Appenda_Bundle_Account
  */
 
-class Appenda_Bundle_Account_Model extends Zend_Db_Table_Row_Abstract
+require_once "Zend/Db/Table/Row.php";
+
+class Appenda_Bundle_Account_Model extends Zend_Db_Table_Row
 {
 }
 
