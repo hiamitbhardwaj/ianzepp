@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition.php";
+
 interface Appenda_Bean_Registry
 {
 	/**

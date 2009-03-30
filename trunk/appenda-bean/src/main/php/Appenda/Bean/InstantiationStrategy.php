@@ -27,6 +27,10 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition/Root.php";
+require_once "Appenda/Bean/Factory.php";
+
+
 interface Appenda_Bean_InstantiationStrategy
 {
 	public function instantiate (Appenda_Bean_Definition_Root $beanDefinition, $beanName, Appenda_Bean_Factory $owner);

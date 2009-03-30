@@ -27,6 +27,11 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition/Root.php";
+require_once "Appenda/Bean/Factory/Listable.php";
+require_once "Appenda/Bean/InstantiationStrategy.php";
+require_once "Appenda/Bean/Property.php";
+
 class Appenda_Bean_Factory_Autowire extends Appenda_Bean_Factory_Listable
 {
 	const AUTOWIRE_NO = 0x00;
@@ -140,11 +145,11 @@ class Appenda_Bean_Factory_Autowire extends Appenda_Bean_Factory_Listable
 			// Determine if the value is a reference or not
 			switch ($argument->getType ())
 			{
-				case Appenda_Bean_Property_Constructor::TYPE_REF:
+				case Appenda_Bean_Property::ReferenceType:
 					$convertedValue = $this->createBean ($argument->getName ());
 					break;
 				
-				case Appenda_Bean_Property_Constructor::TYPE_VALUE:
+				case Appenda_Bean_Property::ValueType:
 					$convertedValue = $argument->getValue ();
 					break;
 				

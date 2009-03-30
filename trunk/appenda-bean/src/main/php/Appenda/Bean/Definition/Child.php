@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition/Abstract.php";
+
 class Appenda_Bean_Definition_Child extends Appenda_Bean_Definition_Abstract
 {
 	private $parentName;

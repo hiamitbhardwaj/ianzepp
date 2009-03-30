@@ -27,14 +27,13 @@
  * @package 
  */
 
-interface Appenda_Bean_Definition
-{
+interface Appenda_Bean_Definition {
 	/**
 	 * Role hint indicating that a Bean Definition is a major part of the application.
 	 *
 	 * @var integer
 	 */
-	const ROLE_APPLICATION = 10;
+	const ApplicationRole = 10;
 	
 	/**
 	 * Role hint indicating that a Bean Definition is providing an entirely background role
@@ -42,7 +41,7 @@ interface Appenda_Bean_Definition
 	 *
 	 * @var integer
 	 */
-	const ROLE_INFRASTRUCTRE = 100;
+	const InfrastructureRole = 100;
 	
 	/**
 	 * Role hint indicating that a Bean Definition is a supporting part of some larger
@@ -50,28 +49,28 @@ interface Appenda_Bean_Definition
 	 *
 	 * @var integer
 	 */
-	const ROLE_SUPPORT = 1000;
+	const SupportRole = 1000;
 	
 	/**
 	 * Scope identifier for the standard prototype scope: "prototype".
 	 *
 	 * @var string
 	 */
-	const SCOPE_PROTOTYPE = "prototype";
+	const PrototypeScope = "prototype";
 	
 	/**
 	 * Scope identifier for the standard prototype scope: "singleton".
 	 *
 	 * @var string
 	 */
-	const SCOPE_SINGLETON = "singleton";
+	const SingletonScope = "singleton";
 	
 	/**
 	 * Return the current bean class name of this bean definition.
 	 *
 	 * @return string
 	 */
-	public function getBeanClass ();
+	public function getBeanClassName ();
 	
 	/**
 	 *  Return the constructor argument values for this bean.
@@ -174,9 +173,9 @@ interface Appenda_Bean_Definition
 	/**
 	 * Override the bean class name of this bean definition.
 	 *
-	 * @param string $beanClass
+	 * @param string $beanClassName
 	 */
-	public function setBeanClass ($beanClass);
+	public function setBeanClassName ($beanClassName);
 	
 	/**
 	 *  Return the constructor argument values for this bean.

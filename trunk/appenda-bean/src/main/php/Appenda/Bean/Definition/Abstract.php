@@ -27,41 +27,43 @@
  * @package 
  */
 
-abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definition
-{
+require_once "Appenda/Bean/Definition.php";
+require_once "Appenda/Bean/Property.php";
+
+abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definition {
 	/**
 	 * Constant that indicates no dependency check at all.
 	 *
 	 * @var integer
 	 */
-	const DEPENDENCY_CHECK_NONE = 0;
+	const NoDependencyCheck = 0;
 	
 	/**
 	 * Constant that indicates dependency checking for "simple" properties.
 	 *
 	 * @var integer
 	 */
-	const DEPENDENCY_CHECK_SIMPLE = 1;
+	const SimpleDependencyCheck = 1;
 	
 	/**
 	 *  Constant that indicates dependency checking for object references.
 	 *
 	 * @var integer
 	 */
-	const DEPENDENCY_CHECK_OBJECTS = 2;
+	const ObjectDependencyCheck = 2;
 	
 	/**
 	 * Constant that indicates dependency checking for all properties (object references as well as "simple" properties).
 	 *
 	 * @var integer
 	 */
-	const DEPENDENCY_CHECK_ALL = 3;
+	const AllDependencyChecks = 3;
 	
 	// Private properties
 	private $abstract = false;
-	private $beanClass;
+	private $beanClassName;
 	private $constructorArgumentValues = array ();
-	private $dependencyCheck = self::DEPENDENCY_CHECK_ALL;
+	private $dependencyCheck = self::AllDependencyChecks;
 	private $dependsOn = array ();
 	private $factoryBeanName;
 	private $factoryBeanMethod;
@@ -69,8 +71,8 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	private $parentName;
 	private $propertyValues = array ();
 	private $resourceDescription;
-	private $role = self::ROLE_APPLICATION;
-	private $scope = self::SCOPE_SINGLETON;
+	private $role = self::ApplicationRole;
+	private $scope = self::SingletonScope;
 	private $synthetic = false;
 	
 	/**
@@ -78,9 +80,8 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getBeanClass ()
-	{
-		return $this->beanClass;
+	public function getBeanClassName () {
+		return $this->beanClassName;
 	}
 	
 	/**
@@ -88,8 +89,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return array(Appenda_Bean_Property_Constructor)
 	 */
-	public function getConstructorArgumentValues ()
-	{
+	public function getConstructorArgumentValues () {
 		return $this->constructorArgumentValues;
 	}
 	
@@ -98,8 +98,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return int
 	 */
-	public function getDependencyCheck ()
-	{
+	public function getDependencyCheck () {
 		return $this->dependencyCheck;
 	}
 	
@@ -108,8 +107,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return array(string)
 	 */
-	public function getDependsOn ()
-	{
+	public function getDependsOn () {
 		return $this->dependsOn;
 	}
 	
@@ -118,8 +116,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getDescription ()
-	{
+	public function getDescription () {
 		return $this->getResourceDescription ();
 	}
 	
@@ -128,8 +125,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getFactoryBeanMethod ()
-	{
+	public function getFactoryBeanMethod () {
 		return $this->factoryBeanMethod;
 	}
 	
@@ -138,8 +134,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getFactoryBeanName ()
-	{
+	public function getFactoryBeanName () {
 		return $this->factoryBeanName;
 	}
 	
@@ -148,8 +143,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getParentName ()
-	{
+	public function getParentName () {
 		return $this->parentName;
 	}
 	
@@ -158,8 +152,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return array(Appenda_Bean_Property_Mutable)
 	 */
-	public function getPropertyValues ()
-	{
+	public function getPropertyValues () {
 		return $this->propertyValues;
 	}
 	
@@ -168,8 +161,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getResourceDescription ()
-	{
+	public function getResourceDescription () {
 		return $this->resourceDescription;
 	}
 	
@@ -178,8 +170,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return integer
 	 */
-	public function getRole ()
-	{
+	public function getRole () {
 		return $this->role;
 	}
 	
@@ -188,8 +179,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return string
 	 */
-	public function getScope ()
-	{
+	public function getScope () {
 		return $this->scope;
 	}
 	
@@ -198,9 +188,8 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function hasBeanClass ()
-	{
-		return !empty ($this->beanClass);
+	public function hasBeanClassName () {
+		return !empty ($this->beanClassName);
 	}
 	
 	/**
@@ -208,8 +197,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function hasConstructorValueArguments ()
-	{
+	public function hasConstructorValueArguments () {
 		return count ($this->getConstructorArgumentValues ()) > 0;
 	}
 	
@@ -218,8 +206,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function isAbstract ()
-	{
+	public function isAbstract () {
 		return $this->abstract;
 	}
 	
@@ -228,8 +215,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function isLazyInit ()
-	{
+	public function isLazyInit () {
 		return $this->lazyInit;
 	}
 	
@@ -238,9 +224,8 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function isSingleton ()
-	{
-		return $this->getScope () === self::SCOPE_SINGLETON;
+	public function isSingleton () {
+		return $this->getScope () === self::SingletonScope;
 	}
 	
 	/**
@@ -248,9 +233,8 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function isPrototype ()
-	{
-		return $this->getScope () === self::SCOPE_PROTOTYPE;
+	public function isPrototype () {
+		return $this->getScope () === self::PrototypeScope;
 	}
 	
 	/**
@@ -258,8 +242,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @return boolean
 	 */
-	public function isSynthetic ()
-	{
+	public function isSynthetic () {
 		return $this->synthetic;
 	}
 	
@@ -268,20 +251,18 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param boolean $abstract
 	 */
-	public function setAbstract ($abstract)
-	{
+	public function setAbstract ($abstract) {
 		assert (is_bool ($abstract));
 		$this->abstract = $abstract;
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::setBeanClass()
+	 * @see Appenda_Bean_Definition::setBeanClassName()
 	 *
-	 * @param string $beanClass
+	 * @param string $beanClassName
 	 */
-	public function setBeanClassName ($beanClass)
-	{
-		$this->beanClass = $beanClass;
+	public function setBeanClassName ($beanClassName) {
+		$this->beanClassName = $beanClassName;
 	}
 	
 	/**
@@ -289,11 +270,9 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param array(Appenda_Bean_Property_Constructor) $constructorArgumentValues
 	 */
-	public function setConstructorArgumentValues (array $constructorArgumentValues)
-	{
-		foreach ($constructorArgumentValues as $constructorArgument )
-		{
-			assert ($constructorArgument instanceof Appenda_Bean_Property_Constructor);
+	public function setConstructorArgumentValues (array $constructorArgumentValues) {
+		foreach ($constructorArgumentValues as $constructorArgument) {
+			assert ($constructorArgument instanceof Appenda_Bean_Property);
 		}
 		
 		$this->constructorArgumentValues = $constructorArgumentValues;
@@ -304,8 +283,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param int $dependencyCheck
 	 */
-	public function setDependencyCheck ($dependencyCheck)
-	{
+	public function setDependencyCheck ($dependencyCheck) {
 		assert (is_int ($dependencyCheck));
 		$this->dependencyCheck = $dependencyCheck;
 	}
@@ -315,16 +293,14 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param array(string) $dependsOn
 	 */
-	public function setDependsOn (array $dependsOn)
-	{
+	public function setDependsOn (array $dependsOn) {
 		$this->dependsOn = array_map ("strval", $dependsOn);
 	}
 	
 	/**
 	 * @param string $factoryBeanMethod
 	 */
-	public function setFactoryBeanMethod ($factoryBeanMethod)
-	{
+	public function setFactoryBeanMethod ($factoryBeanMethod) {
 		assert (is_string ($factoryBeanMethod));
 		$this->factoryBeanMethod = $factoryBeanMethod;
 	}
@@ -332,8 +308,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	/**
 	 * @param string $factoryBeanName
 	 */
-	public function setFactoryBeanName ($factoryBeanName)
-	{
+	public function setFactoryBeanName ($factoryBeanName) {
 		assert (is_string ($factoryBeanName));
 		$this->factoryBeanName = $factoryBeanName;
 	}
@@ -343,8 +318,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param boolean $lazyInit
 	 */
-	public function setLazyInit ($lazyInit)
-	{
+	public function setLazyInit ($lazyInit) {
 		assert (is_bool ($lazyInit) || boolval ($lazyInit));
 		$this->lazyInit = boolval ($lazyInit);
 	}
@@ -352,8 +326,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	/**
 	 * @param string $parentName
 	 */
-	public function setParentName ($parentName)
-	{
+	public function setParentName ($parentName) {
 		assert (is_string ($parentName));
 		$this->parentName = $parentName;
 	}
@@ -363,11 +336,9 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param array(Appenda_Bean_Property_Mutable) $propertyValues
 	 */
-	public function setPropertyValues (array $propertyValues)
-	{
-		foreach ($propertyValues as $propertyValue )
-		{
-			assert ($propertyValue instanceof Appenda_Bean_Property_Mutable);
+	public function setPropertyValues (array $propertyValues) {
+		foreach ($propertyValues as $propertyValue) {
+			assert ($propertyValue instanceof Appenda_Bean_Property);
 		}
 		
 		$this->propertyValues = $propertyValues;
@@ -379,8 +350,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param string $resourceDescription
 	 */
-	public function setResourceDescription ($resourceDescription)
-	{
+	public function setResourceDescription ($resourceDescription) {
 		assert (is_string ($resourceDescription));
 		$this->resourceDescription = $resourceDescription;
 	}
@@ -390,8 +360,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param integer $role
 	 */
-	public function setRole ($role)
-	{
+	public function setRole ($role) {
 		assert (is_integer ($role));
 		$this->role = $role;
 	}
@@ -401,8 +370,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param string $scope
 	 */
-	public function setScope ($scope)
-	{
+	public function setScope ($scope) {
 		assert (is_string ($scope));
 		$this->scope = $scope;
 	}
@@ -412,17 +380,13 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param boolean $singleton
 	 */
-	public function setSingleton ($singleton)
-	{
+	public function setSingleton ($singleton) {
 		assert (is_bool ($singleton) || boolval ($singleton));
 		
-		if (boolval ($singleton))
-		{
-			$this->setScope (self::SCOPE_SINGLETON);
-		}
-		else
-		{
-			$this->setScope (self::SCOPE_PROTOTYPE);
+		if (boolval ($singleton)) {
+			$this->setScope (self::SingletonScope);
+		} else {
+			$this->setScope (self::PrototypeScope);
 		}
 	}
 	
@@ -431,8 +395,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	 *
 	 * @param boolean $synthetic
 	 */
-	public function setSynthetic ($synthetic)
-	{
+	public function setSynthetic ($synthetic) {
 		assert (is_bool ($synthetic) || boolval ($synthetic));
 		$this->synthetic = boolval ($synthetic);
 	}
