@@ -27,6 +27,8 @@
  * @package Appenda_Bundle_Account
  */
 
+require_once "Appenda/Bundle/Account/Table.php";
+
 class Appenda_Bundle_Account_Table_Phone extends Appenda_Bundle_Account_Table
 {
 	protected $_name = "phones";

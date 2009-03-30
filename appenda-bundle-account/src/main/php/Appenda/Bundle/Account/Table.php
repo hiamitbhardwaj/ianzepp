@@ -27,7 +27,9 @@
  * @package Appenda_Bundle_Account
  */
 
-class Appenda_Bundle_Account_Table extends Zend_Db_Table_Abstract
+require_once "Zend/Db/Table.php";
+
+class Appenda_Bundle_Account_Table extends Zend_Db_Table
 {
 	const Account = "Appenda_Bundle_Account_Table_Account";
 	const AccountAddress = "Appenda_Bundle_Account_Table_AccountAddress";

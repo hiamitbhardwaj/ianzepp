@@ -27,6 +27,13 @@
  * @package Appenda_Bundle_Account
  */
 
+require_once "Appenda/Bundle/Account/Model/Account.php";
+require_once "Appenda/Bundle/Account/Model/Address.php";
+require_once "Appenda/Bundle/Account/Model/Contact.php";
+require_once "Appenda/Bundle/Account/Model/Phone.php";
+require_once "Appenda/Bundle/Account/Table.php";
+require_once "Appenda/Message/Endpoint.php";
+
 abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoint
 {
 	private $accountTable;
