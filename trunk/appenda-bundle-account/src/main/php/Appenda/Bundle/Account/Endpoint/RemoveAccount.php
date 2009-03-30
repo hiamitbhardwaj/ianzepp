@@ -27,7 +27,7 @@
  * @package Appenda_Bundle_Account
  */
 
-class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Account_Endpoint
+class Appenda_Bundle_Account_Endpoint_RemoveAccount extends Appenda_Bundle_Account_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml
@@ -35,20 +35,14 @@ class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Acc
 	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
-		// Build the basic response
-		$response = $this->getResponseXml ("Account", $xml ["xmlns"]);
-		
-		// Build the search
+		// Build the select object
 		$select = $this->getAccountTable ()->select ();
 		$select->where ("account_id = ?", (string) $xml);
 		
-		// Results found?
-		if (($model = $this->getAccountTable ()->fetchRow ($select)))
-		{
-			$this->insertAccount ($response, $model);
-		}
+		// Remove the account
+		$this->getAccountTable ()->delete ($select);
 		
-		// Done.
-		return $response;
+		// Done
+		return null;
 	}
 }

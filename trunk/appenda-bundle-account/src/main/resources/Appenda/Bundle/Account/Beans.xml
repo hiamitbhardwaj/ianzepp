@@ -7,8 +7,10 @@
 		<property name="delegates">
 			<props>
 				<!-- Account mappings -->
-				<prop key="{${bundle.account.namespace}}FindAccountById">FindAccountByIdEndpoint</prop>
+				<prop key="{${bundle.account.namespace}}FindAccount">FindAccountEndpoint</prop>
+				<prop key="{${bundle.account.namespace}}FindAccountListByType">FindAccountListByTypeEndpoint</prop>
 				<prop key="{${bundle.account.namespace}}InsertAccount">InsertAccountEndpoint</prop>
+				<prop key="{${bundle.account.namespace}}RemoveAccount">RemoveAccountEndpoint</prop>
 			</props>
 		</property>
 	</bean>
@@ -22,9 +24,13 @@
 		<property name="phoneTable" ref="PhoneTable" />
 	</bean>
 
-	<bean id="FindAccountByIdEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountById" />
+	<bean id="FindAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccount" />
+
+	<bean id="FindAccountListByTypeEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountListByType" />
 
 	<bean id="InsertAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_InsertAccount" />
+
+	<bean id="RemoveAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_RemoveAccount" />
 
 	<!-- Database configuration -->
 
