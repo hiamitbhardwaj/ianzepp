@@ -27,6 +27,12 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition.php";
+require_once "Appenda/Bean/Exception.php";
+require_once "Appenda/Bean/Factory.php";
+require_once "Appenda/Bean/Factory/Configurable.php";
+require_once "Appenda/Bean/PostProcessor.php";
+
 class Appenda_Bean_Factory_Listable implements Appenda_Bean_Factory_Configurable
 {
 	private $allowBeanDefinitionOverriding = false;

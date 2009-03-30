@@ -27,6 +27,9 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Factory.php";
+require_once "Appenda/Bean/PostProcessor.php";
+
 interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
 {
 	/**
@@ -34,14 +37,14 @@ interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
 	 *
 	 * @var string
 	 */
-	const SCOPE_PROTOTYPE = "prototype";
+	const PrototypeScope = "prototype";
 	
 	/**
 	 * Scope identifier for the standard singleton scope: "singleton".
 	 *
 	 * @var string
 	 */
-	const SCOPE_SINGLETON = "singleton";
+	const SingletonScope = "singleton";
 	
 	/**
 	 * Add a new BeanPostProcessor that will get applied to beans created by this factory.

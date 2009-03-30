@@ -27,7 +27,7 @@
  * @package 
  */
 
-class Appenda_Bean_Exception extends Appenda_Exception
+class Appenda_Bean_Exception extends Exception
 {
 }
 

@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Registry.php";
+
 abstract class Appenda_Bean_Definition_Reader_Abstract
 {
 	private $beanRegistry;

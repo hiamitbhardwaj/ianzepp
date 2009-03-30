@@ -27,6 +27,12 @@
  * @package 
  */
 
+require_once "Appenda/Bean/Definition/Reader/Abstract.php";
+require_once "Appenda/Bean/Definition/Child.php";
+require_once "Appenda/Bean/Definition/Root.php";
+require_once "Appenda/Bean/Exception.php";
+require_once "Appenda/Bean/Property.php";
+
 class Appenda_Bean_Definition_Reader_Xml extends Appenda_Bean_Definition_Reader_Abstract
 {
 	/**
@@ -160,23 +166,23 @@ class Appenda_Bean_Definition_Reader_Xml extends Appenda_Bean_Definition_Reader_
 			{
 				case empty ($xml ["ref"]):
 					$property = new Appenda_Bean_Property ($propertyName, (string) $xml ["ref"]);
-					$property->setType (Appenda_Bean_Property::TYPE_REFERENCE);
+					$property->setType (Appenda_Bean_Property::ReferenceType);
 					break;
 				
 				case empty ($xml ["value"]):
 					$property = new Appenda_Bean_Property ($propertyName, (string) $xml ["value"]);
-					$property->setType (Appenda_Bean_Property::TYPE_VALUE);
+					$property->setType (Appenda_Bean_Property::ValueType);
 					break;
 				
 				case empty ($xml->{"props"}):
 					$propertyValue = $this->extractPropsArray ($xml->{"props"});
 					$property = new Appenda_Bean_Property ($propertyName, $propertyValue);
-					$property->setType (Appenda_Bean_Property::TYPE_VALUE);
+					$property->setType (Appenda_Bean_Property::ValueType);
 					break;
 				
 				case empty ($xml->{"bean"}) && empty ($xml->{"bean"} ["id"]):
 					$property = new Appenda_Bean_Property ($propertyName, (string) $xml->{"bean"} ["id"]);
-					$property->setType (Appenda_Bean_Property::TYPE_VALUE);
+					$property->setType (Appenda_Bean_Property::ValueType);
 					break;
 				
 				default:
