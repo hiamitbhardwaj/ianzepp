@@ -34,7 +34,11 @@ class Appenda_Bundle_Session_Endpoint_Insert implements Appenda_Service_Session_
 	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
-		//$this->getSessionTable ()->insert ($xml->asXML());
+		$insert ["name"] = (string) $xml->{"name"};
+		$insert ["data"] = (string) $xml->{"data"};
+		$insert ["expires_at"] = (string) $xml->{"expires"};
+		
+		$this->getSessionTable ()->insert ($insert);
 		
 		// Done.
 		return null;

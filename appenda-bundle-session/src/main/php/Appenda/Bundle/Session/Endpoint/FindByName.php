@@ -31,7 +31,7 @@ class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Service_Sess
 	public function processMessage (SimpleXMLElement $xml)
 	{
 		// Build the basic result xml
-		$responseXml = simplexml_load_string ("<Session />");
+		$responseXml = simplexml_load_string ("<SessionList />");
 		$responseXml ["xmlns"] = array_shift ($xml->getNamespaces (false));
 		
 		// Fetch first match
@@ -52,11 +52,14 @@ class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Service_Sess
 		}
 		
 		// Build and return the result
-		$responseXml->{"name"} = $result ["name"];
-		$responseXml->{"data"} = $result ["data"];
-		$responseXml->{"created"} = $result ["created_at"];
-		$responseXml->{"updated"} = $result ["updated_at"];
-		$responseXml->{"expires"} = $result ["expires_at"];
+		$session = $responseXml->addChild ("session");
+		$session->{"name"} = $result ["name"];
+		$session->{"data"} = $result ["data"];
+		$session->{"created"} = $result ["created_at"];
+		$session->{"updated"} = $result ["updated_at"];
+		$session->{"expires"} = $result ["expires_at"];
+		
+		// Done.
 		return $responseXml;
 	}
 }
