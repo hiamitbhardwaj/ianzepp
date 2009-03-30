@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns:tns="http://www.example.org/Schema/" xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.example.org/Schema/">
-	<complexType name="accountType">
+<schema xmlns:tns="http://www.example.org/Schema/" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Schema/">
+
+	<simpleType name="AccountId">
+		<restriction base="string"></restriction>
+	</simpleType>
+
+	<complexType name="Account">
 		<sequence>
-			<element name="id" type="string"></element>
+			<element name="id" type="tns:AccountId"></element>
 			<element name="name" type="string"></element>
 			<element name="type" type="string"></element>
-			<element name="addresses" type="tns:addressListType" maxOccurs="1" minOccurs="0"></element>
-			<element name="phones" type="tns:phoneListType" maxOccurs="1" minOccurs="0"></element>
-			<element name="contacts" type="tns:contactListType" maxOccurs="1" minOccurs="0"></element>
+			<element name="contact" type="tns:ContactId" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="address" type="tns:Address" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="phone" type="tns:Phone" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="accountListType">
+	<complexType name="AccountList">
 		<sequence>
-			<element name="account" type="tns:accountType" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="account" type="tns:Account" maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="contactType">
+	<simpleType name="ContactId">
+		<restriction base="string"></restriction>
+	</simpleType>
+
+	<complexType name="Contact">
 		<sequence>
-			<element name="id" type="string"></element>
+			<element name="id" type="tns:ContactId"></element>
 			<element name="firstName" type="string"></element>
 			<element name="middleName" type="string" maxOccurs="1" minOccurs="0"></element>
 			<element name="lastName" type="string"></element>
 			<element name="salutation" type="string" maxOccurs="1" minOccurs="0"></element>
 			<element name="suffix" type="string" maxOccurs="1" minOccurs="0"></element>
-			<element name="addresses" type="tns:addressListType" maxOccurs="1" minOccurs="0"></element>
-			<element name="phones" type="tns:phoneListType" maxOccurs="1" minOccurs="0"></element>
-			<element name="accounts" type="tns:accountListType" maxOccurs="1" minOccurs="0"></element>
+			<element name="account" type="tns:AccountId" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="address" type="tns:Address" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="phone" type="tns:Phone" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="contactListType">
+	<complexType name="ContactList">
 		<sequence>
-			<element name="contact" type="tns:contactType" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="contact" type="tns:Contact" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="addressType">
+	<complexType name="Address">
 		<sequence>
 			<element name="company" type="string" maxOccurs="1" minOccurs="0"></element>
 			<element name="attention" type="string" maxOccurs="1" minOccurs="0"></element>
@@ -54,13 +62,13 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="addressListType">
+	<complexType name="AddressList">
 		<sequence>
-			<element name="address" type="tns:addressType" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="address" type="tns:Address" maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<complexType name="phoneType">
+	<complexType name="Phone">
 		<sequence>
 			<element name="prefix" type="int"></element>
 			<element name="areaCode" type="int"></element>
@@ -69,43 +77,15 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="phoneListType">
+	<complexType name="PhoneList">
 		<sequence>
-			<element name="phone" type="tns:phoneType" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="phone" type="tns:Phone" maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 
-	<element name="getAccountRequest" type="tns:accountQueryType"></element>
+	<element name="InsertAccount" type="tns:Account"></element>
 
-	<element name="getAccountResponse" type="tns:accountListType"></element>
+    <element name="FindAccountById" type="string"></element>
 
-	<element name="getContactRequest" type="tns:contactQueryType"></element>
-
-	<element name="getContactResponse" type="tns:contactListType"></element>
-
-	<element name="setContactRequest" type="tns:contactType"></element>
-
-	<element name="setContactResponse" type="tns:statusType"></element>
-
-
-	<complexType name="contactQueryType">
-    	<sequence>
-    		<element name="firstName" type="string" maxOccurs="1" minOccurs="0"></element>
-    		<element name="middleName" type="string" maxOccurs="1" minOccurs="0"></element>
-    		<element name="lastName" type="string" maxOccurs="1" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
-
-
-    <complexType name="accountQueryType"></complexType>
-
-    <complexType name="statusType">
-    	<sequence>
-    		<element name="model" type="string"></element>
-    		<element name="modelId" type="string"></element>
-    		<element name="success" type="boolean"></element>
-    		<element name="exceptionType" type="string" maxOccurs="1" minOccurs="0"></element>
-    		<element name="exceptionMessage" type="string" maxOccurs="1" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
+    <element name="Account" type="tns:Account"></element>
 </schema>

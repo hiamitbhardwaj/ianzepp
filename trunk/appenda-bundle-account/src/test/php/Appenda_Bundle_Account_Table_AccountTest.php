@@ -24,15 +24,20 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package 
  */
 
-class Appenda_Bundle_Account_Table_AccountPhone extends Appenda_Bundle_Account_Table
+require_once "PHPUnit/Framework.php";
+require_once "Zend/Loader.php";
+
+class Appenda_Bundle_Account_Table_AccountTest extends PHPUnit_Framework_TestCase
 {
-	protected $_name = "accounts_phones";
-	protected $_primary = "account_phone_id";
-	protected $_sequence = false;
-	protected $_referenceMap = array (
-		"Account" => array ("columns" => "account_id", "refTableClass" => self::Account, "refColumns" => "account_id"), 
-		"Phone" => array ("columns" => "phone_id", "refTableClass" => self::Phone, "refColumns" => "phone_id"));
+	/**
+	 * @expectedException 
+	 */
+	public function testDefaultConstructor ()
+	{
+		new Appenda_Bundle_Account_Table_AccountTest ();
+	}
 }
+

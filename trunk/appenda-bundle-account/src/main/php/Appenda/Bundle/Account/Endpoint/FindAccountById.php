@@ -24,15 +24,30 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package
  */
 
-class Appenda_Bundle_Account_Table_AccountPhone extends Appenda_Bundle_Account_Table
+class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Account_Endpoint
 {
-	protected $_name = "accounts_phones";
-	protected $_primary = "account_phone_id";
-	protected $_sequence = false;
-	protected $_referenceMap = array (
-		"Account" => array ("columns" => "account_id", "refTableClass" => self::Account, "refColumns" => "account_id"), 
-		"Phone" => array ("columns" => "phone_id", "refTableClass" => self::Phone, "refColumns" => "phone_id"));
+	/**
+	 * @param SimpleXMLElement $xml
+	 * @return SimpleXMLElement
+	 */
+	public function processMessage (SimpleXMLElement $xml)
+	{
+		// Run the search
+		$select = $this->getAccountTable ()->select ();
+		$select->where ("account_id = ?", (string) $xml);
+		$result = $this->getAccountTable ()->fetchRow ($select)->asArray ();
+		
+		// Build the basic response
+		$rsp = simplexml_load_string ("<Account />");
+		$rsp ["xmlns"] = array_shift ($xml->getNamespaces (false));
+		
+		// TODO fill in the data
+		
+
+		// Done.
+		return $rsp;
+	}
 }
