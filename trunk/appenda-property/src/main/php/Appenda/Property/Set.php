@@ -245,7 +245,7 @@ require_once "Appenda/Property/Atom.php";
 require_once "Appenda/Property/Exception.php";
 require_once "Appenda/Property/Filter.php";
 
-final class Appenda_Property_Set extends Appenda_Property_Atom {
+class Appenda_Property_Set extends Appenda_Property_Atom {
 	/**
 	 * @param string $sClassName
 	 * @return Appenda_Property_Set
