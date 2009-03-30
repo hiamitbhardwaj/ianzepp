@@ -32,6 +32,6 @@ class Appenda_Bundle_Account_Table_Account extends Appenda_Bundle_Account_Table
 	protected $_name = "accounts";
 	protected $_primary = "account_id";
 	protected $_sequence = false;
-	protected $_rowClass = "Appenda_Bundle_Account_TableRow_Account";
+	protected $_rowClass = "Appenda_Bundle_Account_Model_Account";
 	protected $_dependentTables = array (self::AccountAddress, self::AccountContact, self::AccountPhone);
 }

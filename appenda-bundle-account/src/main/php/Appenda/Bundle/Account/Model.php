@@ -27,7 +27,7 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Service
+class Appenda_Bundle_Account_Model extends Zend_Db_Table_Row_Abstract
 {
-
 }
+
