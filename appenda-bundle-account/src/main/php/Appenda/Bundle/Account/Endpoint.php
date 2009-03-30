@@ -157,12 +157,12 @@ abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoi
 	 */
 	protected function insertAccount (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Account $model)
 	{
-		$xml->{"id"} = $model->{"account_id"};
+		$xml ["id"] = $model->{"account_id"};
 		$xml->{"name"} = $model->{"name"};
 		$xml->{"type"} = $model->{"type"};
 		
 		foreach ($model->findContacts () as $contact)
-			$rsp->addChild ("contact", $contact->{"id"});
+			$this->insertContactId ($rsp->addChild ("contact"), $contact);
 		
 		foreach ($model->findAddresses () as $address)
 			$this->insertAddress ($rsp->addChild ("address"), $address);
@@ -189,6 +189,19 @@ abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoi
 	 */
 	protected function insertContact (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Contact $model)
 	{
+		$xml ["id"] = $model->{"id"};
+	
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $xml
+	 * @param Appenda_Bundle_Account_Model_Contact $model
+	 */
+	protected function insertContactId (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Contact $model)
+	{
+		$xml ["id"] = $model->{"id"};
 	}
 	
 	/**

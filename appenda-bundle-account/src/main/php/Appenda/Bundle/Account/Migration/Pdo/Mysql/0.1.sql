@@ -45,15 +45,15 @@
 -- Create schema appenda
 --
 
-CREATE DATABASE IF NOT EXISTS appenda;
-USE appenda;
+CREATE DATABASE IF NOT EXISTS `appenda_bundle_account`;
+USE `appenda_bundle_account`;
 
 --
--- Definition of table `appenda`.`accounts`
+-- Definition of table `accounts`
 --
 
-DROP TABLE IF EXISTS `appenda`.`accounts`;
-CREATE TABLE  `appenda`.`accounts` (
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE  `accounts` (
   `account_id` char(36) NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   `updated_at` int(10) unsigned default NULL,
@@ -63,7 +63,7 @@ CREATE TABLE  `appenda`.`accounts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`accounts`
+-- Dumping data for table `accounts`
 --
 
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
@@ -73,11 +73,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`accounts_addresses`
+-- Definition of table `accounts_addresses`
 --
 
-DROP TABLE IF EXISTS `appenda`.`accounts_addresses`;
-CREATE TABLE  `appenda`.`accounts_addresses` (
+DROP TABLE IF EXISTS `accounts_addresses`;
+CREATE TABLE  `accounts_addresses` (
   `account_address_id` int(10) unsigned NOT NULL auto_increment,
   `account_id` char(36) NOT NULL,
   `address_id` char(36) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE  `appenda`.`accounts_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`accounts_addresses`
+-- Dumping data for table `accounts_addresses`
 --
 
 /*!40000 ALTER TABLE `accounts_addresses` DISABLE KEYS */;
@@ -101,11 +101,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`accounts_contacts`
+-- Definition of table `accounts_contacts`
 --
 
-DROP TABLE IF EXISTS `appenda`.`accounts_contacts`;
-CREATE TABLE  `appenda`.`accounts_contacts` (
+DROP TABLE IF EXISTS `accounts_contacts`;
+CREATE TABLE  `accounts_contacts` (
   `account_contact_id` int(10) unsigned NOT NULL auto_increment,
   `account_id` char(36) NOT NULL,
   `contact_id` char(36) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE  `appenda`.`accounts_contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`accounts_contacts`
+-- Dumping data for table `accounts_contacts`
 --
 
 /*!40000 ALTER TABLE `accounts_contacts` DISABLE KEYS */;
@@ -129,11 +129,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`accounts_phones`
+-- Definition of table `accounts_phones`
 --
 
-DROP TABLE IF EXISTS `appenda`.`accounts_phones`;
-CREATE TABLE  `appenda`.`accounts_phones` (
+DROP TABLE IF EXISTS `accounts_phones`;
+CREATE TABLE  `accounts_phones` (
   `account_phone_id` int(10) unsigned NOT NULL auto_increment,
   `account_id` char(36) NOT NULL,
   `phone_id` char(36) NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE  `appenda`.`accounts_phones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`accounts_phones`
+-- Dumping data for table `accounts_phones`
 --
 
 /*!40000 ALTER TABLE `accounts_phones` DISABLE KEYS */;
@@ -157,11 +157,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`addresses`
+-- Definition of table `addresses`
 --
 
-DROP TABLE IF EXISTS `appenda`.`addresses`;
-CREATE TABLE  `appenda`.`addresses` (
+DROP TABLE IF EXISTS `addresses`;
+CREATE TABLE  `addresses` (
   `address_id` char(36) NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   `updated_at` int(10) unsigned default NULL,
@@ -177,7 +177,7 @@ CREATE TABLE  `appenda`.`addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`addresses`
+-- Dumping data for table `addresses`
 --
 
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
@@ -187,11 +187,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`contacts`
+-- Definition of table `contacts`
 --
 
-DROP TABLE IF EXISTS `appenda`.`contacts`;
-CREATE TABLE  `appenda`.`contacts` (
+DROP TABLE IF EXISTS `contacts`;
+CREATE TABLE  `contacts` (
   `contact_id` char(36) NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   `updated_at` int(10) unsigned default NULL,
@@ -205,7 +205,7 @@ CREATE TABLE  `appenda`.`contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`contacts`
+-- Dumping data for table `contacts`
 --
 
 /*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
@@ -215,11 +215,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`contacts_addresses`
+-- Definition of table `contacts_addresses`
 --
 
-DROP TABLE IF EXISTS `appenda`.`contacts_addresses`;
-CREATE TABLE  `appenda`.`contacts_addresses` (
+DROP TABLE IF EXISTS `contacts_addresses`;
+CREATE TABLE  `contacts_addresses` (
   `contact_address_id` int(10) unsigned NOT NULL auto_increment,
   `contact_id` char(36) NOT NULL,
   `address_id` char(36) NOT NULL,
@@ -233,7 +233,7 @@ CREATE TABLE  `appenda`.`contacts_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`contacts_addresses`
+-- Dumping data for table `contacts_addresses`
 --
 
 /*!40000 ALTER TABLE `contacts_addresses` DISABLE KEYS */;
@@ -243,11 +243,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`contacts_phones`
+-- Definition of table `contacts_phones`
 --
 
-DROP TABLE IF EXISTS `appenda`.`contacts_phones`;
-CREATE TABLE  `appenda`.`contacts_phones` (
+DROP TABLE IF EXISTS `contacts_phones`;
+CREATE TABLE  `contacts_phones` (
   `contact_phone_id` int(10) unsigned NOT NULL auto_increment,
   `contact_id` char(36) NOT NULL,
   `phone_id` char(36) NOT NULL,
@@ -261,7 +261,7 @@ CREATE TABLE  `appenda`.`contacts_phones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`contacts_phones`
+-- Dumping data for table `contacts_phones`
 --
 
 /*!40000 ALTER TABLE `contacts_phones` DISABLE KEYS */;
@@ -271,11 +271,11 @@ UNLOCK TABLES;
 
 
 --
--- Definition of table `appenda`.`phones`
+-- Definition of table `phones`
 --
 
-DROP TABLE IF EXISTS `appenda`.`phones`;
-CREATE TABLE  `appenda`.`phones` (
+DROP TABLE IF EXISTS `phones`;
+CREATE TABLE  `phones` (
   `phone_id` char(36) NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   `updated_at` int(10) unsigned default NULL,
@@ -287,7 +287,7 @@ CREATE TABLE  `appenda`.`phones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `appenda`.`phones`
+-- Dumping data for table `phones`
 --
 
 /*!40000 ALTER TABLE `phones` DISABLE KEYS */;
