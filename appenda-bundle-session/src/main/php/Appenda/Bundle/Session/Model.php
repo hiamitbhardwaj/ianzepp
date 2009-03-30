@@ -26,6 +26,9 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Bundle_Session_Row extends Zend_Db_Table_Row
+
+require_once "Zend/Db/Table/Row.php";
+
+class Appenda_Bundle_Session_Model extends Zend_Db_Table_Row
 {
 }

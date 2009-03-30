@@ -26,7 +26,10 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Service_Session_Endpoint
+
+require_once "Appenda/Bundle/Session/Endpoint.php";
+
+class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Bundle_Session_Endpoint
 {
 	public function processMessage (SimpleXMLElement $xml)
 	{

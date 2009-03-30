@@ -26,6 +26,9 @@
  * @author Ian Zepp
  * @package
  */
+
+require_once "Zend/Db/Table.php";
+
 class Appenda_Bundle_Session_Table extends Zend_Db_Table
 {
 }
