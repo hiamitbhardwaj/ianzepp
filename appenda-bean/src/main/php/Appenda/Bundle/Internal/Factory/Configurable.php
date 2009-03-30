@@ -27,11 +27,10 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Factory.php";
-require_once "Appenda/Bean/PostProcessor.php";
+require_once "Appenda/Bundle/Factory.php";
+require_once "Appenda/Bundle/PostProcessor.php";
 
-interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
-{
+interface Appenda_Bundle_Internal_Factory_Configurable extends Appenda_Bundle_Factory {
 	/**
 	 * Scope identifier for the standard prototype scope: "prototype".
 	 *
@@ -49,9 +48,9 @@ interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
 	/**
 	 * Add a new BeanPostProcessor that will get applied to beans created by this factory.
 	 *
-	 * @param Appenda_Bean_PostProcessor $beanPostProcessor
+	 * @param Appenda_Bundle_PostProcessor $beanPostProcessor
 	 */
-	public function addBeanPostProcessor (Appenda_Bean_PostProcessor $beanPostProcessor);
+	public function addBeanPostProcessor (Appenda_Bundle_PostProcessor $beanPostProcessor);
 	
 	/**
 	 * Check if this bean factory contains a singleton instance with the given name.
@@ -94,7 +93,7 @@ interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
 	 * Return a merged BeanDefinition for the given bean name, merging a child bean definition with its parent if necessary.
 	 *
 	 * @param string $beanName
-	 * @return Appenda_Bean_Definition
+	 * @return Appenda_Bundle_Definition
 	 */
 	public function getMergedBeanDefinition ($beanName);
 	
@@ -133,7 +132,7 @@ interface Appenda_Bean_Factory_Configurable extends Appenda_Bean_Factory
 	/**
 	 * Set the parent of this bean factory.
 	 *
-	 * @param Appenda_Bean_Factory $parentBeanFactory
+	 * @param Appenda_Bundle_Factory $parentBeanFactory
 	 */
-	public function setParentBeanFactory (Appenda_Bean_Factory $parentBeanFactory);
+	public function setParentBeanFactory (Appenda_Bundle_Factory $parentBeanFactory);
 }

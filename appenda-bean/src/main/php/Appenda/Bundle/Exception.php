@@ -27,30 +27,5 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Registry.php";
+class Appenda_Bundle_Exception extends Exception {}
 
-abstract class Appenda_Bean_Definition_Reader_Abstract
-{
-	private $beanRegistry;
-	
-	public function __construct (Appenda_Bean_Registry $beanRegistry)
-	{
-		$this->beanRegistry = $beanRegistry;
-	}
-	
-	/**
-	 * @return Appenda_Bean_Registry
-	 */
-	public function getBeanRegistry ()
-	{
-		return $this->beanRegistry;
-	}
-	
-	/**
-	 * Load bean definitions from the specified resource location.
-	 *
-	 * @param string $location
-	 * @return integer The number of bean definitions found 
-	 */
-	public abstract function loadBeanDefinitions ($location);
-}

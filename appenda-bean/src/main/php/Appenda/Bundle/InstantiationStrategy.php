@@ -27,43 +27,9 @@
  * @package 
  */
 
-interface Appenda_Bean_Registry_Singleton
-{
-	/**
-	 * Check if this registry contains a singleton instance with the given name.
-	 *
-	 * @param string $beanName
-	 * @return boolean
-	 */
-	public function containsSingleton ($beanName);
-	
-	/**
-	 * Return the (raw) singleton object registered under the given name.
-	 *
-	 * @param string $beanName
-	 * @return object|null
-	 */
-	public function getSingleton ($beanName);
-	
-	/**
-	 * Return the number of singleton beans registered in this registry.
-	 *
-	 * @return integer
-	 */
-	public function getSingletonCount ();
-	
-	/**
-	 * Return the names of singleton beans registered in this registry.
-	 *
-	 * @return array(string)
-	 */
-	public function getSingletonNames ();
-	
-	/**
-	 * Register the given existing object as singleton in the bean registry, under the given bean name.
-	 *
-	 * @param string $beanName
-	 * @param object $singletonObject
-	 */
-	public function registerSingleton ($beanName, $singletonObject);
+require_once "Appenda/Bundle/Definition/Root.php";
+require_once "Appenda/Bundle/Factory.php";
+
+interface Appenda_Bundle_InstantiationStrategy {
+	public function instantiate (Appenda_Bundle_Definition_Root $beanDefinition, $beanName, Appenda_Bundle_Factory $owner);
 }

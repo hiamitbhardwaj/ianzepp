@@ -27,8 +27,42 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Definition/Abstract.php";
-
-class Appenda_Bean_Definition_Root extends Appenda_Bean_Definition_Abstract
-{
+interface Appenda_Bundle_Internal_Registry_Singleton {
+	/**
+	 * Check if this registry contains a singleton instance with the given name.
+	 *
+	 * @param string $beanName
+	 * @return boolean
+	 */
+	public function containsSingleton ($beanName);
+	
+	/**
+	 * Return the (raw) singleton object registered under the given name.
+	 *
+	 * @param string $beanName
+	 * @return object|null
+	 */
+	public function getSingleton ($beanName);
+	
+	/**
+	 * Return the number of singleton beans registered in this registry.
+	 *
+	 * @return integer
+	 */
+	public function getSingletonCount ();
+	
+	/**
+	 * Return the names of singleton beans registered in this registry.
+	 *
+	 * @return array(string)
+	 */
+	public function getSingletonNames ();
+	
+	/**
+	 * Register the given existing object as singleton in the bean registry, under the given bean name.
+	 *
+	 * @param string $beanName
+	 * @param object $singletonObject
+	 */
+	public function registerSingleton ($beanName, $singletonObject);
 }

@@ -27,26 +27,6 @@
  * @package 
  */
 
-interface Appenda_Bean_PostProcessor
-{
-	/**
-	 * Apply this BeanPostProcessor to the given new bean instance after any bean initialization callbacks
-	 * (like InitializingBean's afterPropertiesSet or a custom init-method).
-	 *
-	 * @param object $bean
-	 * @param string $beanName
-	 * @return object
-	 */
-	public function postProcessAfterInitialization ($bean, $beanName);
-	
-	/**
-	 * Apply this BeanPostProcessor to the given new bean instance before any bean initialization callbacks
-	 * (like InitializingBean's afterPropertiesSet or a custom init-method).
-	 *
-	 * @param object $bean
-	 * @param string $beanName
-	 * @return object
-	 */
-	public function postProcessBeforeInitialization ($bean, $beanName);
-}
+require_once "Appenda/Bundle/Internal/Definition/Abstract.php";
 
+class Appenda_Bundle_Internal_Definition_Root extends Appenda_Bundle_Internal_Definition_Abstract {}

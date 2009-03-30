@@ -27,10 +27,10 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Definition.php";
-require_once "Appenda/Bean/Property.php";
+require_once "Appenda/Bundle/Definition.php";
+require_once "Appenda/Bundle/Property.php";
 
-abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definition {
+abstract class Appenda_Bundle_Internal_Definition_Abstract implements Appenda_Bundle_Definition {
 	/**
 	 * Constant that indicates no dependency check at all.
 	 *
@@ -76,7 +76,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	private $synthetic = false;
 	
 	/**
-	 * @see Appenda_Bean_Definition::getBeanClassName()
+	 * @see Appenda_Bundle_Definition::getBeanClassName()
 	 *
 	 * @return string
 	 */
@@ -85,9 +85,9 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getConstructorArgumentValues()
+	 * @see Appenda_Bundle_Definition::getConstructorArgumentValues()
 	 *
-	 * @return array(Appenda_Bean_Property_Constructor)
+	 * @return array(Appenda_Bundle_Property)
 	 */
 	public function getConstructorArgumentValues () {
 		return $this->constructorArgumentValues;
@@ -112,7 +112,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getDescription()
+	 * @see Appenda_Bundle_Definition::getDescription()
 	 *
 	 * @return string
 	 */
@@ -121,7 +121,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getFactoryBeanMethod()
+	 * @see Appenda_Bundle_Definition::getFactoryBeanMethod()
 	 *
 	 * @return string
 	 */
@@ -130,7 +130,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getFactoryBeanName()
+	 * @see Appenda_Bundle_Definition::getFactoryBeanName()
 	 *
 	 * @return string
 	 */
@@ -139,7 +139,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getParentName()
+	 * @see Appenda_Bundle_Definition::getParentName()
 	 *
 	 * @return string
 	 */
@@ -148,16 +148,16 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getPropertyValues()
+	 * @see Appenda_Bundle_Definition::getPropertyValues()
 	 *
-	 * @return array(Appenda_Bean_Property_Mutable)
+	 * @return array(Appenda_Bundle_Property_Mutable)
 	 */
 	public function getPropertyValues () {
 		return $this->propertyValues;
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getResourceDescription()
+	 * @see Appenda_Bundle_Definition::getResourceDescription()
 	 *
 	 * @return string
 	 */
@@ -166,7 +166,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getRole()
+	 * @see Appenda_Bundle_Definition::getRole()
 	 *
 	 * @return integer
 	 */
@@ -175,7 +175,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::getScope()
+	 * @see Appenda_Bundle_Definition::getScope()
 	 *
 	 * @return string
 	 */
@@ -202,7 +202,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::isAbstract()
+	 * @see Appenda_Bundle_Definition::isAbstract()
 	 *
 	 * @return boolean
 	 */
@@ -211,7 +211,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::isLazyInit()
+	 * @see Appenda_Bundle_Definition::isLazyInit()
 	 *
 	 * @return boolean
 	 */
@@ -220,7 +220,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::isSingleton()
+	 * @see Appenda_Bundle_Definition::isSingleton()
 	 *
 	 * @return boolean
 	 */
@@ -257,7 +257,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::setBeanClassName()
+	 * @see Appenda_Bundle_Definition::setBeanClassName()
 	 *
 	 * @param string $beanClassName
 	 */
@@ -268,11 +268,11 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	/**
 	 *  Specify constructor argument values for this bean.
 	 *
-	 * @param array(Appenda_Bean_Property_Constructor) $constructorArgumentValues
+	 * @param array(Appenda_Bundle_Property_Constructor) $constructorArgumentValues
 	 */
 	public function setConstructorArgumentValues (array $constructorArgumentValues) {
 		foreach ($constructorArgumentValues as $constructorArgument) {
-			assert ($constructorArgument instanceof Appenda_Bean_Property);
+			assert ($constructorArgument instanceof Appenda_Bundle_Property);
 		}
 		
 		$this->constructorArgumentValues = $constructorArgumentValues;
@@ -334,11 +334,11 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	/**
 	 * Specify property values for this bean, if any.
 	 *
-	 * @param array(Appenda_Bean_Property_Mutable) $propertyValues
+	 * @param array(Appenda_Bundle_Property_Mutable) $propertyValues
 	 */
 	public function setPropertyValues (array $propertyValues) {
 		foreach ($propertyValues as $propertyValue) {
-			assert ($propertyValue instanceof Appenda_Bean_Property);
+			assert ($propertyValue instanceof Appenda_Bundle_Property);
 		}
 		
 		$this->propertyValues = $propertyValues;
@@ -366,7 +366,7 @@ abstract class Appenda_Bean_Definition_Abstract implements Appenda_Bean_Definiti
 	}
 	
 	/**
-	 * @see Appenda_Bean_Definition::setScope()
+	 * @see Appenda_Bundle_Definition::setScope()
 	 *
 	 * @param string $scope
 	 */

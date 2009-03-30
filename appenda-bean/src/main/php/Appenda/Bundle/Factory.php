@@ -27,8 +27,7 @@
  * @package 
  */
 
-interface Appenda_Bean_Factory
-{
+interface Appenda_Bundle_Factory {
 	/**
 	 * Does this bean factory contain a bean with the given name?
 	 *

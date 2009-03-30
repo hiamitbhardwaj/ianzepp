@@ -27,7 +27,7 @@
  * @package 
  */
 
-interface Appenda_Bean_Definition {
+interface Appenda_Bundle_Definition {
 	/**
 	 * Role hint indicating that a Bean Definition is a major part of the application.
 	 *
@@ -75,7 +75,7 @@ interface Appenda_Bean_Definition {
 	/**
 	 *  Return the constructor argument values for this bean.
 	 *
-	 * @return array(Appenda_Bean_Property_Constructor)
+	 * @return array(Appenda_Bundle_Property_Constructor)
 	 */
 	public function getConstructorArgumentValues ();
 	
@@ -110,7 +110,7 @@ interface Appenda_Bean_Definition {
 	/**
 	 * Return the property values to be applied to a new instance of the bean.
 	 *
-	 * @return array(Appenda_Bean_Property_Mutable)
+	 * @return array(Appenda_Bundle_Property_Mutable)
 	 */
 	public function getPropertyValues ();
 	
@@ -180,7 +180,7 @@ interface Appenda_Bean_Definition {
 	/**
 	 *  Return the constructor argument values for this bean.
 	 *
-	 * @return array(Appenda_Bean_Property_Constructor)
+	 * @return array(Appenda_Bundle_Property_Constructor)
 	 */
 	public function setConstructorArgumentValues (array $constructorArgs);
 	

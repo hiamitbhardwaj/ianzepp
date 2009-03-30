@@ -27,7 +27,7 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Exception.php";
+require_once "Appenda/Bundle/Exception.php";
 require_once "Appenda/Property/Set.php";
 
 /**
@@ -45,7 +45,7 @@ require_once "Appenda/Property/Set.php";
  * @method void setValue() setValue(string $value)
  * 
  */
-class Appenda_Bean_Property extends Appenda_Property_Set {
+class Appenda_Bundle_Property extends Appenda_Property_Set {
 	/**
 	 * Enter description here...
 	 *
@@ -63,7 +63,7 @@ class Appenda_Bean_Property extends Appenda_Property_Set {
 	/**
 	 * Enter description here...
 	 *
-	 * @param Appenda_Bean_Property|string $arg0
+	 * @param Appenda_Bundle_Property|string $arg0
 	 * @param mixed $arg1
 	 */
 	public function __construct ($arg0, $arg1 = null) {
@@ -87,7 +87,7 @@ class Appenda_Bean_Property extends Appenda_Property_Set {
 			return $this->__constructCopyNew ($arg0, $arg1);
 		}
 		
-		throw new Appenda_Bean_Exception ("Invalid constructor arguments");
+		throw new Appenda_Bundle_Exception ("Invalid constructor arguments");
 	}
 	
 	/**
@@ -104,9 +104,9 @@ class Appenda_Bean_Property extends Appenda_Property_Set {
 	/**
 	 * Enter description here...
 	 *
-	 * @param Appenda_Bean_Property $copy
+	 * @param Appenda_Bundle_Property $copy
 	 */
-	private function __constructCopy (Appenda_Bean_Property $copy) {
+	private function __constructCopy (Appenda_Bundle_Property $copy) {
 		$this->setConvertedValue ($copy->getConvertedValue ());
 		$this->setName ($copy->getName ());
 		$this->setSource ($copy->getSource ());
@@ -116,10 +116,10 @@ class Appenda_Bean_Property extends Appenda_Property_Set {
 	/**
 	 * Enter description here...
 	 *
-	 * @param Appenda_Bean_Property $copy
+	 * @param Appenda_Bundle_Property $copy
 	 * @param mixed $convertedValue
 	 */
-	private function __constructCopyNew (Appenda_Bean_Property $copy, $convertedValue) {
+	private function __constructCopyNew (Appenda_Bundle_Property $copy, $convertedValue) {
 		$this->setConvertedValue ($convertedValue);
 		$this->setName ($copy->getName ());
 		$this->setSource ($copy->getSource ());

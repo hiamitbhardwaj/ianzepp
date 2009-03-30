@@ -27,11 +27,25 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Definition/Root.php";
-require_once "Appenda/Bean/Factory.php";
-
-
-interface Appenda_Bean_InstantiationStrategy
-{
-	public function instantiate (Appenda_Bean_Definition_Root $beanDefinition, $beanName, Appenda_Bean_Factory $owner);
+interface Appenda_Bundle_PostProcessor {
+	/**
+	 * Apply this BeanPostProcessor to the given new bean instance after any bean initialization callbacks
+	 * (like InitializingBean's afterPropertiesSet or a custom init-method).
+	 *
+	 * @param object $bean
+	 * @param string $beanName
+	 * @return object
+	 */
+	public function postProcessAfterInitialization ($bean, $beanName);
+	
+	/**
+	 * Apply this BeanPostProcessor to the given new bean instance before any bean initialization callbacks
+	 * (like InitializingBean's afterPropertiesSet or a custom init-method).
+	 *
+	 * @param object $bean
+	 * @param string $beanName
+	 * @return object
+	 */
+	public function postProcessBeforeInitialization ($bean, $beanName);
 }
+
