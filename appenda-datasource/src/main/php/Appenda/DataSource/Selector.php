@@ -26,40 +26,7 @@
  * @author Ian Zepp
  * @package
  */
-interface Appenda_DataSource_Adapter
+interface Appenda_DataSource_Selector
 {
-	/**
-	 * Enter description here...
-	 *
-	 * @return bool
-	 */
-	public function getConnected ();
 	
-	/**
-	 * Enter description here...
-	 *
-	 * @param bool $connected
-	 */
-	public function setConnected ($connected);
-	
-	/**
-	 * Enter description here...
-	 *
-	 * @return Appenda_Uri
-	 */
-	public function getUri ();
-	
-	/**
-	 * Enter description here...
-	 *
-	 * @param Appenda_Uri|string $uri
-	 */
-	public function setUri ($uri);
-	
-	/**
-	 * Enter description here...
-	 *
-	 * @return Appenda_DataSource_Selector
-	 */
-	public function getSelector ();
 }
