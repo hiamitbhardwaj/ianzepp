@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Define the endpoint mapping -->
+
+	<bean id="MessageMapper" class="Appenda_Endpoint_Filtering">
+		<property name="delegates">
+			<props>
+				<prop key="{http://www.ianzepp.com/appenda/bundle/session}FindByExpiration">FindByExpirationEndpoint</prop>
+				<prop key="{http://www.ianzepp.com/appenda/bundle/session}FindByName">FindByNameEndpoint</prop>
+				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Insert">InsertEndpoint</prop>
+				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Remove">RemoveEndpoint</prop>
+				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Update">UpdateEndpoint</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Endpoint definitions -->
+	
+	<bean id="Endpoint" abstract="true">
+		<property name="sessionTable" ref="SessionTable" />
+	</bean>
+
+	<bean id="FindByExpirationEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_FindByExpiration" />
+
+	<bean id="FindByNameEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_FindByName" />
+
+	<bean id="InsertEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_Insert" />
+
+	<bean id="RemoveEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_Remove" />
+
+	<bean id="UpdateEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_Update" />
+
+	<!-- Database configuration -->
+	
+	<bean id="Adapter" class="Zend_Db_Adapter_Pdo_Mysql">
+		<constructor-arg>
+			<props>
+				<prop key="hostname">localhost</prop>
+				<prop key="username">root</prop>
+				<prop key="password">root</prop>
+				<prop key="dbname">sessions</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+	<bean id="SessionTable" class="Appenda_Bundle_Session_Table">
+		<constructor-arg index="0">
+			<props>
+				<prop key="name">sessions</prop>
+				<prop key="schema">sessions</prop>
+				<prop key="primaryKey">id</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+
+		<property name="rowsetClass" value="Appenda_Bundle_Session_RowSet" />
+
+		<property name="rowClass" value="Appenda_Bundle_Session_Row" />
+	</bean>
+</beans>
