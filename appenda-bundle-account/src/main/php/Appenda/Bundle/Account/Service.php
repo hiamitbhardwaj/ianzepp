@@ -27,6 +27,7 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Service {
-	
+class Appenda_Bundle_Account_Service
+{
+
 }

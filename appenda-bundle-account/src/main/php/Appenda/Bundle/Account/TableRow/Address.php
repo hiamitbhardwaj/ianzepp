@@ -27,13 +27,27 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_UnsetAccountAddress extends Appenda_Bundle_Account_Endpoint {
+class Appenda_Bundle_Account_TableRow_Phone extends Appenda_Bundle_Account_TableRow
+{
 	/**
 	 * Enter description here...
 	 *
-	 * @param SimpleXMLElement $xml
+	 * @param SimpleXMLElement $rootXml
+	 * @return SimpleXMLElement
 	 */
-	public function processMessage (SimpleXMLElement $xml) {}
+	public function toXml (SimpleXMLElement $xml)
+	{
+		$xml->{"company"} = $this->{"company"};
+		$xml->{"attention"} = $this->{"attention"};
+		$xml->{"street"} = $this->{"street"};
+		$xml->{"street1"} = null;
+		$xml->{"street2"} = null;
+		$xml->{"street3"} = null;
+		$xml->{"country"} = $this->{"country"};
+		$xml->{"countryId"} = $this->{"countryId"};
+		$xml->{"province"} = $this->{"province"};
+		$xml->{"city"} = $this->{"city"};
+		$xml->{"postalCode"} = $this->{"postalCode"};
+		return $xml;
+	}
 }
-	
-	

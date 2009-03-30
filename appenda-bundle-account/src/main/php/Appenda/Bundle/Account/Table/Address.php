@@ -27,13 +27,11 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_SetAccount extends Appenda_Bundle_Account_Endpoint {
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
-	 */
-	public function processMessage (SimpleXMLElement $xml) {}
+class Appenda_Bundle_Account_Table_Address extends Appenda_Bundle_Account_Table
+{
+	protected $_name = "addresses";
+	protected $_primary = "address_id";
+	protected $_sequence = false;
+	protected $_rowClass = "Appenda_Bundle_Account_TableRow_Address";
+	protected $_dependentTables = array (self::AccountAddress, self::ContactAddress);
 }
-	
-	

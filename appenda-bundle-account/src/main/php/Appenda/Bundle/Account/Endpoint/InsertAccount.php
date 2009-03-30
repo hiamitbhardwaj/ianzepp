@@ -24,16 +24,17 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package
  */
 
-class Appenda_Bundle_Account_Endpoint_UnsetAccountContact extends Appenda_Bundle_Account_Endpoint {
+class Appenda_Bundle_Account_Endpoint_InsertAccount extends Appenda_Bundle_Account_Endpoint
+{
 	/**
-	 * Enter description here...
-	 *
 	 * @param SimpleXMLElement $xml
+	 * @return SimpleXMLElement
 	 */
-	public function processMessage (SimpleXMLElement $xml) {}
+	public function processMessage (SimpleXMLElement $xml)
+	{
+		return null;
+	}
 }
-	
-	

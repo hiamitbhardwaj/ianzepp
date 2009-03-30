@@ -27,39 +27,11 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Endpoint_SetContact extends Appenda_Bundle_Account_Endpoint {
-	/**
-	 * Enter description here...
-	 *
-	 * @param SimpleXMLElement $xml
-	 * @return SimpleXMLElement
-	 */
-	public function processMessage (SimpleXMLElement $xml) {
-		// Build the status response in advance
-		$responseXml = simplexml_load_string ("<{$xml->getName ()} />");
-		$responseXml->addAttribute ("xmlns", array_shift ($xml->getNamespaces ()));
-		$responseXml->{"model"} = "Contact";
-		$responseXml->{"modelId"} = null;
-		$responseXml->{"success"} = true;
-		
-		try {
-			// Try to add the contact
-			$row = $this->getContacts ()->createRow ();
-			$row->{"firstName"} = $xml->{"firstName"};
-			$row->{"middleName"} = $xml->{"middleName"};
-			$row->{"lastName"} = $xml->{"lastName"};
-			$row->save ();
-			
-			// If successful, add the id
-			$responseXml->{"modelId"} = $row->{"contact_id"};
-		} catch (Exception $exception) {
-			$responseXml->{"success"} = false;
-			$responseXml->{"exceptionType"} = get_class ($exception);
-			$responseXml->{"exceptionMessage"} = $exception->getMessage ();
-		}
-		
-		return $responseXml;
-	}
+class Appenda_Bundle_Account_Table_Phone extends Appenda_Bundle_Account_Table
+{
+	protected $_name = "phones";
+	protected $_primary = "phone_id";
+	protected $_sequence = false;
+	protected $_rowClass = "Appenda_Bundle_Account_TableRow_Phone";
+	protected $_dependentTables = array (self::AccountPhone, self::ContactPhone);
 }
-	
-	

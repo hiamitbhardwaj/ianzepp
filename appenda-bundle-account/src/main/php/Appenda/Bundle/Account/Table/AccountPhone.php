@@ -27,5 +27,12 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_Model extends Zend_Db_Table_Abstract implements Appenda_Bundle_Account_Naming {}
-
+class Appenda_Bundle_Account_Table_AccountsPhones extends Appenda_Bundle_Account_Model
+{
+	protected $_name = "accounts_phones";
+	protected $_primary = "account_phone_id";
+	protected $_sequence = false;
+	protected $_referenceMap = array (
+		"Account" => array ("columns" => "account_id", "refTableClass" => self::Accounts, "refColumns" => "account_id"), 
+		"Phone" => array ("columns" => "phone_id", "refTableClass" => self::Phones, "refColumns" => "phone_id"));
+}
