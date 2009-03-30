@@ -35,6 +35,8 @@ abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoi
 	private $emailTable;
 	private $phoneTable;
 	
+	private $defaultLimit = 100;
+	
 	/**
 	 * @return Appenda_Bundle_Account_Table
 	 */
@@ -114,5 +116,88 @@ abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoi
 	{
 		$this->phoneTable = $phoneTable;
 	}
-
+	
+	/**
+	 * @return integer
+	 */
+	public function getDefaultLimit ()
+	{
+		return $this->defaultLimit;
+	}
+	
+	/**
+	 * @param integer $defaultLimit
+	 */
+	public function setDefaultLimit ($defaultLimit)
+	{
+		$this->defaultLimit = $defaultLimit;
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param string $name
+	 * @param string $xmlns
+	 * @param string $text OPTIONAL
+	 * @return SimpleXMLElement
+	 */
+	protected function getResponseXml ($name, $xmlns, $text = null)
+	{
+		if (empty ($text))
+			return simplexml_load_string ("<$name xmlns='$xmlns' />");
+		else
+			return simplexml_load_string ("<$name xmlns='$xmlns'>$text</$name>");
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $xml
+	 * @param Appenda_Bundle_Account_Model_Account $model
+	 */
+	protected function insertAccount (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Account $model)
+	{
+		$xml->{"id"} = $model->{"account_id"};
+		$xml->{"name"} = $model->{"name"};
+		$xml->{"type"} = $model->{"type"};
+		
+		foreach ($model->findContacts () as $contact)
+			$rsp->addChild ("contact", $contact->{"id"});
+		
+		foreach ($model->findAddresses () as $address)
+			$this->insertAddress ($rsp->addChild ("address"), $address);
+		
+		foreach ($model->findPhones () as $phone)
+			$this->insertPhone ($rsp->addChild ("phone"), $phone);
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $xml
+	 * @param Appenda_Bundle_Account_Model_Address $model
+	 */
+	protected function insertAddress (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Address $model)
+	{
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $xml
+	 * @param Appenda_Bundle_Account_Model_Contact $model
+	 */
+	protected function insertContact (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Contact $model)
+	{
+	}
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $xml
+	 * @param Appenda_Bundle_Account_Model_Phone $model
+	 */
+	protected function insertPhone (SimpleXMLElement $xml, Appenda_Bundle_Account_Model_Phone $model)
+	{
+	}
 }

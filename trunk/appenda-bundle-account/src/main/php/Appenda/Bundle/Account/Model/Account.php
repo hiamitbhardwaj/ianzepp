@@ -70,19 +70,19 @@ class Appenda_Bundle_Account_Model_Account extends Appenda_Bundle_Account_Model
 		$xml->{"name"} = $this->{"name"};
 		$xml->{"type"} = $this->{"type"};
 		
-		foreach ($this->findContacts () as $contact )
+		foreach ($this->findContacts () as $contact)
 		{
-			$contact->toXml ($xml->{"contacts"}->addChild ("contact"));
+			$xml->addChild ("contact", $contact->{"id"});
 		}
 		
-		foreach ($this->findAddresses () as $address )
+		foreach ($this->findAddresses () as $address)
 		{
-			$address->toXml ($xml->{"addresses"}->addChild ("address"));
+			$address->toXml ($xml->addChild ("address"));
 		}
 		
-		foreach ($this->findPhones () as $phone )
+		foreach ($this->findPhones () as $phone)
 		{
-			$phone->toXml ($xml->{"phones"}->addChild ("phone"));
+			$phone->toXml ($xml->addChild ("phone"));
 		}
 		
 		return $xml;
