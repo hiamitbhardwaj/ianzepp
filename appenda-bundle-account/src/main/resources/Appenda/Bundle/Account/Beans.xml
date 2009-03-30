@@ -7,10 +7,12 @@
 		<property name="delegates">
 			<props>
 				<!-- Account mappings -->
-				<prop key="{${bundle.account.namespace}}FindAccount">FindAccountEndpoint</prop>
-				<prop key="{${bundle.account.namespace}}FindAccountListByType">FindAccountListByTypeEndpoint</prop>
-				<prop key="{${bundle.account.namespace}}InsertAccount">InsertAccountEndpoint</prop>
-				<prop key="{${bundle.account.namespace}}RemoveAccount">RemoveAccountEndpoint</prop>
+				<prop key="{${bundle.account.namespace}}FindAccount">FindAccount</prop>
+				<prop key="{${bundle.account.namespace}}FindAccountByName">FindAccountByName</prop>
+				<prop key="{${bundle.account.namespace}}FindAccountByType">FindAccountByType</prop>
+				<prop key="{${bundle.account.namespace}}InsertAccount">InsertAccount</prop>
+				<prop key="{${bundle.account.namespace}}InsertAccountContact">InsertAccountContact</prop>
+				<prop key="{${bundle.account.namespace}}RemoveAccount">RemoveAccount</prop>
 			</props>
 		</property>
 	</bean>
@@ -24,13 +26,17 @@
 		<property name="phoneTable" ref="PhoneTable" />
 	</bean>
 
-	<bean id="FindAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccount" />
+	<bean id="FindAccount" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccount" />
 
-	<bean id="FindAccountListByTypeEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountListByType" />
+	<bean id="FindAccountByType" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountByType" />
 
-	<bean id="InsertAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_InsertAccount" />
+	<bean id="FindAccountByName" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountByName" />
 
-	<bean id="RemoveAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_RemoveAccount" />
+	<bean id="InsertAccount" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_InsertAccount" />
+
+	<bean id="InsertAccountContact" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_InsertAccountContact" />
+
+	<bean id="RemoveAccount" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_RemoveAccount" />
 
 	<!-- Database configuration -->
 
@@ -50,6 +56,39 @@
 			<props>
 				<prop key="schema">${bundle.account.adapter.schema}</prop>
 				<prop key="name">accounts</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+	</bean>
+
+	<bean id="AddressTable" class="Appenda_Bundle_Account_Table_Address">
+		<constructor-arg index="0">
+			<props>
+				<prop key="schema">${bundle.account.adapter.schema}</prop>
+				<prop key="name">addresses</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+	</bean>
+
+	<bean id="ContactTable" class="Appenda_Bundle_Account_Table_Contact">
+		<constructor-arg index="0">
+			<props>
+				<prop key="schema">${bundle.account.adapter.schema}</prop>
+				<prop key="name">contacts</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+	</bean>
+
+	<bean id="PhoneTable" class="Appenda_Bundle_Account_Table_Phone">
+		<constructor-arg index="0">
+			<props>
+				<prop key="schema">${bundle.account.adapter.schema}</prop>
+				<prop key="name">phones</prop>
 			</props>
 		</constructor-arg>
 

@@ -37,7 +37,7 @@ class Appenda_Bundle_Account_Endpoint_RemoveAccount extends Appenda_Bundle_Accou
 	{
 		// Build the select object
 		$select = $this->getAccountTable ()->select ();
-		$select->where ("account_id = ?", (string) $xml);
+		$select->where ("account_id = ?", (string) $xml ["id"]);
 		
 		// Remove the account
 		$this->getAccountTable ()->delete ($select);
