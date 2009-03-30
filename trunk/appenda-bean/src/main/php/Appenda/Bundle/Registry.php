@@ -27,10 +27,9 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Definition.php";
+require_once "Appenda/Bundle/Definition.php";
 
-interface Appenda_Bean_Registry
-{
+interface Appenda_Bundle_Registry {
 	/**
 	 * Check if this registry contains a bean definition with the given name
 	 *
@@ -51,7 +50,7 @@ interface Appenda_Bean_Registry
 	 * Return the BeanDefinition for the given bean name
 	 *
 	 * @param string $beanName
-	 * @return Appenda_Bean_Definition
+	 * @return Appenda_Bundle_Definition
 	 */
 	public function getBeanDefinition ($beanName);
 	
@@ -89,9 +88,9 @@ interface Appenda_Bean_Registry
 	 * Register a new bean definition with this registry
 	 *
 	 * @param string $beanName
-	 * @param Appenda_Bean_Definition $beanDefinition
+	 * @param Appenda_Bundle_Definition $beanDefinition
 	 */
-	public function registerBeanDefinition ($beanName, Appenda_Bean_Definition $beanDefinition);
+	public function registerBeanDefinition ($beanName, Appenda_Bundle_Definition $beanDefinition);
 	
 	/**
 	 * Remove the specified alias from this registry.

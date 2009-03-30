@@ -27,10 +27,9 @@
  * @package 
  */
 
-require_once "Appenda/Bean/Definition/Abstract.php";
+require_once "Appenda/Bundle/Internal/Definition/Abstract.php";
 
-class Appenda_Bean_Definition_Child extends Appenda_Bean_Definition_Abstract
-{
+class Appenda_Bundle_Internal_Definition_Child extends Appenda_Bundle_Internal_Definition_Abstract {
 	private $parentName;
 	
 	/**
@@ -41,24 +40,22 @@ class Appenda_Bean_Definition_Child extends Appenda_Bean_Definition_Abstract
 	 *
 	 * @param string $parentName
 	 */
-	public function __construct ($parentName, $arg1 = null, $arg2 = null, $arg3 = null)
-	{
+	public function __construct ($parentName, $arg1 = null, $arg2 = null, $arg3 = null) {
 		// Parent name is always a requirement
 		$this->setParentName ($parentName);
 		
 		// What about the remaining args?
-		switch (count (func_get_args ()))
-		{
-			case 2:
+		switch (count (func_get_args ())) {
+			case 2 :
 				$this->setPropertyValues ($arg1);
 				break;
 			
-			case 3:
+			case 3 :
 				$this->setConstructorArgumentValues ($arg1);
 				$this->setPropertyValues ($arg2);
 				break;
 			
-			case 4:
+			case 4 :
 				$this->setBeanClassName ($arg1);
 				$this->setConstructorArgumentValues ($arg2);
 				$this->setPropertyValues ($arg3);
@@ -69,16 +66,14 @@ class Appenda_Bean_Definition_Child extends Appenda_Bean_Definition_Abstract
 	/**
 	 * @return string
 	 */
-	public function getParentName ()
-	{
+	public function getParentName () {
 		return $this->parentName;
 	}
 	
 	/**
 	 * @param string $parentName
 	 */
-	public function setParentName ($parentName)
-	{
+	public function setParentName ($parentName) {
 		assert (is_string ($parentName));
 		$this->parentName = $parentName;
 	}
