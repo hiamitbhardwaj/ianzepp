@@ -11,13 +11,20 @@
 	<artifactId>appenda-bundle-logging</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>php</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>com.ianzepp.appenda</groupId>
+			<artifactId>appenda-message</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
 	<properties>
-		<bundle.session.namespace>http://www.ianzepp.com/appenda/bundle/logging</bundle.session.namespace>
-		<bundle.session.adapter.class>Zend_Db_Adapter_Pdo_Mysql</bundle.session.adapter.class>
-		<bundle.session.adapter.host>localhost</bundle.session.adapter.host>
-		<bundle.session.adapter.user>root</bundle.session.adapter.user>
-		<bundle.session.adapter.password>root</bundle.session.adapter.password>
-		<bundle.session.adapter.schema>logging</bundle.session.adapter.schema>
+		<bundle.logging.namespace>http://www.ianzepp.com/appenda/bundle/logging</bundle.logging.namespace>
+		<bundle.logging.adapter.class>Zend_Db_Adapter_Pdo_Mysql</bundle.logging.adapter.class>
+		<bundle.logging.adapter.host>localhost</bundle.logging.adapter.host>
+		<bundle.logging.adapter.user>root</bundle.logging.adapter.user>
+		<bundle.logging.adapter.password>root</bundle.logging.adapter.password>
+		<bundle.logging.adapter.schema>logging</bundle.logging.adapter.schema>
 	</properties>
 </project>

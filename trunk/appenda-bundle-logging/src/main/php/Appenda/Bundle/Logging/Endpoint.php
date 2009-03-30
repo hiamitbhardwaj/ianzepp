@@ -26,6 +26,9 @@
  * @author Ian Zepp
  * @package
  */
+
+require_once 'Appenda/Message/Endpoint.php';
+
 class Appenda_Bundle_Logging_Endpoint implements Appenda_Message_Endpoint
 {
 	private $loggingTable;
