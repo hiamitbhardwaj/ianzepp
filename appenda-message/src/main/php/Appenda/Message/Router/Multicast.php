@@ -27,6 +27,9 @@
  * @package 
  */
 
+require_once "Appenda/Message/Router/Delegating.php";
+require_once "Appenda/Message/Processor.php";
+
 class Appenda_Message_Router_Multicast extends Appenda_Message_Router_Delegating
 {
 	/**

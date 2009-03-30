@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Message/Processor.php";
+
 interface Appenda_Message_Endpoint extends Appenda_Message_Processor
 {
 }

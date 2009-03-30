@@ -27,6 +27,9 @@
  * @package 
  */
 
+require_once "Appenda/Message/Router/Delegating.php";
+require_once "Appenda/Message/Processor.php";
+
 class Appenda_Message_Router_ContentBased extends Appenda_Message_Router_Delegating
 {
 	/**
@@ -51,7 +54,7 @@ class Appenda_Message_Router_ContentBased extends Appenda_Message_Router_Delegat
 		// Load the mapped bean
 		$delegate = $this->getDelegateInstance ($delegateId);
 		
-		if (!is_subclass_of ($delegate, "Appenda_Message_Processor"))
+		if ($delegate instanceof Appenda_Message_Processor === false)
 		{
 			$map ["message"] = "Invalid delegate class type found";
 			$map ["delegate"] = $delegate;

@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Message/Endpoint.php";
+
 interface Appenda_Message_Endpoint_Outbound extends Appenda_Message_Endpoint
 {
 }

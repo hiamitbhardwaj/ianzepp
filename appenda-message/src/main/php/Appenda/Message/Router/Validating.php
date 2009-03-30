@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Message/Router/PassThrough.php";
+
 class Appenda_Message_Router_Validating extends Appenda_Message_Router_PassThrough
 {
 	private $schema;

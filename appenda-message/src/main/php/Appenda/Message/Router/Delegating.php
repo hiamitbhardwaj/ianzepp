@@ -27,6 +27,9 @@
  * @package 
  */
 
+require_once "Appenda/Message/Processor.php";
+require_once "Appenda/Message/Router.php";
+
 abstract class Appenda_Message_Router_Delegating implements Appenda_Message_Router
 {
 	private $delegates;
