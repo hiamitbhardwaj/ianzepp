@@ -26,7 +26,7 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Bundle_Session_Endpoint_Insert implements Appenda_Message_Endpoint
+class Appenda_Bundle_Session_Endpoint_Insert implements Appenda_Service_Session_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml
@@ -34,6 +34,9 @@ class Appenda_Bundle_Session_Endpoint_Insert implements Appenda_Message_Endpoint
 	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
+		//$this->getSessionTable ()->insert ($xml->asXML());
+		
+		// Done.
 		return null;
 	}
 }

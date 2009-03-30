@@ -26,15 +26,37 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Message_Endpoint
+class Appenda_Bundle_Session_Endpoint_FindByName implements Appenda_Service_Session_Endpoint
 {
-	/**
-	 * @param SimpleXMLElement $xml
-	 * @return SimpleXMLElement
-	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
-		$model = new Appenda_Bundle_Session_Model_FindByName($xml);
-		return null;
+		// Build the basic result xml
+		$responseXml = simplexml_load_string ("<Session />");
+		$responseXml ["xmlns"] = array_shift ($xml->getNamespaces (false));
+		
+		// Fetch first match
+		$select = $this->getSessionTable ()->select ();
+		$select->where ("name = ?", (string) $xml);
+		$result = $this->getSessionTable ()->fetchRow ($select)->toArray ();
+		
+		// Is there a match?
+		if (empty ($result))
+		{
+			return $responseXml;
+		}
+		
+		// Is the session invalid (timed out)?
+		if (intval ((string) $result ["expires_at"]) >= time ())
+		{
+			return $responseXml;
+		}
+		
+		// Build and return the result
+		$responseXml->{"name"} = $result ["name"];
+		$responseXml->{"data"} = $result ["data"];
+		$responseXml->{"created"} = $result ["created_at"];
+		$responseXml->{"updated"} = $result ["updated_at"];
+		$responseXml->{"expires"} = $result ["expires_at"];
+		return $responseXml;
 	}
 }

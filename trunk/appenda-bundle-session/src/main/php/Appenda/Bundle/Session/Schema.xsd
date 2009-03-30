@@ -4,7 +4,7 @@
 		<sequence>
 			<element name="created" type="dateTime"></element>
 			<element name="updated" type="dateTime"></element>
-			<element name="expiration" type="dateTime"></element>
+			<element name="expires" type="dateTime"></element>
 			<element name="data" type="string"></element>
 			<element name="name" type="string"></element>
 		</sequence>
