@@ -26,18 +26,17 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_DataSource_Adapter_Mysql implements Appenda_DataSource
+interface Appenda_DataSource_Adapter
 {
-	private $factory;
+	public function getUri ();
 	
-	/**
-	 * @see Appenda_DataSource::getFactory()
-	 *
-	 * @return Appenda_DataSource_Factory
-	 */
-	public function getFactory ()
-	{
-		return $factory;
-	}
-
+	public function setUri ($uri);
+	
+	public function getConnected ();
+	
+	public function setConnected ($connected);
+	
+	public function getDefaultSchema ();
+	
+	public function setDefaultSchema ($defaultSchema);
 }
