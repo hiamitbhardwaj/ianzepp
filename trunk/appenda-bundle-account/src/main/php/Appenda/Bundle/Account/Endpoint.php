@@ -24,26 +24,95 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package Appenda.Bundle.Account
+ * @package Appenda_Bundle_Account
  */
 
 abstract class Appenda_Bundle_Account_Endpoint implements Appenda_Message_Endpoint
 {
 	private $accountTable;
+	private $addressTable;
+	private $contactTable;
+	private $emailTable;
+	private $phoneTable;
 	
 	/**
 	 * @return Appenda_Bundle_Account_Table
 	 */
 	public function getAccountTable ()
 	{
-		return $this->accounts;
+		return $this->accountTable;
 	}
 	
 	/**
-	 * @param Appenda_Bundle_Account_Model $accounts
+	 * @param Appenda_Bundle_Account_Table $accountTable
 	 */
-	public function setAccountTable (Appenda_Bundle_Account_Model $accounts)
+	public function setAccountTable ($accountTable)
 	{
-		$this->accounts = $accounts;
+		$this->accountTable = $accountTable;
 	}
+	
+	/**
+	 * @return Appenda_Bundle_Account_Table
+	 */
+	public function getAddressTable ()
+	{
+		return $this->addressTable;
+	}
+	
+	/**
+	 * @param Appenda_Bundle_Account_Table $addressTable
+	 */
+	public function setAddressTable ($addressTable)
+	{
+		$this->addressTable = $addressTable;
+	}
+	
+	/**
+	 * @return Appenda_Bundle_Account_Table
+	 */
+	public function getContactTable ()
+	{
+		return $this->contactTable;
+	}
+	
+	/**
+	 * @param Appenda_Bundle_Account_Table $contactTable
+	 */
+	public function setContactTable ($contactTable)
+	{
+		$this->contactTable = $contactTable;
+	}
+	
+	/**
+	 * @return Appenda_Bundle_Account_Table
+	 */
+	public function getEmailTable ()
+	{
+		return $this->emailTable;
+	}
+	
+	/**
+	 * @param Appenda_Bundle_Account_Table $emailTable
+	 */
+	public function setEmailTable ($emailTable)
+	{
+		$this->emailTable = $emailTable;
+	}
+	
+	/**
+	 * @return Appenda_Bundle_Account_Table
+	 */
+	public function getPhoneTable ()
+	{
+		return $this->phoneTable;
+	}
+	
+	/**
+	 * @param Appenda_Bundle_Account_Table $phoneTable
+	 */
+	public function setPhoneTable ($phoneTable)
+	{
+		$this->phoneTable = $phoneTable;
+	}
+
 }

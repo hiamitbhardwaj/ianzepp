@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  * 
  * @author Ian Zepp
- * @package
+ * @package Appenda_Bundle_Account
  */
 
 class Appenda_Bundle_Account_Endpoint_InsertAccount extends Appenda_Bundle_Account_Endpoint
