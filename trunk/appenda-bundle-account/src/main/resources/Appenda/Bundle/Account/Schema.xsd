@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns:tns="http://www.example.org/Schema/" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Schema/">
+<schema xmlns:tns="${bundle.account.namespace}" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="${bundle.account.namespace}">
 
 	<simpleType name="AccountId">
 		<restriction base="string"></restriction>
