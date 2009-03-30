@@ -11,6 +11,15 @@
 	<groupId>com.ianzepp.appenda</groupId>
 	<artifactId>appenda-bundle-session</artifactId>
 
+	<properties>
+		<bundle.session.namespace>http://www.ianzepp.com/appenda/bundle/session</bundle.session.namespace>
+		<bundle.session.adapter.class>Zend_Db_Adapter_Pdo_Mysql</bundle.session.adapter.class>
+		<bundle.session.adapter.host>localhost</bundle.session.adapter.host>
+		<bundle.session.adapter.user>root</bundle.session.adapter.user>
+		<bundle.session.adapter.password>root</bundle.session.adapter.password>
+		<bundle.session.adapter.schema>sessions</bundle.session.adapter.schema>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.ianzepp.appenda</groupId>
