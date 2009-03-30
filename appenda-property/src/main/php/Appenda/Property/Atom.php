@@ -76,6 +76,9 @@ abstract class Appenda_Property_Atom {
 			list ($sMethod, $sCommand, $sName) = $aMatches;
 		} elseif (preg_match ('/^(appendTo|count|prependTo)(.+)$/', $sMethod, $aMatches)) {
 			list ($sMethod, $sCommand, $sName) = $aMatches;
+		} elseif (preg_match ('/^(is)(.+?)$/', $sMethod, $aMatches)) {
+			list ($sMethod, $sCommand, $sName) = $aMatches;
+			$sComparison == 'True';
 		} else {
 			assert (false);
 			return $this->__fail ('Unknown magic method, method=' . $sMethod);
