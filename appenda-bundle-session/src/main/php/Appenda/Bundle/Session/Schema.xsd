@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.ianzepp.com/appenda/bundle/session" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ianzepp.com/appenda/bundle/session">
+	<complexType name="Session">
+		<sequence>
+			<element name="created" type="dateTime"></element>
+			<element name="updated" type="dateTime"></element>
+			<element name="expiration" type="dateTime"></element>
+			<element name="data" type="string"></element>
+			<element name="name" type="string"></element>
+		</sequence>
+		<attribute name="id" type="string"></attribute>
+	</complexType>
+
+
+	<complexType name="SessionList">
+		<sequence>
+			<element name="session" type="tns:Session"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="FindByExpiration">
+		<sequence>
+			<element name="min" type="dateTime"></element>
+			<element name="max" type="dateTime"></element>
+			<element name="limit" type="int" maxOccurs="1" minOccurs="0"></element>
+			<element name="offset" type="int" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="FindByName">
+		<restriction base="string"></restriction>
+	</simpleType>
+
+	<element name="Insert" type="tns:Session"></element>
+
+	<element name="Remove" type="tns:Session"></element>
+
+	<element name="Update" type="tns:Session"></element>
+
+	<element name="FindByExpiration" type="tns:FindByExpiration"></element>
+
+	<element name="FindByName" type="tns:FindByName"></element>
+
+</schema>
