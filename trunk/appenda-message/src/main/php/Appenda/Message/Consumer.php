@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Message/Router/Chain.php";
+
 class Appenda_Message_Consumer extends Appenda_Message_Router_Chain
 {
 	private $brokerContext;
@@ -54,7 +56,7 @@ class Appenda_Message_Consumer extends Appenda_Message_Router_Chain
 				$map ["loopStarted"] = $loopStarted;
 				$map ["loopTime"] = time () - $loopStarted;
 				$map ["this"] = $this;
-				file_put_contents ("php://stderr", new Appenda_Exception ($map));
+				file_put_contents ("php://stderr", new Exception ($map));
 				continue;
 			}
 			

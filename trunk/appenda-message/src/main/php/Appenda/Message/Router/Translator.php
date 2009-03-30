@@ -27,6 +27,8 @@
  * @package 
  */
 
+require_once "Appenda/Message/Router.php";
+
 class Appenda_Message_Router_Translator implements Appenda_Message_Router
 {
 	private $template;
