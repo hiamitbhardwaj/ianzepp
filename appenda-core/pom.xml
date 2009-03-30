@@ -7,32 +7,12 @@
 		<groupId>com.ianzepp.appenda</groupId>
 		<version>1.0</version>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ianzepp.appenda</groupId>
 	<artifactId>appenda-core</artifactId>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>bundle-project-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/php-lib.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<packaging>php</packaging>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.ianzepp.appenda</groupId>
