@@ -10,8 +10,20 @@
 		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
 		<maven-assembly-plugin.version>2.2-beta-3</maven-assembly-plugin.version>
 		<maven-assembly-plugin.type>php-lib</maven-assembly-plugin.type>
-		<phpunit.version>3.2.9-BETA-1</phpunit.version>
+
+		<php.assembly>php-lib</php.assembly>
+		<php.compile.args></php.compile.args>
+		<php.plugin.version>1.0-BETA-2</php.plugin.version>
+
+		<phpunit5.version>3.2.9-BETA-1</phpunit5.version>
+
+		<zend-framework.version>1.7.7-minimal</zend-framework.version>
 	</properties>
+
+	<organization>
+		<name>ianzepp.com</name>
+		<url>http://www.ianzepp.com/engineering</url>
+	</organization>
 
 	<developers>
 		<developer>
@@ -32,37 +44,81 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.phpunit</groupId>
+			<artifactId>phpunit5</artifactId>
+			<version>${phpunit5.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.zend</groupId>
 			<artifactId>zend-framework</artifactId>
-			<version>1.7.7-minimal</version>
+			<version>${zend-framework.version}</version>
 			<classifier>php-lib</classifier>
 		</dependency>
 	</dependencies>
-	<organization>
-		<name>ianzepp.com</name>
-		<url>http://www.ianzepp.com/engineering</url>
-	</organization>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.phpmaven</groupId>
 				<artifactId>maven-php-plugin</artifactId>
-				<version>${maven-php-plugin.version}</version>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven-assembly-plugin.version}</version>
+				<version>${php.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<compileArgs>${php.compile.args}</compileArgs>
+				</configuration>
 			</plugin>
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven-assembly-plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.phpmaven</groupId>
+							<artifactId>maven-php-plugin</artifactId>
+							<version>${php.plugin.version}</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<id>bundle-project-sources</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<descriptorRefs>
+									<descriptorRef>${php.assembly}</descriptorRef>
+								</descriptorRefs>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
-	<!-- To use the report goals in your POM or parent POM -->
 	<reporting>
 		<plugins>
 			<plugin>
 				<groupId>org.phpmaven</groupId>
 				<artifactId>maven-php-plugin</artifactId>
+				<version>${php.plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report-only</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
