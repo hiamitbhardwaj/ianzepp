@@ -1,10 +1,5 @@
 <?php
 
-/**
- *
- * @author Ian Zepp
- *
- */
 abstract class Appenda_Service_Session_Endpoint implements Appenda_Endpoint {
 	private $sessionTable;
 	private $expirationTime;
