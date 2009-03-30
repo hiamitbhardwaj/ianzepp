@@ -35,19 +35,20 @@ class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Acc
 	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
-		// Run the search
+		// Build the basic response
+		$response = $this->getResponseXml ("Account", $xml ["xmlns"]);
+		
+		// Build the search
 		$select = $this->getAccountTable ()->select ();
 		$select->where ("account_id = ?", (string) $xml);
-		$result = $this->getAccountTable ()->fetchRow ($select)->asArray ();
 		
-		// Build the basic response
-		$rsp = simplexml_load_string ("<Account />");
-		$rsp ["xmlns"] = array_shift ($xml->getNamespaces (false));
+		// Results found?
+		if (($model = $this->getAccountTable ()->fetchRow ($select)))
+		{
+			$this->insertAccount ($response, $model);
+		}
 		
-		// TODO fill in the data
-		
-
 		// Done.
-		return $rsp;
+		return $response;
 	}
 }

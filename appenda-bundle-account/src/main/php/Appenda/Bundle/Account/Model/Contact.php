@@ -74,12 +74,12 @@ class Appenda_Bundle_Account_Model_Contact extends Appenda_Bundle_Account_Model
 		$xml->{"salutation"} = $this->{"salutation"};
 		$xml->{"suffix"} = $this->{"suffix"};
 		
-		foreach ($this->findAddresses () as $address )
+		foreach ($this->findAddresses () as $address)
 		{
 			$address->toXml ($xml->{"addresses"}->addChild ("address"));
 		}
 		
-		foreach ($this->findPhones () as $phone )
+		foreach ($this->findPhones () as $phone)
 		{
 			$phone->toXml ($xml->{"phones"}->addChild ("phone"));
 		}
@@ -90,7 +90,7 @@ class Appenda_Bundle_Account_Model_Contact extends Appenda_Bundle_Account_Model
 			return $xml;
 		}
 		
-		foreach ($this->findAccounts () as $account )
+		foreach ($this->findAccounts () as $account)
 		{
 			$account->toXml ($xml->{"accounts"}->addChild ("account"));
 		}

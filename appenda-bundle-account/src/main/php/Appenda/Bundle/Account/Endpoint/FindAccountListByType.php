@@ -27,7 +27,7 @@
  * @package Appenda_Bundle_Account
  */
 
-class Appenda_Bundle_Account_Endpoint_InsertAccount extends Appenda_Bundle_Account_Endpoint
+class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Account_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml
@@ -35,13 +35,34 @@ class Appenda_Bundle_Account_Endpoint_InsertAccount extends Appenda_Bundle_Accou
 	 */
 	public function processMessage (SimpleXMLElement $xml)
 	{
-		$insert ["name"] = (string) $xml->{"name"};
-		$insert ["type"] = (string) $xml->{"type"};
+		// Build the basic response
+		$response = $this->getResponseXml ("AccountList", $xml ["xmlns"]);
 		
-		// Insert the account
-		$accountId = $this->getAccountTable ()->insert ($insert);
+		// Build the search
+		$offset = (int) $xml->{"offset"};
+		$limit = (int) $xml->{"limit"};
 		
-		// Return the id
-		return $this->getResponseXml ("AccountId", $xml ["xmlns"], $accountId);
+		if ($limit == 0)
+			$limit = $this->getDefaultLimit ();
+		
+		$select = $this->getAccountTable ()->select ();
+		$select->where ("type = ?", (string) $xml);
+		$select->limit ($limit, $offset);
+		
+		// Results found?
+		$modelList = $this->getAccountTable ()->fetch ($select);
+		
+		foreach ($modelList as $model)
+		{
+			$this->insertAccount ($response->addChild ("account"), $model);
+		}
+		
+		// Add metadata
+		$response ["count"] = count ($modelList);
+		$response ["limit"] = $limit;
+		$response ["offset"] = $offset;
+		
+		// Done.
+		return $response;
 	}
 }
