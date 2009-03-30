@@ -239,14 +239,18 @@
  * </code>
  *
  */
-final class Appenda_Property_Set extends Appenda_Property_Atom
-{
+
+require_once "Appenda/Property.php";
+require_once "Appenda/Property/Atom.php";
+require_once "Appenda/Property/Exception.php";
+require_once "Appenda/Property/Filter.php";
+
+final class Appenda_Property_Set extends Appenda_Property_Atom {
 	/**
 	 * @param string $sClassName
 	 * @return Appenda_Property_Set
 	 */
-	static public function newInstance ($sClassName = null)
-	{
+	static public function newInstance ($sClassName = null) {
 		return parent::newInstance (empty ($sClassName) ? __CLASS__ : $sClassName);
 	}
 	
@@ -258,8 +262,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param mixed $mDefaultValue
 	 * @return Appenda_Property
 	 */
-	public function register ($sName, $sType, $mDefaultValue = null)
-	{
+	public function register ($sName, $sType, $mDefaultValue = null) {
 		assert (is_string ($sName));
 		assert (is_string ($sType));
 		
@@ -278,8 +281,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param string $sName
 	 * @return boolean
 	 */
-	public function registerAlias ($sAliasedName, $sName)
-	{
+	public function registerAlias ($sAliasedName, $sName) {
 		assert (is_string ($sAliasedName));
 		assert (is_string ($sName));
 		
@@ -299,8 +301,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param boolean $bCached
 	 * @return Appenda_Property
 	 */
-	public function registerCallback ($sName, $sType, array $aCallback, $bCached = false)
-	{
+	public function registerCallback ($sName, $sType, array $aCallback, $bCached = false) {
 		assert (is_string ($sName));
 		assert (is_string ($sType));
 		assert (is_boolean ($bCached));
@@ -318,8 +319,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param string $sFilterType
 	 * @param mixed $mFilterData
 	 */
-	public function registerFilter ($sName, $sFilterType, $mFilterData)
-	{
+	public function registerFilter ($sName, $sFilterType, $mFilterData) {
 		assert (is_string ($sName));
 		assert (is_string ($sFilterType));
 		
@@ -338,8 +338,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param integer $mMinimum
 	 * @param integer $mMaximum
 	 */
-	public function registerRangeFilter ($sName, $iMinimum = PHP_INT_MIN, $iMaximum = PHP_INT_MAX)
-	{
+	public function registerRangeFilter ($sName, $iMinimum = PHP_INT_MIN, $iMaximum = PHP_INT_MAX) {
 		$this->registerFilter ($sName, Appenda_Property_Filter::MINIMUM, $iMinimum);
 		$this->registerFilter ($sName, Appenda_Property_Filter::MAXIMUM, $iMaximum);
 	}
@@ -350,8 +349,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param string $sName
 	 * @param array $aCallback
 	 */
-	public function registerTrigger ($sName, array $aCallback)
-	{
+	public function registerTrigger ($sName, array $aCallback) {
 		assert (is_string ($sName));
 		
 		$sInstanceMethod = 'inspect' . $sName;
@@ -366,20 +364,16 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @param array $aArguments
 	 * @return mixed
 	 */
-	public function __call ($sMethod, array $aArguments)
-	{
+	public function __call ($sMethod, array $aArguments) {
 		assert (is_string ($sMethod));
 		
 		$aMatches = array ();
 		$aPropertyAliases = array ();
 		
 		// Overriden magic methods at this class level
-		if (preg_match ('/^(get|inspect|set)(.+)$/', $sMethod, $aMatches))
-		{
+		if (preg_match ('/^(get|inspect|set)(.+)$/', $sMethod, $aMatches)) {
 			list ($sMethod, $sCommand, $sProperty) = $aMatches;
-		}
-		else
-		{
+		} else {
 			return parent::__call ($sMethod, $aArguments);
 		}
 		
@@ -387,34 +381,27 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 		$oProperty = $this->__callget ($sProperty);
 		
 		// Loop through the aliases
-		while ($oProperty->isAliasedTrue ())
-		{
+		while ($oProperty->isAliasedTrue ()) {
 			// Loop detection
-			if (count ($aPropertyAliases) > 1000)
-			{
+			if (count ($aPropertyAliases) > 1000) {
 				throw new Appenda_Property_Exception ('Exceeded maximum allowed alias depth of 1000 objects.');
-			}
-			elseif (in_array ($oProperty, $aPropertyAliases, true))
-			{
+			} elseif (in_array ($oProperty, $aPropertyAliases, true)) {
 				throw new Appenda_Property_Exception ('Alias loop detected!');
-			}
-			else
-			{
+			} else {
 				$aPropertyAliases [] = $oProperty;
 				$oProperty = $this->__callget ($oProperty->getAlias ());
 			}
 		}
 		
 		// Switch to the proper magic command
-		switch ($sCommand)
-		{
-			case 'get':
+		switch ($sCommand) {
+			case 'get' :
 				return $oProperty->getValue (array_shift ($aArguments));
 			
-			case 'set':
+			case 'set' :
 				return $oProperty->setValue (array_shift ($aArguments), array_shift ($aArguments));
 			
-			case 'inspect':
+			case 'inspect' :
 				return $oProperty;
 		
 		}
@@ -430,8 +417,7 @@ final class Appenda_Property_Set extends Appenda_Property_Atom
 	 * @return boolean
 	 * @see Appenda_Property_Atom::__is()
 	 */
-	protected function __is ($sName, $sComparison)
-	{
+	protected function __is ($sName, $sComparison) {
 		assert (is_string ($sName));
 		assert (is_string ($sComparison));
 		
