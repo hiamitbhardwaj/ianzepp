@@ -76,22 +76,23 @@
 		<attribute name="id" type="string"></attribute>
 	</complexType>
 
-	<element name="Account" type="tns:Account"></element>
 
 	<element name="AccountList" type="tns:AccountList"></element>
 
 	<element name="FindAccount" type="tns:AccountId"></element>
 
-	<element name="FindAccountListByType" type="tns:FindAccountListByType"></element>
+	<element name="FindAccountByType" type="tns:FindAccountByType"></element>
 
 	<element name="InsertAccount" type="tns:Account"></element>
 
-	<complexType name="FindAccountListByType">
-		<attribute name="limit" type="int"></attribute>
-		<attribute name="offset" type="int"></attribute>
+	<complexType name="FindAccountByType">
+		<complexContent>
+			<extension base="tns:FindList">
+
+			</extension>
+		</complexContent>
 	</complexType>
 
-	<element name="AccountId" type="tns:AccountId"></element>
 
 	<complexType name="AccountContact">
 		<sequence>
@@ -109,4 +110,19 @@
 	<complexType name="ContactId">
 		<attribute name="id" type="string"></attribute>
 	</complexType>
+
+	<complexType name="FindList">
+		<attribute name="limit" type="int"></attribute>
+		<attribute name="offset" type="int"></attribute>
+	</complexType>
+
+	<complexType name="FindAccountByName">
+		<complexContent>
+			<extension base="tns:FindList">
+				<attribute name="exact" type="boolean"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<element name="FindAccountByName" type="tns:FindAccountByName"></element>
 </schema>

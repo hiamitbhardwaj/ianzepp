@@ -36,7 +36,7 @@ class Appenda_Bundle_Account_Endpoint_FindAccount extends Appenda_Bundle_Account
 	public function processMessage (SimpleXMLElement $xml)
 	{
 		// Build the basic response
-		$response = $this->getResponseXml ("Account", $xml ["xmlns"]);
+		$response = $this->getResponseXml ("AccountList", $xml ["xmlns"]);
 		
 		// Build the select object
 		$select = $this->getAccountTable ()->select ();
@@ -45,7 +45,7 @@ class Appenda_Bundle_Account_Endpoint_FindAccount extends Appenda_Bundle_Account
 		// Results found?
 		if (($model = $this->getAccountTable ()->fetchRow ($select)))
 		{
-			$this->insertAccount ($response, $model);
+			$this->insertAccount ($response->addChild ("account"), $model);
 		}
 		
 		// Done.

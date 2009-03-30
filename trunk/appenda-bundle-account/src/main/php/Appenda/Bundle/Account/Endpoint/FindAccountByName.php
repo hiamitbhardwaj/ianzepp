@@ -27,7 +27,7 @@
  * @package Appenda_Bundle_Account
  */
 
-class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Account_Endpoint
+class Appenda_Bundle_Account_Endpoint_FindAccountByName extends Appenda_Bundle_Account_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml
@@ -46,9 +46,14 @@ class Appenda_Bundle_Account_Endpoint_FindAccountById extends Appenda_Bundle_Acc
 			$limit = $this->getDefaultLimit ();
 		
 		$select = $this->getAccountTable ()->select ();
-		$select->where ("type = ?", (string) $xml);
 		$select->limit ($limit, $offset);
 		
+		// Exact match or like match?
+		if ((string) $xml ["exact"] == 'true')
+			$select->where ("name = ?", (string) $xml);
+		else
+			$select->where ("name LIKE ?", (string) $xml);
+			
 		// Results found?
 		$modelList = $this->getAccountTable ()->fetchAll ($select);
 		
