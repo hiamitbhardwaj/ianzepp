@@ -27,7 +27,7 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_TableRow_Phone extends Appenda_Bundle_Account_TableRow
+class Appenda_Bundle_Account_Model_Phone extends Appenda_Bundle_Account_Model
 {
 	/**
 	 * Enter description here...
@@ -37,17 +37,10 @@ class Appenda_Bundle_Account_TableRow_Phone extends Appenda_Bundle_Account_Table
 	 */
 	public function toXml (SimpleXMLElement $xml)
 	{
-		$xml->{"company"} = $this->{"company"};
-		$xml->{"attention"} = $this->{"attention"};
-		$xml->{"street"} = $this->{"street"};
-		$xml->{"street1"} = null;
-		$xml->{"street2"} = null;
-		$xml->{"street3"} = null;
-		$xml->{"country"} = $this->{"country"};
-		$xml->{"countryId"} = $this->{"countryId"};
-		$xml->{"province"} = $this->{"province"};
-		$xml->{"city"} = $this->{"city"};
-		$xml->{"postalCode"} = $this->{"postalCode"};
+		$xml->{"prefix"} = $this->{"prefix"};
+		$xml->{"areaCode"} = $this->{"areaCode"};
+		$xml->{"number"} = $this->{"number"};
+		$xml->{"extension"} = $this->{"extension"};
 		return $xml;
 	}
 }

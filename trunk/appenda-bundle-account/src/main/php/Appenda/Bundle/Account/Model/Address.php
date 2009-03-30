@@ -27,7 +27,27 @@
  * @package Appenda.Bundle.Account
  */
 
-class Appenda_Bundle_Account_TableRow extends Zend_Db_Table_Row_Abstract
+class Appenda_Bundle_Account_Model_Phone extends Appenda_Bundle_Account_Model
 {
+	/**
+	 * Enter description here...
+	 *
+	 * @param SimpleXMLElement $rootXml
+	 * @return SimpleXMLElement
+	 */
+	public function toXml (SimpleXMLElement $xml)
+	{
+		$xml->{"company"} = $this->{"company"};
+		$xml->{"attention"} = $this->{"attention"};
+		$xml->{"street"} = $this->{"street"};
+		$xml->{"street1"} = null;
+		$xml->{"street2"} = null;
+		$xml->{"street3"} = null;
+		$xml->{"country"} = $this->{"country"};
+		$xml->{"countryId"} = $this->{"countryId"};
+		$xml->{"province"} = $this->{"province"};
+		$xml->{"city"} = $this->{"city"};
+		$xml->{"postalCode"} = $this->{"postalCode"};
+		return $xml;
+	}
 }
-
