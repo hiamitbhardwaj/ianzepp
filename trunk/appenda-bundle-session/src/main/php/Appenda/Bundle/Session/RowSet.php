@@ -26,6 +26,6 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Service_Session_RowSet extends Zend_Db_Table_RowSet
+class Appenda_Bundle_Session_RowSet extends Zend_Db_Table_RowSet
 {
 }

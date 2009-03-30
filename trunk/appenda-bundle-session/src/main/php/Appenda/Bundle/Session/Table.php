@@ -26,6 +26,6 @@
  * @author Ian Zepp
  * @package
  */
-class Appenda_Service_Session_Table extends Zend_Db_Table
+class Appenda_Bundle_Session_Table extends Zend_Db_Table
 {
 }
