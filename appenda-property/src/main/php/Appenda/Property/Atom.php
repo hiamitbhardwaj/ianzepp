@@ -26,8 +26,10 @@
  * @author Ian Zepp
  * @package 
  */
-abstract class Appenda_Property_Atom
-{
+
+require_once "Appenda/Property/Exception.php";
+
+abstract class Appenda_Property_Atom {
 	/**
 	 * Add a data element to the end of an array
 	 *
@@ -35,8 +37,7 @@ abstract class Appenda_Property_Atom
 	 * @param mixed $mData
 	 * @return Appenda_Property_Atom
 	 */
-	protected function __appendTo ($sName, $mData)
-	{
+	protected function __appendTo ($sName, $mData) {
 		assert (isset ($this->__aInternals));
 		assert (isset ($this->__aInternals [$sName]));
 		assert (isset ($this->__aInternals [$sName] ['Type']));
@@ -51,10 +52,8 @@ abstract class Appenda_Property_Atom
 	 * @param string $sName
 	 * @param string $sComparison
 	 */
-	protected function __assert ($sName, $sComparison)
-	{
-		if (ASSERT_ACTIVE && $this->__is ($sName, $sComparison) === false)
-		{
+	protected function __assert ($sName, $sComparison) {
+		if (ASSERT_ACTIVE && $this->__is ($sName, $sComparison) === false) {
 			return $this->__fail ('Assertation failed');
 		}
 		return $this;
@@ -68,24 +67,16 @@ abstract class Appenda_Property_Atom
 	 * @return mixed
 	 * @throws Appenda_Property_Exception
 	 */
-	public function __call ($sMethod, array $aArguments)
-	{
+	public function __call ($sMethod, array $aArguments) {
 		$aMatches = array ();
 		
-		if (preg_match ('/^(assert|is)(.+?)(Empty|False|NotEmpty|NotNull|Null|True)$/', $sMethod, $aMatches))
-		{
+		if (preg_match ('/^(assert|is)(.+?)(Empty|False|NotEmpty|NotNull|Null|True)$/', $sMethod, $aMatches)) {
 			list ($sMethod, $sCommand, $sName, $sComparison) = $aMatches;
-		}
-		elseif (preg_match ('/^(get|has|set)(.+)$/', $sMethod, $aMatches))
-		{
+		} elseif (preg_match ('/^(get|has|set)(.+)$/', $sMethod, $aMatches)) {
 			list ($sMethod, $sCommand, $sName) = $aMatches;
-		}
-		elseif (preg_match ('/^(appendTo|count|prependTo)(.+)$/', $sMethod, $aMatches))
-		{
+		} elseif (preg_match ('/^(appendTo|count|prependTo)(.+)$/', $sMethod, $aMatches)) {
 			list ($sMethod, $sCommand, $sName) = $aMatches;
-		}
-		else
-		{
+		} else {
 			assert (false);
 			return $this->__fail ('Unknown magic method, method=' . $sMethod);
 		}
@@ -98,35 +89,34 @@ abstract class Appenda_Property_Atom
 		$sType = strtolower ($this->__aInternals [$sName] ['Type']);
 		
 		// Handle the correct command
-		switch ($sCommand)
-		{
-			case 'assert':
+		switch ($sCommand) {
+			case 'assert' :
 				return $this->__assert ($sName, $sComparison);
 			
-			case 'count':
+			case 'count' :
 				assert ($sType === 'array');
 				return count ($this->__aInternals [$sName] ['Data']);
 			
-			case 'get':
+			case 'get' :
 				return $this->__callget ($sName, array_shift ($aArguments));
 			
-			case 'has':
+			case 'has' :
 				return $this->__has ($sName);
 			
-			case 'is':
+			case 'is' :
 				return $this->__is ($sName, $sComparison);
 			
-			case 'set':
+			case 'set' :
 				return $this->__callset ($sName, array_shift ($aArguments), array_shift ($aArguments));
 			
 			// Special handling for arrays
-			case 'appendTo':
+			case 'appendTo' :
 				return $this->__appendTo ($sName, array_shift ($aArguments));
 			
-			case 'prependTo':
+			case 'prependTo' :
 				return $this->__prependTo ($sName, array_shift ($aArguments));
 			
-			default:
+			default :
 				throw new Appenda_Property_Exception ('Should NEVER ever get here!');
 		}
 	}
@@ -138,20 +128,16 @@ abstract class Appenda_Property_Atom
 	 * @param mixed|null $mData
 	 * @return mixed
 	 */
-	protected function __callget ($sName, $mData = null)
-	{
+	protected function __callget ($sName, $mData = null) {
 		assert (isset ($this->__aInternals));
 		assert (isset ($this->__aInternals [$sName]));
 		assert (isset ($this->__aInternals [$sName] ['Type']));
 		
 		$sInternalType = strtolower ($this->__aInternals [$sName] ['Type']);
 		
-		if ($sInternalType === 'array' && is_null ($mData) === false)
-		{
+		if ($sInternalType === 'array' && is_null ($mData) === false) {
 			return $this->__aInternals [$sName] ['Data'] [$mData];
-		}
-		else
-		{
+		} else {
 			return $this->__aInternals [$sName] ['Data'];
 		}
 	}
@@ -164,8 +150,7 @@ abstract class Appenda_Property_Atom
 	 * @param mixed|null $mRelatedData
 	 * @return Appenda_Property_Atom
 	 */
-	protected function __callset ($sName, $mData, $mRelatedData = null)
-	{
+	protected function __callset ($sName, $mData, $mRelatedData = null) {
 		assert (is_string ($sName));
 		assert (isset ($this->__aInternals));
 		assert (isset ($this->__aInternals [$sName]));
@@ -173,45 +158,43 @@ abstract class Appenda_Property_Atom
 		
 		$sInternalType = strtolower ($this->__aInternals [$sName] ['Type']);
 		
-		switch ($sInternalType)
-		{
-			case 'string':
+		switch ($sInternalType) {
+			case 'string' :
 				$mData = is_null ($mData) ? '' : $mData;
 				$bValidated = is_string ($mData);
 				break;
 			
-			case 'integer':
+			case 'integer' :
 				$mData = is_null ($mData) ? 0 : $mData;
 				$bValidated = is_integer ($mData);
 				break;
 			
-			case 'boolean':
+			case 'boolean' :
 				$mData = is_null ($mData) ? false : $mData;
 				$bValidated = is_bool ($mData);
 				break;
 			
-			case 'double':
+			case 'double' :
 				$mData = is_null ($mData) ? 0.0 : $mData;
 				$bValidated = is_double ($mData);
 				break;
 			
-			case 'array':
+			case 'array' :
 				$mData = is_null ($mData) ? array () : $mData;
 				$bValidated = is_null ($mRelatedData) && is_array ($mData);
 				break;
 			
-			case 'mixed':
+			case 'mixed' :
 				$bValidated = true; // no checks on mixed type
 				break;
 			
-			default:
+			default :
 				$bValidated = $mData instanceof $sInternalType;
 				$bValidated = $bValidated || is_null ($mData); // Objects allowed to be null
 				break;
 		}
 		
-		if ($bValidated === false)
-		{
+		if ($bValidated === false) {
 			$sMessage = 'Type and/or class not validated';
 			$sMessage .= ', name=' . $sName;
 			$sMessage .= ', data=' . strval ($mData);
@@ -222,12 +205,9 @@ abstract class Appenda_Property_Atom
 			throw new Appenda_Property_Exception ($sMessage);
 		}
 		
-		if ($sInternalType === 'array' && is_null ($mRelatedData) === false)
-		{
+		if ($sInternalType === 'array' && is_null ($mRelatedData) === false) {
 			$this->__aInternals [$sName] ['Data'] [$mData] = $mRelatedData;
-		}
-		else
-		{
+		} else {
 			$this->__aInternals [$sName] ['Data'] = $mData;
 		}
 		
@@ -238,8 +218,7 @@ abstract class Appenda_Property_Atom
 	 * @param string $sName
 	 * @return boolean
 	 */
-	protected function __has ($sName)
-	{
+	protected function __has ($sName) {
 		assert (is_string ($sName));
 		return isset ($this->__aInternals [$sName]);
 	}
@@ -249,36 +228,34 @@ abstract class Appenda_Property_Atom
 	 * @param string $sComparison
 	 * @return boolean
 	 */
-	protected function __is ($sName, $sComparison)
-	{
+	protected function __is ($sName, $sComparison) {
 		assert (is_string ($sName));
 		assert (is_string ($sComparison));
 		
 		$mData = $this->__callget ($sName); // throws if missing
 		
 
-		switch ($sComparison)
-		{
-			case 'Empty':
+		switch ($sComparison) {
+			case 'Empty' :
 				return empty ($mData);
 			
-			case 'NotEmpty':
+			case 'NotEmpty' :
 				return empty ($mData) === false;
 				break;
 			
-			case 'Null':
+			case 'Null' :
 				return is_null ($mData);
 			
-			case 'NotNull':
+			case 'NotNull' :
 				return is_null ($mData) === false;
 			
-			case 'True':
+			case 'True' :
 				return $mData === true;
 			
-			case 'False':
+			case 'False' :
 				return $mData === false;
 			
-			default:
+			default :
 				throw new Appenda_Property_Exception ('Unrecognized option.');
 		}
 	}
@@ -288,14 +265,10 @@ abstract class Appenda_Property_Atom
 	 * @return boolean False always, if no exception thrown
 	 * @throws Appenda_Property_Exception
 	 */
-	public function __fail ($sMessage)
-	{
-		if ($this->__bExceptionsEnabled)
-		{
+	public function __fail ($sMessage) {
+		if ($this->__bExceptionsEnabled) {
 			throw new Appenda_Property_Exception ($sMessage);
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -303,8 +276,7 @@ abstract class Appenda_Property_Atom
 	/**
 	 * @deprecated
 	 */
-	final public function __get ($sName)
-	{
+	final public function __get ($sName) {
 		return $this->__callget ($sName);
 	}
 	
@@ -315,8 +287,7 @@ abstract class Appenda_Property_Atom
 	 * @param mixed $mData
 	 * @return Appenda_Property_Atom
 	 */
-	protected function __prependTo ($sName, $mData)
-	{
+	protected function __prependTo ($sName, $mData) {
 		assert (isset ($this->__aInternals));
 		assert (isset ($this->__aInternals [$sName]));
 		assert (isset ($this->__aInternals [$sName] ['Type']));
@@ -332,80 +303,75 @@ abstract class Appenda_Property_Atom
 	 * @param string $sType
 	 * @return Appenda_Property_Atom
 	 */
-	protected function __reset ($sName, $sType)
-	{
+	protected function __reset ($sName, $sType) {
 		assert (is_string ($sName));
 		assert (is_string ($sType));
 		
-		if (isset ($this->__aInternals [$sName]) === false)
-		{
+		if (isset ($this->__aInternals [$sName]) === false) {
 			$mData = null;
-		}
-		else
-		{
+		} else {
 			assert (isset ($this->__aInternals [$sName] ['Type']));
 			
 			$sOriginalType = strtolower ($this->__aInternals [$sName] ['Type']);
 			$mOriginalData = $this->__aInternals [$sName] ['Data'];
 			$sTargetType = strtolower ($sType);
 			
-			switch (true)
-			{
+			switch (true) {
 				// Array -> String: we need to serialize it.
-				case $sTargetType === 'string' && $sOriginalType === 'array':
+				case $sTargetType === 'string' && $sOriginalType === 'array' :
 					$mData = serialize ($mOriginalData);
 					break;
 				
 				// Boolean -> String: convert to a textual representation of the boolean
-				case $sTargetType === 'string' && $sOriginalType === 'boolean':
+				case $sTargetType === 'string' && $sOriginalType === 'boolean' :
 					$mData = $mOriginalData ? 'true' : 'false';
 					break;
 				
 				// Object -> String: serialize it.
-				case $sTargetType === 'string' && $sOriginalType instanceof stdClass:
+				case $sTargetType === 'string' && $sOriginalType instanceof stdClass :
 					$mData = serialize ($mOriginalData);
 					break;
 				
 				// * -> String: use the built-in string conversion.
-				case $sTargetType === 'string':
+				case $sTargetType === 'string' :
 					$mData = strval ($mOriginalData);
 					break;
 				
-				case $sTargetType === 'array':
+				case $sTargetType === 'array' :
 					$mData = (array) $mOriginalData;
 					break;
 				
 				// String -> Boolean: convert thetext to a true/false
-				case $sTargetType === 'boolean' && $mOriginalData === 'TRUE':
-				case $sTargetType === 'boolean' && $mOriginalData === 'true':
+				case $sTargetType === 'boolean' && $mOriginalData === 'TRUE' :
+				case $sTargetType === 'boolean' && $mOriginalData === 'true' :
 					$mData = true;
 					break;
 				
 				// String -> Boolean: convert thetext to a true/false
-				case $sTargetType === 'boolean' && $mOriginalData === 'FALSE':
-				case $sTargetType === 'boolean' && $mOriginalData === 'false':
+				case $sTargetType === 'boolean' && $mOriginalData === 'FALSE' :
+				case $sTargetType === 'boolean' && $mOriginalData === 'false' :
 					$mData = false;
 					break;
 				
 				// * -> Boolean: simple existance test
-				case $sTargetType === 'boolean':
+				case $sTargetType === 'boolean' :
 					$mData = $mOriginalData ? true : false;
 					break;
 				
-				case $sTargetType === 'integer':
+				case $sTargetType === 'integer' :
 					$mData = intval ($mOriginalData);
 					break;
 				
-				case $sTargetType === 'double':
+				case $sTargetType === 'double' :
 					$mData = doubleval ($mOriginalData);
 					break;
 				
-				case $sOriginalType === 'string':
+				case $sOriginalType === 'string' :
 					$mData = unserialize ($mOriginalData);
 					$mData = $mData instanceof $sTargetType || gettype ($mData) === $sTargetType ? $mData : null;
 					break;
 				
-				default:
+				default :
 					$mData = null;
 					break;
 			}
@@ -421,8 +387,7 @@ abstract class Appenda_Property_Atom
 	 * @param string $sName
 	 * @param mixed $mData
 	 */
-	final public function __set ($sName, $mData)
-	{
+	final public function __set ($sName, $mData) {
 		return $this->__callset ($sName, $mData);
 	}
 	
@@ -431,8 +396,7 @@ abstract class Appenda_Property_Atom
 	 *
 	 * @return array
 	 */
-	public function describe ()
-	{
+	public function describe () {
 		return $this->__aInternals;
 	}
 	
@@ -442,8 +406,7 @@ abstract class Appenda_Property_Atom
 	 * @param boolean $bEnabled
 	 * @return Appenda_Property_Atom
 	 */
-	public function enableExceptions ($bEnabled)
-	{
+	public function enableExceptions ($bEnabled) {
 		$this->__bExceptionsEnabled = $bEnabled;
 		return $this;
 	}
@@ -455,16 +418,12 @@ abstract class Appenda_Property_Atom
 	 * @param mixed $mDefaultValue
 	 * @return Appenda_Property_Atom
 	 */
-	static public function newInstance ($sClassName)
-	{
+	static public function newInstance ($sClassName) {
 		assert (is_string ($sClassName));
 		
-		if (isset (self::$__aTemplates [$sClassName]))
-		{
+		if (isset (self::$__aTemplates [$sClassName])) {
 			return clone self::$__aTemplates [$sClassName];
-		}
-		else
-		{
+		} else {
 			return new $sClassName ();
 		}
 	}
@@ -476,19 +435,16 @@ abstract class Appenda_Property_Atom
 	 * @param string $sType
 	 * @return Appenda_Property_Atom
 	 */
-	public function register ($sName, $sType, $mData = null)
-	{
+	public function register ($sName, $sType, $mData = null) {
 		assert (is_string ($sName));
 		assert (is_string ($sType));
 		assert (isset ($this->__aInternals [$sName]) === false);
 		
 		// Change the internal type, set the data
-		if ($this->__reset ($sName, $sType) === false)
-		{
+		if ($this->__reset ($sName, $sType) === false) {
 			return $this->__fail ('Failed to reset internal type');
 		}
-		if ($this->__callset ($sName, $mData) === false)
-		{
+		if ($this->__callset ($sName, $mData) === false) {
 			return $this->__fail ('Failed to set the name and data');
 		}
 		return $this;
@@ -498,8 +454,7 @@ abstract class Appenda_Property_Atom
 	 * @param object
 	 * @return Appenda_Property_Atom
 	 */
-	public function registerInstance ($sClassName)
-	{
+	public function registerInstance ($sClassName) {
 		assert (is_string ($sClassName));
 		return self::$__aTemplates [$sClassName] = clone $this;
 	}
@@ -509,8 +464,7 @@ abstract class Appenda_Property_Atom
 	 *
 	 * @param Appenda_Property_Atom $oProperty
 	 */
-	public function setTo (Appenda_Property_Atom $oProperty)
-	{
+	public function setTo (Appenda_Property_Atom $oProperty) {
 		$this->__aInternals = $oProperty->__aInternals;
 		$this->__bExceptionsEnabled = $oProperty->__bExceptionsEnabled;
 	}
@@ -520,12 +474,10 @@ abstract class Appenda_Property_Atom
 	 *
 	 * @return array
 	 */
-	public function toArray ()
-	{
+	public function toArray () {
 		$aProperties = array ();
 		
-		foreach ($this->__aInternals as $sName => $aData )
-		{
+		foreach ($this->__aInternals as $sName => $aData) {
 			$aProperties [$sName] = $aData ['Data'];
 		}
 		

@@ -26,6 +26,8 @@
  * @author Ian Zepp
  * @package 
  */
-class Appenda_Property_Filter_Exception extends Appenda_Property_Exception
-{}
+
+require_once "Appenda/Property/Exception.php";
+
+class Appenda_Property_Filter_Exception extends Appenda_Property_Exception {}
 

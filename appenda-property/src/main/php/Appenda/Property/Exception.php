@@ -26,7 +26,5 @@
  * @author Ian Zepp
  * @package 
  */
-class Appenda_Property_Exception extends Exception
-{
-}
+class Appenda_Property_Exception extends Exception {}
 

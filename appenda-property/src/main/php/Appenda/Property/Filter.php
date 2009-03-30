@@ -26,8 +26,10 @@
  * @author Ian Zepp
  * @package 
  */
-final class Appenda_Property_Filter extends Appenda_Property_Atom
-{
+
+require_once "Appenda/Property/Atom.php";
+
+final class Appenda_Property_Filter extends Appenda_Property_Atom {
 	/**
 	 * @var string
 	 */
@@ -56,8 +58,7 @@ final class Appenda_Property_Filter extends Appenda_Property_Atom
 	/**
 	 * Enter description here...
 	 */
-	public function __construct ()
-	{
+	public function __construct () {
 		$this->register ('Type', 'String');
 		$this->register ('Data', 'Mixed');
 		$this->registerInstance (__CLASS__);
@@ -67,8 +68,7 @@ final class Appenda_Property_Filter extends Appenda_Property_Atom
 	 * @param string $sClassName
 	 * @return 
 	 */
-	static public function newInstance ($sFilterType, $mFilterData = null)
-	{
+	static public function newInstance ($sFilterType, $mFilterData = null) {
 		$oInstance = parent::newInstance (__CLASS__);
 		$oInstance->setType ($sFilterType);
 		$oInstance->setData ($mFilterData);
@@ -81,26 +81,24 @@ final class Appenda_Property_Filter extends Appenda_Property_Atom
 	 * @param mixed $mData
 	 * @return boolean
 	 */
-	public function evaluate ($mData)
-	{
-		switch (strtoupper ($this->getType ()))
-		{
-			case self::REGEX:
+	public function evaluate ($mData) {
+		switch (strtoupper ($this->getType ())) {
+			case self::REGEX :
 				return preg_match ($this->getData (), $mData) > 0;
 			
-			case self::INVERSE_REGEX:
+			case self::INVERSE_REGEX :
 				return preg_match ($this->getData (), $mData) == 0;
 			
-			case self::MAXIMUM:
+			case self::MAXIMUM :
 				return $this->__maximum ($mData, $this->getData ());
 			
-			case self::MINIMUM:
+			case self::MINIMUM :
 				return $this->__minimum ($mData, $this->getData ());
 			
-			case self::UNSIGNED:
+			case self::UNSIGNED :
 				return $this->__minimum ($mData, 0);
 			
-			default:
+			default :
 				return false;
 		}
 	}
@@ -112,17 +110,15 @@ final class Appenda_Property_Filter extends Appenda_Property_Atom
 	 * @param mixed $mLimit
 	 * @return boolean
 	 */
-	protected function __maximum ($mData, $mLimit)
-	{
-		switch (gettype ($mData))
-		{
-			case 'string':
+	protected function __maximum ($mData, $mLimit) {
+		switch (gettype ($mData)) {
+			case 'string' :
 				return strlen ($mData) <= $mLimit;
 			
-			case 'array':
+			case 'array' :
 				return count ($mData) <= $mLimit;
 			
-			default:
+			default :
 				return $mData <= $mLimit;
 		}
 	}
@@ -134,17 +130,15 @@ final class Appenda_Property_Filter extends Appenda_Property_Atom
 	 * @param mixed $mLimit
 	 * @return boolean
 	 */
-	protected function __minimum ($mData, $mLimit)
-	{
-		switch (gettype ($mData))
-		{
-			case 'string':
+	protected function __minimum ($mData, $mLimit) {
+		switch (gettype ($mData)) {
+			case 'string' :
 				return strlen ($mData) >= $mLimit;
 			
-			case 'array':
+			case 'array' :
 				return count ($mData) >= $mLimit;
 			
-			default:
+			default :
 				return $mData >= $mLimit;
 		}
 	}

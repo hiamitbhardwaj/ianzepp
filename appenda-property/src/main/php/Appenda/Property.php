@@ -26,13 +26,14 @@
  * @author Ian Zepp
  * @package 
  */
-final class Appenda_Property extends Appenda_Property_Atom
-{
+
+require_once "Appenda/Property/Atom.php";
+
+final class Appenda_Property extends Appenda_Property_Atom {
 	/**
 	 * @return Appenda_Property
 	 */
-	static public function newInstance ()
-	{
+	static public function newInstance () {
 		return parent::newInstance (__CLASS__);
 	}
 	
@@ -40,8 +41,7 @@ final class Appenda_Property extends Appenda_Property_Atom
 	 * Constructor
 	 *
 	 */
-	public function __construct ()
-	{
+	public function __construct () {
 		$this->register ('Alias', 'String');
 		$this->register ('Aliased', 'Boolean');
 		$this->register ('Cached', 'Boolean');
@@ -83,21 +83,16 @@ final class Appenda_Property extends Appenda_Property_Atom
 	/**
 	 * Override the xxxValue methods
 	 */
-	public function getValue ($mData = null)
-	{
+	public function getValue ($mData = null) {
 		//-------------------------------------------------------------------
 		// Updated value, whether a callback or not.
 		//-------------------------------------------------------------------
-		if ($this->isUpdatedTrue ())
-		{
+		if ($this->isUpdatedTrue ()) {
 			$mReturnData = $this->__callget ('Value', $mData);
 			
-			if ($this->isCompressedTrue ())
-			{
+			if ($this->isCompressedTrue ()) {
 				return gzuncompress ($mReturnData);
-			}
-			else
-			{
+			} else {
 				return $mReturnData;
 			}
 		}
@@ -105,16 +100,12 @@ final class Appenda_Property extends Appenda_Property_Atom
 		//-------------------------------------------------------------------
 		// Default value, but no callback assigned
 		//-------------------------------------------------------------------
-		if ($this->isCallbackEmpty ())
-		{
+		if ($this->isCallbackEmpty ()) {
 			$mReturnData = $this->__callget ('DefaultValue', $mData);
 			
-			if ($this->isCompressedTrue ())
-			{
+			if ($this->isCompressedTrue ()) {
 				return gzuncompress ($mReturnData);
-			}
-			else
-			{
+			} else {
 				return $mReturnData;
 			}
 		}
@@ -124,8 +115,7 @@ final class Appenda_Property extends Appenda_Property_Atom
 		//-------------------------------------------------------------------
 		$mReturnData = call_user_func ($this->getCallback (), $mData);
 		
-		if ($this->isCachedTrue ())
-		{
+		if ($this->isCachedTrue ()) {
 			$this->setValue ($mReturnData);
 		}
 		
@@ -142,26 +132,21 @@ final class Appenda_Property extends Appenda_Property_Atom
 	 * @param mixed $mRelatedData
 	 * @return Appenda_Property
 	 */
-	public function setValue ($mData, $mRelatedData = null)
-	{
+	public function setValue ($mData, $mRelatedData = null) {
 		assert ($this->isUpdateableTrue ());
 		assert ($this->getNullable () || is_null ($mData) === false);
 		
 		//-------------------------------------------------------------------
 		// FILTERS
 		//-------------------------------------------------------------------
-		if ($this->isFilterableTrue ())
-		{
-			foreach ($this->getFilters () as $oFilter )
-			{
-				if ($oFilter->evaluate ($mData, $mRelatedData))
-				{
+		if ($this->isFilterableTrue ()) {
+			foreach ($this->getFilters () as $oFilter) {
+				if ($oFilter->evaluate ($mData, $mRelatedData)) {
 					continue;
 				}
 				
 				// Filter failed. Figure out how to proceed?
-				if (ASSERT_BAIL)
-				{
+				if (ASSERT_BAIL) {
 					$sMessage = 'Filter evaluation failed';
 					$sMessage .= ', name=' . $this->getName ();
 					$sMessage .= ', currentValue=' . $this->getValue ();
@@ -170,9 +155,7 @@ final class Appenda_Property extends Appenda_Property_Atom
 					$sMessage .= ', filterType=' . $oFilter->getType ();
 					$sMessage .= ', filterData=' . $oFilter->getData ();
 					throw new Appenda_Property_Filter_Exception ($sMessage);
-				}
-				else
-				{
+				} else {
 					return false;
 				}
 			}
@@ -184,20 +167,19 @@ final class Appenda_Property extends Appenda_Property_Atom
 		$bCompressed = $this->isCompressedTrue ();
 		$sInternalType = strtolower ($this->getType ());
 		
-		switch (true)
-		{
-			case $bCompressed && $sInternalType === 'array' && is_string ($mRelatedData):
+		switch (true) {
+			case $bCompressed && $sInternalType === 'array' && is_string ($mRelatedData) :
 				$mProcessedData = $mData;
 				$mProcessedRelatedData = gzcompress ($mRelatedData);
 				break;
 			
-			case $bCompressed && $sInternalType === 'string':
-			case $bCompressed && $sInternalType === 'mixed' && is_string ($mData):
+			case $bCompressed && $sInternalType === 'string' :
+			case $bCompressed && $sInternalType === 'mixed' && is_string ($mData) :
 				$mProcessedData = gzcompress ($mData);
 				$mProcessedRelatedData = $mRelatedData;
 				break;
 			
-			default:
+			default :
 				$mProcessedData = $mData;
 				$mProcessedRelatedData = $mRelatedData;
 				break;
@@ -212,11 +194,11 @@ final class Appenda_Property extends Appenda_Property_Atom
 		//-------------------------------------------------------------------
 		// TRIGGERS
 		//-------------------------------------------------------------------
-		if ($this->isTriggerableTrue ())
-		{
-			foreach ($this->getTriggers () as $aTriggerCallback )
-			{
-				call_user_func_array ($aTriggerCallback, array ($mData, $mRelatedData));
+		if ($this->isTriggerableTrue ()) {
+			foreach ($this->getTriggers () as $aTriggerCallback) {
+				call_user_func_array ($aTriggerCallback, array (
+					$mData, 
+					$mRelatedData));
 			}
 		}
 		
@@ -226,8 +208,7 @@ final class Appenda_Property extends Appenda_Property_Atom
 	/**
 	 * Override the xxxType methods to redefine the internal value types.
 	 */
-	public function setType ($sType)
-	{
+	public function setType ($sType) {
 		assert (is_string ($sType));
 		
 		parent::__callset ('Type', $sType);
