@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Define the endpoint mapping -->
+
+	<bean id="MessageMapper" class="Appenda_Endpoint_Filtering">
+		<property name="delegates">
+			<props>
+				<!-- Account mappings -->
+				<prop key="{${bundle.account.namespace}}FindAccountById">FindAccountByIdEndpoint</prop>
+				<prop key="{${bundle.account.namespace}}InsertAccount">InsertAccountEndpoint</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Endpoint definitions -->
+
+	<bean id="Endpoint" abstract="true">
+		<property name="accountTable" ref="AccountTable" />
+		<property name="addressTable" ref="AddressTable" />
+		<property name="contactTable" ref="ContactTable" />
+		<property name="phoneTable" ref="PhoneTable" />
+	</bean>
+
+	<bean id="FindAccountByIdEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_FindAccountById" />
+
+	<bean id="InsertAccountEndpoint" parent="Endpoint" class="Appenda_Bundle_Account_Endpoint_InsertAccount" />
+
+	<!-- Database configuration -->
+
+	<bean id="Adapter" class="${bundle.account.adapter.class}">
+		<constructor-arg>
+			<props>
+				<prop key="hostname">${bundle.account.adapter.host}</prop>
+				<prop key="username">${bundle.account.adapter.user}</prop>
+				<prop key="password">${bundle.account.adapter.password}</prop>
+				<prop key="dbname">${bundle.account.adapter.schema}</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+	<bean id="AccountTable" class="Appenda_Bundle_Account_Table_Account">
+		<constructor-arg index="0">
+			<props>
+				<prop key="schema">${bundle.account.adapter.schema}</prop>
+				<prop key="name">accounts</prop>
+			</props>
+		</constructor-arg>
+
+		<constructor-arg index="1" ref="Adapter" />
+	</bean>
+
+</beans>
