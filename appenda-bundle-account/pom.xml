@@ -1,10 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ianzepp.appenda</groupId>
 	<artifactId>appenda-bundle-account</artifactId>
 	<packaging>php</packaging>
 	<version>1.0-SNAPSHOT</version>
+
+	<properties>
+		<bundle.account.namespace>http://www.ianzepp.com/appenda/bundle/account</bundle.account.namespace>
+		<bundle.account.adapter.class>Zend_Db_Adapter_Pdo_Mysql</bundle.account.adapter.class>
+		<bundle.account.adapter.host>localhost</bundle.account.adapter.host>
+		<bundle.account.adapter.user>root</bundle.account.adapter.user>
+		<bundle.account.adapter.password>root</bundle.account.adapter.password>
+		<bundle.account.adapter.schema>sessions</bundle.account.adapter.schema>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -20,6 +28,7 @@
 			<classifier>php-lib</classifier>
 		</dependency>
 	</dependencies>
+
 	<parent>
 		<artifactId>appenda-base</artifactId>
 		<groupId>com.ianzepp.appenda</groupId>
@@ -38,7 +47,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-								<appendAssemblyId>false</appendAssemblyId>
+							<appendAssemblyId>false</appendAssemblyId>
 							<descriptors>
 								<descriptor>src/assembly/${maven-assembly-plugin.type}.xml</descriptor>
 							</descriptors>
