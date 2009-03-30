@@ -6,17 +6,17 @@
 	<bean id="MessageMapper" class="Appenda_Endpoint_Filtering">
 		<property name="delegates">
 			<props>
-				<prop key="{http://www.ianzepp.com/appenda/bundle/session}FindByExpiration">FindByExpirationEndpoint</prop>
-				<prop key="{http://www.ianzepp.com/appenda/bundle/session}FindByName">FindByNameEndpoint</prop>
-				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Insert">InsertEndpoint</prop>
-				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Remove">RemoveEndpoint</prop>
-				<prop key="{http://www.ianzepp.com/appenda/bundle/session}Update">UpdateEndpoint</prop>
+				<prop key="{${bundle.session.namespace}}FindByExpiration">FindByExpirationEndpoint</prop>
+				<prop key="{${bundle.session.namespace}}FindByName">FindByNameEndpoint</prop>
+				<prop key="{${bundle.session.namespace}}Insert">InsertEndpoint</prop>
+				<prop key="{${bundle.session.namespace}}Remove">RemoveEndpoint</prop>
+				<prop key="{${bundle.session.namespace}}Update">UpdateEndpoint</prop>
 			</props>
 		</property>
 	</bean>
 
 	<!-- Endpoint definitions -->
-	
+
 	<bean id="Endpoint" abstract="true">
 		<property name="sessionTable" ref="SessionTable" />
 	</bean>
@@ -32,14 +32,14 @@
 	<bean id="UpdateEndpoint" parent="Endpoint" class="Appenda_Bundle_Session_Endpoint_Update" />
 
 	<!-- Database configuration -->
-	
-	<bean id="Adapter" class="Zend_Db_Adapter_Pdo_Mysql">
+
+	<bean id="Adapter" class="${bundle.session.adapter.class}">
 		<constructor-arg>
 			<props>
-				<prop key="hostname">localhost</prop>
-				<prop key="username">root</prop>
-				<prop key="password">root</prop>
-				<prop key="dbname">sessions</prop>
+				<prop key="hostname">${bundle.session.adapter.host}</prop>
+				<prop key="username">${bundle.session.adapter.user}</prop>
+				<prop key="password">${bundle.session.adapter.password}</prop>
+				<prop key="dbname">${bundle.session.adapter.schema}</prop>
 			</props>
 		</constructor-arg>
 	</bean>
@@ -47,8 +47,8 @@
 	<bean id="SessionTable" class="Appenda_Bundle_Session_Table">
 		<constructor-arg index="0">
 			<props>
-				<prop key="name">sessions</prop>
-				<prop key="schema">sessions</prop>
+				<prop key="name">${bundle.session.adapter.schema}</prop>
+				<prop key="schema">${bundle.session.adapter.schema}</prop>
 				<prop key="primaryKey">id</prop>
 			</props>
 		</constructor-arg>
