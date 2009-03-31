@@ -8,7 +8,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ianzepp.appenda</groupId>
-	<artifactId>appenda-message</artifactId>
+	<artifactId>appenda-base-message</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>php</packaging>
 </project>
