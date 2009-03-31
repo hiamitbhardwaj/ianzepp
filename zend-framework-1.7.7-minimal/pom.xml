@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.zend</groupId>
 	<artifactId>zend-framework</artifactId>
+	<packaging>php</packaging>
 	<version>1.7.7-minimal</version>
 	
 	<developers>
@@ -46,6 +47,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<compileArgs>${php.compile.args}</compileArgs>
+					<ignoreValidate>true</ignoreValidate>
 				</configuration>
 			</plugin>
 		</plugins>
