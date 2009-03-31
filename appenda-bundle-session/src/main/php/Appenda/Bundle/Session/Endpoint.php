@@ -27,9 +27,6 @@
  * @package
  */
 
-require_once "Appenda/Bundle/Session/Table.php";
-require_once "Appenda/Message/Endpoint.php";
-
 abstract class Appenda_Bundle_Session_Endpoint implements Appenda_Message_Endpoint
 {
 	private $sessionTable;

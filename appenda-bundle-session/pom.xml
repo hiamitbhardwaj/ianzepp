@@ -10,6 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ianzepp.appenda</groupId>
 	<artifactId>appenda-bundle-session</artifactId>
+	<packaging>php</packaging>
 
 	<properties>
 		<bundle.session.namespace>http://www.ianzepp.com/appenda/bundle/session</bundle.session.namespace>
@@ -18,6 +19,9 @@
 		<bundle.session.adapter.user>root</bundle.session.adapter.user>
 		<bundle.session.adapter.password>root</bundle.session.adapter.password>
 		<bundle.session.adapter.schema>sessions</bundle.session.adapter.schema>
+		
+		<!-- Override the default assembly to build a full deployable package -->
+		<php.assembly>php-lib-with-dependencies</php.assembly>
 	</properties>
 
 	<dependencies>

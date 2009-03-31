@@ -6,13 +6,25 @@
 	<packaging>pom</packaging>
 	<version>1.0</version>
 
+	<distributionManagement>
+		<repository>
+			<id>release-repo</id>
+			<name>Release Repo</name>
+			<url>deploy</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot-repo</id>
+			<name>Snapshot Repo</name>
+			<url>deploy</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
-		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
 		<maven-assembly-plugin.version>2.2-beta-3</maven-assembly-plugin.version>
 
-		<php.assembly>php-lib</php.assembly>
-		<php.compile.args></php.compile.args>
-		<php.plugin.version>1.0-BETA-2</php.plugin.version>
+		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
+		<maven-php-plugin.assembly>php-lib</maven-php-plugin.assembly>
+		<maven-php-plugin.compileArgs>-d auto_prepend_file=Appenda/Autoloader.php</maven-php-plugin.compileArgs>
 
 		<phpunit5.version>3.2.9-BETA-1</phpunit5.version>
 
@@ -41,6 +53,49 @@
 		</developer>
 	</developers>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>release-repo1.php-maven.org</id>
+			<name>PHP-Maven 2 Release Repository</name>
+			<url>http://repo1.php-maven.org/release</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>snapshot-repo1.php-maven.org</id>
+			<name>PHP-Maven 2 Snapshot Repository</name>
+			<url>http://repo1.php-maven.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>release-repo1.php-maven.org</id>
+			<name>PHP-Maven 2 Release Repository</name>
+			<url>http://repo1.php-maven.org/release</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>snapshot-repo1.php-maven.org</id>
+			<name>PHP-Maven 2 Snapshot Repository</name>
+			<url>http://repo1.php-maven.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.phpunit</groupId>
@@ -56,14 +111,21 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.phpmaven</groupId>
 				<artifactId>maven-php-plugin</artifactId>
-				<version>${php.plugin.version}</version>
+				<version>${maven-php-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<compileArgs>${php.compile.args}</compileArgs>
+					<compileArgs>${maven-php-plugin.compileArgs}</compileArgs>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -78,7 +140,7 @@
 						<dependency>
 							<groupId>org.phpmaven</groupId>
 							<artifactId>maven-php-plugin</artifactId>
-							<version>${php.plugin.version}</version>
+							<version>${maven-php-plugin.version}</version>
 						</dependency>
 					</dependencies>
 					<executions>
@@ -90,7 +152,7 @@
 							</goals>
 							<configuration>
 								<descriptorRefs>
-									<descriptorRef>${php.assembly}</descriptorRef>
+									<descriptorRef>${maven-php-plugin.assembly}</descriptorRef>
 								</descriptorRefs>
 							</configuration>
 						</execution>
