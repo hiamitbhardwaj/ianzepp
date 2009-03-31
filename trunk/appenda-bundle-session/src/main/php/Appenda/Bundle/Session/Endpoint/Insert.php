@@ -27,9 +27,7 @@
  * @package
  */
 
-require_once "Appenda/Bundle/Session/Endpoint.php";
-
-class Appenda_Bundle_Session_Endpoint_Insert implements Appenda_Bundle_Session_Endpoint
+class Appenda_Bundle_Session_Endpoint_Insert extends Appenda_Bundle_Session_Endpoint
 {
 	/**
 	 * @param SimpleXMLElement $xml

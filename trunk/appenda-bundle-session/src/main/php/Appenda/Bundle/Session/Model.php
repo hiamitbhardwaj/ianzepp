@@ -27,8 +27,6 @@
  * @package
  */
 
-require_once "Zend/Db/Table/Row.php";
-
 class Appenda_Bundle_Session_Model extends Zend_Db_Table_Row
 {
 }
