@@ -11,9 +11,8 @@
   <dependencies>
   	<dependency>
   		<groupId>com.ianzepp.appenda</groupId>
-  		<artifactId>appenda-property</artifactId>
+  		<artifactId>appenda-base-property</artifactId>
   		<version>1.0-SNAPSHOT</version>
-  		<classifier>php-lib</classifier>
   	</dependency>
   </dependencies>
 </project>
