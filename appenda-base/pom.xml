@@ -151,7 +151,9 @@
 								<goal>single</goal>
 							</goals>
 							<configuration>
+								<appendAssemblyId>true</appendAssemblyId>
 								<descriptorRefs>
+									<item>${maven-php-plugin.assembly}</item>
 									<descriptorRef>${maven-php-plugin.assembly}</descriptorRef>
 								</descriptorRefs>
 							</configuration>
