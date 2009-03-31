@@ -9,7 +9,6 @@
 	<properties>
 		<maven-php-plugin.version>1.0-BETA-2</maven-php-plugin.version>
 		<maven-assembly-plugin.version>2.2-beta-3</maven-assembly-plugin.version>
-		<maven-assembly-plugin.type>php-lib</maven-assembly-plugin.type>
 
 		<php.assembly>php-lib</php.assembly>
 		<php.compile.args></php.compile.args>
