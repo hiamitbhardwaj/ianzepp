@@ -1,4 +1,0 @@
-#MIN_CONFIG
-
-AM_INIT_AUTOMAKE(koog,0.3)
-
