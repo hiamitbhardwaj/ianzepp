@@ -17,12 +17,4 @@ require_once 'Zend/Layout.php';
 $controller = Zend_Controller_Front::getInstance();
 $controller->setControllerDirectory('../application/controllers');
 $controller->throwExceptions(false); // should be turned on in development time 
-
-//// bootstrap layouts
-//Zend_Layout::startMvc(array(
-//    'layoutPath' => '../application/default/layouts',
-//    'layout' => 'main'
-//	));
-
-// run!
 $controller->dispatch();
