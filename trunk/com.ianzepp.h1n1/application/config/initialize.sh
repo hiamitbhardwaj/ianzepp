@@ -15,7 +15,7 @@ apt-get -y -q autoremove
 # Import the mysql migrations
 #
 
-for MIGRATION in `ls "${H1N1_BASE}/${H1N1_SITE}/application/migration/pdo_mysql/*.sql" | sort`;
+for MIGRATION in `ls "${H1N1_BASE}/${H1N1_SITE}/application/migration/pdo_mysql" | grep \.sql | sort`;
 do
 	echo ${MIGRATION};
 done
