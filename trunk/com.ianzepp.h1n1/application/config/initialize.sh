@@ -1,10 +1,18 @@
 #!/bin/bash
 
 #
-# This script initializes the site
+# This initializes the system
 #
 
-H1N1_BASE="/mnt/h1n1/app"
+apt-get -y -q install apache2-mpm-prefork libapache2-mod-php5 php5
+apt-get -y -q install mysql-server php5-mysql  
+apt-get -y -q autoremove
+
+#
+# This initializes the site
+#
+
+H1N1_BASE="/mnt"
 H1N1_SITE="com.ianzepp.h1n1"
 
 # Copy over the site config
