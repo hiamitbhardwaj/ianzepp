@@ -14,6 +14,8 @@ cp -f "${H1N1_BASE}/${H1N1_SITE}/application/config/site.config" "/etc/apache2/s
 a2dissite "default"
 a2dissite "${H1N1_SITE}"
 a2ensite  "${H1N1_SITE}"
+a2enmod   "rewrite"
+a2enmod   "php5"
 
 # Restart apache
 /etc/init.d/apache2 restart
