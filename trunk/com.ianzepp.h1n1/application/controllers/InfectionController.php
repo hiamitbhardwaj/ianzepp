@@ -28,11 +28,15 @@
  */
 
 require_once 'Zend/Controller/Action.php';
+require_once 'Zend/Db.php';
+require_once 'Zend/Db/Select.php';
+require_once 'InfectionTable.php';
 
-class QueryController extends Zend_Controller_Action
+class InfectionController extends Zend_Controller_Action
 {
 	/**
-	 * The default action - show the home page
+	 * Return a list of the infections
+	 *
 	 */
 	public function indexAction ()
 	{
