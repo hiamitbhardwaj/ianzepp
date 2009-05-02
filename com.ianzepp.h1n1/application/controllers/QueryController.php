@@ -26,28 +26,17 @@
  * @author Ian Zepp
  * @package
  */
-?> 
 
-<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>H1N1 Influenza Map</title>
-<script src="http://maps.google.com/maps?file=api&v=2&sensor=false&key=ABQIAAAAyqeo4eOTLy29nr7HXSpF_BTml3AyaOoIENVrkQWKYXYpaRCARxSvVwIpfK4VGD1DQDi2zoISjDQJtg" type="text/javascript"></script>
-<script type="text/javascript">
-	function initialize()
+require_once 'Zend/Controller/Action.php';
+
+class QueryController extends Zend_Controller_Action
+{
+	/**
+	 * The default action - show the home page
+	 */
+	public function indexAction ()
 	{
-		if (GBrowserIsCompatible())
-		{
-			var map = new GMap2(document.getElementById("map_canvas"));
-			map.setCenter(new GLatLng(30, -100), 4);
-			map.setUIToDefault();
-		}
 	}
-    </script>
-</head>
+}
 
-<body onload="initialize()" onunload="GUnload()" style="padding: 0; margin: 0">
-<div id="map_canvas" style="width: 100%; height: 100%" />
-</body>
-</html>
+
