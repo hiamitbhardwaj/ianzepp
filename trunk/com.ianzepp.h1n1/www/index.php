@@ -11,6 +11,7 @@ set_include_path (get_include_path () . PATH_SEPARATOR . '../library');
 set_include_path (get_include_path () . PATH_SEPARATOR . '../application/models/');
 
 require_once 'Zend/Controller/Front.php';
+require_once 'Zend/Db.php';
 require_once 'Zend/Layout.php';
 
 // Setup default DB connection
