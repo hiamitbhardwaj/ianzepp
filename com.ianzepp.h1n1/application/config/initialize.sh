@@ -9,6 +9,17 @@ apt-get -y -q install mysql-server php5-mysql
 apt-get -y -q autoremove
 
 #
+# Import the mysql migrations
+#
+
+for MIGRATION in `ls "${H1N1_BASE}/${H1N1_SITE}/migration/pdo_mysql/*.sql" | sort`;
+do
+	echo ${MIGRATION};
+done
+
+exit
+
+#
 # This initializes the site
 #
 
