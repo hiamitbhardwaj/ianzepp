@@ -18,4 +18,5 @@ CREATE TABLE `h1n1`.`infections` (
   `loc_province` tinytext,
   `description` text,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
