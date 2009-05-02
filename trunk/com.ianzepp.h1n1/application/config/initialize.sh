@@ -4,7 +4,7 @@
 # This script initializes the site
 #
 
-H1N1_BASE     = dirname (dirname (dirname (dirname ($0))))
+H1N1_BASE     = /mnt/h1n1/app
 H1N1_SITE     = com.ianzepp.h1n1
 
 # Copy over the site config
