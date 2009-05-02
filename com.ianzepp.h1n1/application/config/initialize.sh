@@ -17,10 +17,8 @@ apt-get -y -q autoremove
 
 for MIGRATION in `ls "${H1N1_BASE}/${H1N1_SITE}/application/migration/pdo_mysql" | grep \.sql | sort`;
 do
-	mysql -u root < "${H1N1_BASE}/${H1N1_SITE}/application/migration/pdo_mysql/${MIGRATION}";
+	mysql -u root -v < "${H1N1_BASE}/${H1N1_SITE}/application/migration/pdo_mysql/${MIGRATION}";
 done
-
-exit
 
 #
 # This initializes the site
