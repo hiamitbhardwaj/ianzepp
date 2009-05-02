@@ -7,8 +7,6 @@
  * @version 
  */
 
-require_once 'Zend/Db/Table/Abstract.php';
-
 class InfectionModel extends Zend_Db_Table_Abstract
 {
 	/**

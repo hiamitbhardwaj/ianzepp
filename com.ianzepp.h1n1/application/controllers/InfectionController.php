@@ -27,11 +27,6 @@
  * @package
  */
 
-require_once 'Zend/Controller/Action.php';
-require_once 'Zend/Db.php';
-require_once 'Zend/Db/Select.php';
-require_once 'InfectionTable.php';
-
 class InfectionController extends Zend_Controller_Action
 {
 	/**
