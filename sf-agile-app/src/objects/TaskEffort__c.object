@@ -75,4 +75,20 @@
     <pluralLabel>Task Effort</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Sprint_NotNull</fullName>
+        <active>true</active>
+        <errorConditionFormula>Sprint__c = NULL</errorConditionFormula>
+        <errorMessage>The parent Story must be assigned to a Sprint before Task Effort can be assigned.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Done</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Done</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location = &quot;/{!TaskEffort__c.TaskId__c}&quot;</url>
+    </webLinks>
 </CustomObject>
