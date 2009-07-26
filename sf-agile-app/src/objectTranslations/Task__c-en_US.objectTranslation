@@ -40,6 +40,10 @@
         <name>Requirements__c</name>
     </fields>
     <fields>
+        <label><!-- Sprint Points --></label>
+        <name>SprintPoints__c</name>
+    </fields>
+    <fields>
         <label><!-- Sprint --></label>
         <name>Sprint__c</name>
         <relationshipLabel><!-- Tasks --></relationshipLabel>
@@ -51,6 +55,31 @@
     <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- I Want --></label>
+        <name>StoryNeed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Story Points --></label>
+        <name>StoryPoints__c</name>
+    </fields>
+    <fields>
+        <label><!-- As A --></label>
+        <name>StoryRole__c</name>
+    </fields>
+    <fields>
+        <label><!-- Story Sprint ID --></label>
+        <name>StorySprintID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Story --></label>
+        <name>Story__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Summary --></label>
+        <name>Summary__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

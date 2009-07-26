@@ -7,5 +7,42 @@
         <plural>true</plural>
         <value>Stories</value>
     </caseValues>
+    <fields>
+        <label><!-- I Want --></label>
+        <name>Need__c</name>
+    </fields>
+    <fields>
+        <label><!-- Points Value --></label>
+        <name>PointsValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Points --></label>
+        <name>Points__c</name>
+    </fields>
+    <fields>
+        <label><!-- As A --></label>
+        <name>Role__c</name>
+    </fields>
+    <fields>
+        <label><!-- Current Sprint --></label>
+        <name>Sprint__c</name>
+        <relationshipLabel><!-- Stories --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Summary --></label>
+        <name>Summary__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tasks Blocked --></label>
+        <name>TasksBlocked__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tasks Completed --></label>
+        <name>TasksCompleted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tasks In Progress --></label>
+        <name>TasksInProgress__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
