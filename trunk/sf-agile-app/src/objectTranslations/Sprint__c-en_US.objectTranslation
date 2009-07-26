@@ -7,5 +7,17 @@
         <plural>true</plural>
         <value>Sprints</value>
     </caseValues>
+    <fields>
+        <label><!-- Hours Completed --></label>
+        <name>HoursCompleted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Points Value --></label>
+        <name>PointsValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Points --></label>
+        <name>Points__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
