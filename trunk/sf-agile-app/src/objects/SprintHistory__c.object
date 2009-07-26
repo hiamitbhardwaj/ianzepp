@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <fields>
+        <fullName>Sprint__c</fullName>
+        <label>Sprint</label>
+        <referenceTo>Sprint__c</referenceTo>
+        <relationshipLabel>Related Stories</relationshipLabel>
+        <relationshipName>Stories</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Story__c</fullName>
+        <label>Story</label>
+        <referenceTo>Story__c</referenceTo>
+        <relationshipLabel>Related Sprints</relationshipLabel>
+        <relationshipName>Sprints</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <label>Sprint History</label>
+    <nameField>
+        <displayFormat>{0000000}</displayFormat>
+        <label>Sprint History ID</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Sprint History</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>
