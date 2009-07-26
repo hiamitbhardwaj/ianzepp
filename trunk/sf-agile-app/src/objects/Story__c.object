@@ -1,7 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
+    <fields>
+        <fullName>Need__c</fullName>
+        <label>I Want</label>
+        <required>true</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>PointsValue__c</fullName>
+        <formula>IF (OR (TEXT(Points__c) = &apos;?&apos;, TEXT(Points__c) = &apos;∞&apos;), NULL, VALUE (TEXT(Points__c)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Points Value</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Points__c</fullName>
+        <label>Points</label>
+        <picklist>
+            <picklistValues>
+                <fullName>?</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>0</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>8</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>13</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>100</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>∞</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <label>As A</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Sprint__c</fullName>
+        <label>Current Sprint</label>
+        <referenceTo>Sprint__c</referenceTo>
+        <relationshipLabel>Stories</relationshipLabel>
+        <relationshipName>Stories</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Summary__c</fullName>
+        <formula>NULL</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Summary</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>TasksBlocked__c</fullName>
+        <label>Tasks Blocked</label>
+        <summaryFilterItems>
+            <field>Task__c.Status__c</field>
+            <operation>equals</operation>
+            <value>In Progress, &quot;In Progress, Late&quot;</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Task__c.Story__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>TasksCompleted__c</fullName>
+        <label>Tasks Completed</label>
+        <summaryFilterItems>
+            <field>Task__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Completed, &quot;Completed, Late&quot;</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Task__c.Story__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>TasksInProgress__c</fullName>
+        <label>Tasks In Progress</label>
+        <summaryFilterItems>
+            <field>Task__c.Status__c</field>
+            <operation>equals</operation>
+            <value>In Progress, &quot;In Progress, Late&quot;</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Task__c.Story__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
     <label>Story</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <displayFormat>{0000000}</displayFormat>
         <label>Story ID</label>
@@ -10,4 +144,16 @@
     <pluralLabel>Stories</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>AssignToSprint</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Assign To Sprint</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>?</url>
+    </webLinks>
 </CustomObject>
