@@ -7,7 +7,7 @@
         <label>Society</label>
         <referenceTo>Society__c</referenceTo>
         <relationshipLabel>Society Managers</relationshipLabel>
-        <relationshipName>Society_Managers</relationshipName>
+        <relationshipName>SocietyManagers</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <type>MasterDetail</type>
     </fields>
