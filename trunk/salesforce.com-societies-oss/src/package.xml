@@ -3,41 +3,8 @@
     <fullName>Societies Discussion Board %28OSS%29</fullName>
     <apiAccessLevel>Unrestricted</apiAccessLevel>
     <types>
-        <members>Society_UpdateCombinedName</members>
+        <members>Comment_SetType</members>
         <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>CommentVote__c.Comment__c</members>
-        <members>CommentVote__c.Type__c</members>
-        <members>Comment__c.Depth__c</members>
-        <members>Comment__c.Disliked__c</members>
-        <members>Comment__c.Liked__c</members>
-        <members>Comment__c.Link__c</members>
-        <members>Comment__c.Parent__c</members>
-        <members>Comment__c.Society__c</members>
-        <members>Comment__c.Summary__c</members>
-        <members>Comment__c.Text__c</members>
-        <members>Comment__c.Type__c</members>
-        <members>SocietyManager__c.Society__c</members>
-        <members>Society__c.Account__c</members>
-        <members>Society__c.CombinedName__c</members>
-        <members>Society__c.Comments__c</members>
-        <members>Society__c.Name__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
-        <members>CommentVote__c</members>
-        <members>Comment__c</members>
-        <members>SocietyManager__c</members>
-        <members>Society__c</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
-        <members>CommentVote__c-Comment Vote Layout</members>
-        <members>Comment__c-Comment Layout</members>
-        <members>SocietyManager__c-Society Manager Layout</members>
-        <members>Society__c-Society Layout</members>
-        <name>Layout</name>
     </types>
     <version>16.0</version>
 </Package>

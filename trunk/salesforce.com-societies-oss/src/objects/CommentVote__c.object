@@ -7,7 +7,7 @@
         <label>Comment</label>
         <referenceTo>Comment__c</referenceTo>
         <relationshipLabel>Comment Votes</relationshipLabel>
-        <relationshipName>Comment_Votes</relationshipName>
+        <relationshipName>CommentVotes</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>true</writeRequiresMasterRead>

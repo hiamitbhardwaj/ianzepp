@@ -28,13 +28,51 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Managers__c</fullName>
+        <label>Managers</label>
+        <summaryForeignKey>SocietyManager__c.Society__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Name__c</fullName>
         <label>Name</label>
         <length>235</length>
         <required>true</required>
         <type>Text</type>
     </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <description>Public - Anyone can submit and/or comment.
+Managed - Only managers can submit, but anyone can comment.
+Private - Only managers can submit and/or comment.</description>
+        <inlineHelpText>Public - Anyone can submit and/or comment.
+Managed - Only managers can submit, but anyone can comment.
+Private - Only managers can submit and/or comment.</inlineHelpText>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Public</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Managed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
     <label>Society</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <displayFormat>{0}</displayFormat>
         <label>Reference ID</label>

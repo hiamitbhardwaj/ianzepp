@@ -40,6 +40,29 @@
         <type>Url</type>
     </fields>
     <fields>
+        <fullName>ParentDepth__c</fullName>
+        <formula>IF(NOT(ISBLANK(Parent__c)), Parent__r.Depth__c, NULL)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Parent Depth</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>ParentHierarchy__c</fullName>
+        <description>This picklist becomes automatically built-out with parent IDs.</description>
+        <label>Parent Hierarchy</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Root</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>MultiselectPicklist</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
         <fullName>Parent__c</fullName>
         <label>Parent</label>
         <referenceTo>Comment__c</referenceTo>
@@ -103,4 +126,11 @@
     <pluralLabel>Comments</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Comment_TypeIsNotUpdated</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(NOT(ISNEW()), ISCHANGED(Type__c))</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>The type field is only allowed to be set when first creating a comment.</errorMessage>
+    </validationRules>
 </CustomObject>
