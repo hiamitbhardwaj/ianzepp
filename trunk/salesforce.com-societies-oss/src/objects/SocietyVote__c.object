@@ -2,13 +2,24 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Societies Discussion Board</description>
+    <enableReports>true</enableReports>
     <fields>
         <fullName>Comment__c</fullName>
         <label>Comment</label>
-        <referenceTo>Comment__c</referenceTo>
-        <relationshipLabel>Comment Votes</relationshipLabel>
-        <relationshipName>CommentVotes</relationshipName>
+        <referenceTo>SocietyComment__c</referenceTo>
+        <relationshipLabel>Society Votes</relationshipLabel>
+        <relationshipName>SocietyVotes</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Society__c</fullName>
+        <label>Society</label>
+        <referenceTo>Society__c</referenceTo>
+        <relationshipLabel>Society Votes</relationshipLabel>
+        <relationshipName>Society_Votes</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>true</writeRequiresMasterRead>
     </fields>
@@ -40,13 +51,13 @@
         </picklist>
         <type>Picklist</type>
     </fields>
-    <label>Comment Vote</label>
+    <label>Society Vote</label>
     <nameField>
         <displayFormat>{0}</displayFormat>
         <label>Reference ID</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Comment Votes</pluralLabel>
+    <pluralLabel>Society Votes</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

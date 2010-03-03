@@ -3,14 +3,6 @@
     <fullName>Societies Discussion Board %28OSS%29</fullName>
     <apiAccessLevel>Unrestricted</apiAccessLevel>
     <types>
-        <members>Comment_ShowTree</members>
-        <members>Comment_UpdateReplies</members>
-        <name>ApexClass</name>
-    </types>
-    <types>
-        <members>Comment_SetDepth</members>
-        <members>Comment_SetParentHierarchy</members>
-        <members>Comment_SetType</members>
         <members>Society_UpdateCombinedName</members>
         <name>ApexTrigger</name>
     </types>
@@ -19,21 +11,22 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>CommentVote__c.Comment__c</members>
-        <members>CommentVote__c.Type__c</members>
-        <members>Comment__c.Depth__c</members>
-        <members>Comment__c.Disliked__c</members>
-        <members>Comment__c.IsInlineEdit__c</members>
-        <members>Comment__c.Liked__c</members>
-        <members>Comment__c.Link__c</members>
-        <members>Comment__c.ParentDepth__c</members>
-        <members>Comment__c.ParentHierarchy__c</members>
-        <members>Comment__c.Parent__c</members>
-        <members>Comment__c.Score__c</members>
-        <members>Comment__c.Society__c</members>
-        <members>Comment__c.Text__c</members>
-        <members>Comment__c.Type__c</members>
+        <members>SocietyComment__c.Depth__c</members>
+        <members>SocietyComment__c.Disliked__c</members>
+        <members>SocietyComment__c.IsInlineEdit__c</members>
+        <members>SocietyComment__c.Liked__c</members>
+        <members>SocietyComment__c.Link__c</members>
+        <members>SocietyComment__c.ParentDepth__c</members>
+        <members>SocietyComment__c.ParentHierarchy__c</members>
+        <members>SocietyComment__c.Parent__c</members>
+        <members>SocietyComment__c.Score__c</members>
+        <members>SocietyComment__c.Society__c</members>
+        <members>SocietyComment__c.Text__c</members>
+        <members>SocietyComment__c.Type__c</members>
         <members>SocietyManager__c.Society__c</members>
+        <members>SocietyVote__c.Comment__c</members>
+        <members>SocietyVote__c.Society__c</members>
+        <members>SocietyVote__c.Type__c</members>
         <members>Society__c.Account__c</members>
         <members>Society__c.CombinedName__c</members>
         <members>Society__c.Comments__c</members>
@@ -43,9 +36,9 @@
         <name>CustomField</name>
     </types>
     <types>
-        <members>CommentVote__c</members>
-        <members>Comment__c</members>
+        <members>SocietyComment__c</members>
         <members>SocietyManager__c</members>
+        <members>SocietyVote__c</members>
         <members>Society__c</members>
         <name>CustomObject</name>
     </types>
@@ -54,9 +47,9 @@
         <name>CustomTab</name>
     </types>
     <types>
-        <members>CommentVote__c-Comment Vote Layout</members>
-        <members>Comment__c-Comment Layout</members>
+        <members>SocietyComment__c-Society Comment Layout</members>
         <members>SocietyManager__c-Society Manager Layout</members>
+        <members>SocietyVote__c-Society Vote Layout</members>
         <members>Society__c-Society Layout</members>
         <name>Layout</name>
     </types>
@@ -65,7 +58,7 @@
         <name>ListView</name>
     </types>
     <types>
-        <members>Comment__c.Comment_TypeIsNotUpdated</members>
+        <members>SocietyComment__c.SocietyComment_TypeIsNotUpdated</members>
         <name>ValidationRule</name>
     </types>
     <version>16.0</version>

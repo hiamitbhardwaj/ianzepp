@@ -2,6 +2,8 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Societies Discussion Board</description>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
     <fields>
         <fullName>Depth__c</fullName>
         <defaultValue>0</defaultValue>
@@ -14,11 +16,11 @@
         <fullName>Disliked__c</fullName>
         <label>Disliked</label>
         <summaryFilterItems>
-            <field>CommentVote__c.Type__c</field>
+            <field>SocietyVote__c.Type__c</field>
             <operation>equals</operation>
             <value>Disliked</value>
         </summaryFilterItems>
-        <summaryForeignKey>CommentVote__c.Comment__c</summaryForeignKey>
+        <summaryForeignKey>SocietyVote__c.Comment__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <type>Summary</type>
     </fields>
@@ -32,11 +34,11 @@
         <fullName>Liked__c</fullName>
         <label>Liked</label>
         <summaryFilterItems>
-            <field>CommentVote__c.Type__c</field>
+            <field>SocietyVote__c.Type__c</field>
             <operation>equals</operation>
             <value>Liked</value>
         </summaryFilterItems>
-        <summaryForeignKey>CommentVote__c.Comment__c</summaryForeignKey>
+        <summaryForeignKey>SocietyVote__c.Comment__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <type>Summary</type>
     </fields>
@@ -71,9 +73,9 @@
     <fields>
         <fullName>Parent__c</fullName>
         <label>Parent</label>
-        <referenceTo>Comment__c</referenceTo>
-        <relationshipLabel>Comments</relationshipLabel>
-        <relationshipName>Comments</relationshipName>
+        <referenceTo>SocietyComment__c</referenceTo>
+        <relationshipLabel>Society Comments</relationshipLabel>
+        <relationshipName>SocietyComments</relationshipName>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -88,7 +90,6 @@
         <fullName>Society__c</fullName>
         <label>Society</label>
         <referenceTo>Society__c</referenceTo>
-        <relationshipLabel>Comments</relationshipLabel>
         <relationshipName>Comments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <type>MasterDetail</type>
@@ -125,17 +126,17 @@
         </picklist>
         <type>Picklist</type>
     </fields>
-    <label>Comment</label>
+    <label>Society Comment</label>
     <nameField>
         <displayFormat>{0}</displayFormat>
         <label>Reference ID</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Comments</pluralLabel>
+    <pluralLabel>Society Comments</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
-        <fullName>Comment_TypeIsNotUpdated</fullName>
+        <fullName>SocietyComment_TypeIsNotUpdated</fullName>
         <active>true</active>
         <errorConditionFormula>AND(NOT(ISNEW()), ISCHANGED(Type__c))</errorConditionFormula>
         <errorDisplayField>Type__c</errorDisplayField>
