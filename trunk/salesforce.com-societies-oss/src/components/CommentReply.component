@@ -1,0 +1,4 @@
+<apex:component >
+    <apex:attribute name="comment" type="Comment__c" description="The Comment record" required="true" />
+    <c:Comment comment="{!comment}" />
+</apex:component>

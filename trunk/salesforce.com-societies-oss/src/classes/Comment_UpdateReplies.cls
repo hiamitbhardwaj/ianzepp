@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-trigger Comment_SetDepth on Comment__c (before insert) {
-    for(Comment__c comment : Trigger.new) {
-        if (comment.ParentDepth__c == null)
-            continue; // defaults to 0
-        comment.Depth__c = comment.ParentDepth__c + 1;
+public with sharing class Comment_UpdateReplies {
+    @future
+    public static void applyTo(Set<Id> commentIds) {
+    	// at some point, this method will query the ParentHierarchy__c field
+    	// to build a count of children replies, and then bulk update the parents.
     }
 }
