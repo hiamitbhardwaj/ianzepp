@@ -4,8 +4,8 @@
     <description>Societies Discussion Board</description>
     <enableReports>true</enableReports>
     <fields>
-        <fullName>Comment__c</fullName>
-        <label>Comment</label>
+        <fullName>SocietyComment__c</fullName>
+        <label>Society Comment</label>
         <referenceTo>SocietyComment__c</referenceTo>
         <relationshipLabel>Society Votes</relationshipLabel>
         <relationshipName>SocietyVotes</relationshipName>

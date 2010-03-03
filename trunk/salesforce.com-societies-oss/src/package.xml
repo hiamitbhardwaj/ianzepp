@@ -3,6 +3,22 @@
     <fullName>Societies Discussion Board %28OSS%29</fullName>
     <apiAccessLevel>Unrestricted</apiAccessLevel>
     <types>
+        <members>SocietyController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>SocietyComment</members>
+        <members>SocietyHeaderPanel</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>Society</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>SocietyComment_SetDepth</members>
+        <members>SocietyComment_SetParentHierarchy</members>
+        <members>SocietyComment_SetType</members>
         <members>Society_UpdateCombinedName</members>
         <name>ApexTrigger</name>
     </types>
@@ -23,21 +39,23 @@
         <members>SocietyComment__c.Society__c</members>
         <members>SocietyComment__c.Text__c</members>
         <members>SocietyComment__c.Type__c</members>
-        <members>SocietyManager__c.Society__c</members>
-        <members>SocietyVote__c.Comment__c</members>
+        <members>SocietyMember__c.Society__c</members>
+        <members>SocietyMember__c.Type__c</members>
+        <members>SocietyVote__c.SocietyComment__c</members>
         <members>SocietyVote__c.Society__c</members>
         <members>SocietyVote__c.Type__c</members>
         <members>Society__c.Account__c</members>
         <members>Society__c.CombinedName__c</members>
         <members>Society__c.Comments__c</members>
         <members>Society__c.Managers__c</members>
+        <members>Society__c.Members__c</members>
         <members>Society__c.Name__c</members>
         <members>Society__c.Type__c</members>
         <name>CustomField</name>
     </types>
     <types>
         <members>SocietyComment__c</members>
-        <members>SocietyManager__c</members>
+        <members>SocietyMember__c</members>
         <members>SocietyVote__c</members>
         <members>Society__c</members>
         <name>CustomObject</name>
@@ -48,7 +66,7 @@
     </types>
     <types>
         <members>SocietyComment__c-Society Comment Layout</members>
-        <members>SocietyManager__c-Society Manager Layout</members>
+        <members>SocietyMember__c-Society Member Layout</members>
         <members>SocietyVote__c-Society Vote Layout</members>
         <members>Society__c-Society Layout</members>
         <name>Layout</name>

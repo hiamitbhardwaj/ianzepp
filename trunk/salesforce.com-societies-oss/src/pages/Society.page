@@ -1,0 +1,9 @@
+<apex:page standardController="Society__c" extensions="SocietyController">
+    <c:SocietyHeaderPanel societyList="{!societyList}" />
+
+    <apex:sectionHeader title="{!$ObjectType.Society__c.Label}" subtitle="{!Society__c.Name__c}" />
+
+    <apex:repeat var="societyPost" value="{!societyPostList}">
+        <c:SocietyComment societyComment="{!societyPost}" /> 
+    </apex:repeat>
+</apex:page>
