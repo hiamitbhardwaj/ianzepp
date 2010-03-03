@@ -8,11 +8,6 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <members>Comment</members>
-        <members>CommentReply</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
         <members>Comment_SetDepth</members>
         <members>Comment_SetParentHierarchy</members>
         <members>Comment_SetType</members>
