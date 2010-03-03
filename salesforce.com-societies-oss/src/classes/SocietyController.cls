@@ -18,16 +18,49 @@
  */
 
 public with sharing class SocietyController {
-    // private vars
-    private ApexPages.StandardController controller;
+    public static final String PARAM_SOCIETY_ID = 'societyId';
+    public static final String PARAM_POST_ID = 'postId';
     
-    // SocietyComment.component treats this class as a controller
-    public SocietyController() {}
-
-    // Society.page treats this class as an extension
-    public SocietyController(ApexPages.StandardController controller) {
-        this.controller = controller;
-        this.selectedSociety = (Society__c) controller.getRecord();
+    public SocietyController() {
+        if (getParam(PARAM_SOCIETY_ID) != null) {
+            this.selectedSociety = [
+                select Account__r.Name
+                     , Account__r.OwnerId
+                     , Comments__c
+                     , Managers__c
+                     , Members__c
+                     , Name__c
+                     , Type__c
+                  from Society__c
+                 where Id = :getParam(PARAM_SOCIETY_ID)
+            ];
+        }
+        
+        if (getParam(PARAM_POST_ID) != null) {
+            this.selectedSocietyPost = [
+                select CreatedById
+                     , CreatedDate
+                     , Depth__c
+                     , Disliked__c
+                     , FormattedText__c
+                     , IsInlineEdit__c
+                     , Liked__c
+                     , Link__c
+                     , Parent__c
+                     , Score__c
+                     , Society__r.Name__c
+                     , Text__c
+                     , Type__c
+                     , CreatedBy.Name
+                     
+                     // Also select all of the votes the current user has made
+                     , (select Type__c
+                          from SocietyVotes__r
+                         where CreatedById = :UserInfo.getUserId()) 
+                  from SocietyComment__c
+                 where Id = :getParam(PARAM_POST_ID)
+            ];
+        }
     }
 
     //
@@ -61,6 +94,15 @@ public with sharing class SocietyController {
     //
 
     public SocietyComment__c selectedSocietyComment {
+        set;
+        get;
+    }
+
+    //
+    // Selected society comment (when replying)
+    //
+
+    public SocietyComment__c selectedSocietyCommentReply {
         set;
         get;
     }
@@ -101,9 +143,11 @@ public with sharing class SocietyController {
                 , CreatedDate
                 , Depth__c
                 , Disliked__c
+                , FormattedText__c
                 , IsInlineEdit__c
                 , Liked__c
                 , Link__c
+                , Parent__c
                 , Score__c
                 , Society__r.Name__c
                 , Text__c
@@ -168,6 +212,18 @@ public with sharing class SocietyController {
     }
 
     //
+    // Special handling to better format comment lines
+    //
+    
+    public List<String> getSocietyCommentParagraphs() {
+        if (selectedSocietyComment == null)
+            return new List<String>();
+        if (selectedSocietyComment.Text__c == null)
+            return new List<String>();
+    	return selectedSocietyComment.Text__c.split('\n');
+    }
+
+    //
     // Update the number of votes
     //
     
@@ -207,7 +263,7 @@ public with sharing class SocietyController {
         
         if (societyComment.Type__c == 'Post') {
             PageReference pageReference = System.Page.Society;
-            pageReference.getParameters().put('id', societyComment.Society__c);
+            pageReference.getParameters().put('societyId', societyComment.Society__c);
             pageReference.getParameters().put('postId', societyComment.Id);
             pageReference.setRedirect(true);
             return pageReference;
@@ -217,36 +273,34 @@ public with sharing class SocietyController {
             return null; // error?
         }
     }
-/*
-    public PageReference updateSocietyCommentReplyStarted() {
-        commentReply = new SocietyComment__c();
-        commentReply.Parent__c = getParam('commentId');
-        commentReply.IsInlineEdit__c = true;
+
+    public PageReference redirectToComments() {
+        PageReference pageReference = System.Page.Society;
+        pageReference.getParameters().put('societyId', getParam('societyId'));
+        pageReference.getParameters().put('postId', getParam('postId'));
+        pageReference.setRedirect(true);
+        return pageReference;
+    }
+
+    public PageReference updateReplyStarted() {
+        selectedSocietyCommentReply = new SocietyComment__c();
+        selectedSocietyCommentReply.Parent__c = getParam('societyCommentId');
+        selectedSocietyCommentReply.IsInlineEdit__c = true;
         return null;
     }
 
     public PageReference updateReplySaved() {
-        upsert commentReply;
-        commentReply = [
-           select CreatedById
-                , CreatedDate
-                , Depth__c
-                , Disliked__c
-                , IsInlineEdit__c
-                , Liked__c
-                , Link__c
-                , Score__c
-                , Text__c
-                , Type__c
-             from SocietyComment__c
-            where Id = :commentReply.Id
-        ];
-        return null;
+        upsert selectedSocietyCommentReply;
+
+        PageReference pageReference = ApexPages.currentPage();
+        pageReference.setAnchor(selectedSocietyCommentReply.Id);
+        pageReference.setRedirect(true);
+        return pageReference;
     }
 
     public PageReference updateReplyCanceled() {
-        commentReply = null;
+        selectedSocietyCommentReply = null;
         return null;
     }
-*/
+
 }

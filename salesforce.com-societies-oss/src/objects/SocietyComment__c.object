@@ -25,6 +25,13 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>FormattedText__c</fullName>
+        <label>Formatted Text</label>
+        <length>32000</length>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
         <fullName>IsInlineEdit__c</fullName>
         <defaultValue>false</defaultValue>
         <label>Is Inline Edit?</label>

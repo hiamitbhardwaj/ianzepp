@@ -57,6 +57,10 @@
                 <behavior>Readonly</behavior>
                 <field>Saved__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>FormattedText__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>

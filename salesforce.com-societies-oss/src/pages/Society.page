@@ -1,16 +1,48 @@
-<apex:page standardController="Society__c" extensions="SocietyController">
+<!-- 
+ * Societies Discussion Board (OSS)
+ *
+ * Copyright (C) 2009 - 2010, Ian Zepp <ian.zepp@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<apex:page controller="SocietyController" tabStyle="Society__c">
     <!-- Include JQuery resources -->
     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" />
     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" />
     <apex:includeScript value="{!URLFOR($Resource.JQueryTimeAgo)}" />
-    
-    <!-- Default section header -->
-    <apex:sectionHeader title="{!$ObjectType.Society__c.Label}" subtitle="{!Society__c.Name__c}" />
 
-    <!-- List of posts -->
-    <apex:repeat var="societyPost" value="{!societyPostList}">
-        <c:SocietyComment societyComment="{!societyPost}" /> 
-    </apex:repeat>
+    <!-- Default section header -->
+    <apex:sectionHeader title="{!$ObjectType.Society__c.Label}" />
+
+    <apex:form >
+        <!-- List of posts : Rendered for a society home page only -->
+        <apex:repeat var="societyPost" value="{!societyPostList}" rendered="{!AND(ISBLANK(selectedSocietyPost))}">
+            <c:SocietyComment societyComment="{!societyPost}" />
+        </apex:repeat>
+
+        <!-- Selected Post and comments : When specified -->
+        <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(selectedSocietyPost))}">
+            <c:SocietyComment societyComment="{!selectedSocietyPost}" />
+            <apex:outputPanel layout="block" style="margin-bottom: 3em;" />
+        </apex:outputPanel>
+
+        <!-- Show the related comments : When a post is specified -->
+        <apex:repeat var="societyComment" value="{!societyCommentList}" rendered="{!NOT(ISBLANK(selectedSocietyPost))}">
+            <c:SocietyComment societyComment="{!societyComment}" />
+        </apex:repeat>
+    </apex:form>
 
     <!-- Include the CSS -->
     <c:SocietyCSS />
