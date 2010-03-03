@@ -23,6 +23,12 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>IsInlineEdit__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Is Inline Edit?</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Liked__c</fullName>
         <label>Liked</label>
         <summaryFilterItems>
@@ -71,6 +77,14 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Score__c</fullName>
+        <defaultValue>0</defaultValue>
+        <label>Score</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
         <fullName>Society__c</fullName>
         <label>Society</label>
         <referenceTo>Society__c</referenceTo>
@@ -81,17 +95,11 @@
         <writeRequiresMasterRead>true</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>Summary__c</fullName>
-        <label>Summary</label>
-        <required>true</required>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Text__c</fullName>
         <label>Text</label>
         <length>32000</length>
-        <type>Html</type>
-        <visibleLines>25</visibleLines>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>Type__c</fullName>

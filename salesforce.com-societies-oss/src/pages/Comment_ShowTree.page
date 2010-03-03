@@ -1,4 +1,4 @@
-/**
+<!-- 
  * Societies Discussion Board (OSS)
  *
  * Copyright (C) 2009 - 2010, Ian Zepp <ian.zepp@gmail.com>
@@ -15,12 +15,11 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ *
+ -->
 
-trigger Comment_SetDepth on Comment__c (before insert) {
-    for(Comment__c comment : Trigger.new) {
-        if (comment.ParentDepth__c == null)
-            continue; // defaults to 0
-        comment.Depth__c = comment.ParentDepth__c + 1;
-    }
-}
+<apex:page standardController="Comment__c" extensions="Comment_ShowTree" showHeader="false" >
+    <apex:repeat var="comment" value="{!commentList}">
+        <c:Comment comment="{!comment}" />
+    </apex:repeat>
+</apex:page>
