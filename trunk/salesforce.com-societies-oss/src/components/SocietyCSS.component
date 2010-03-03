@@ -8,6 +8,10 @@
 
     <!-- Styling -->
     <style type="text/css">
+    .SocietyComment {
+        font: x-small verdana,arial,helvetica,sans-serif;
+    }
+
     .SocietyComment .Arrows {
         background: none repeat scroll 0 0 transparent;
         float: left;
@@ -49,6 +53,28 @@
         margin-bottom: 0.5em;
         opacity: 1;
         overflow: hidden;
+    }
+    
+    .SocietyComment .Links {
+        color: #aaaaaa;
+        font-weight: bold;
+    }
+    
+    .SocietyComment .Links .LinkWrapper {
+        padding-right: 0.5em;
+    }
+    
+    .SocietyComment .Links .Link  {
+        text-decoration: none;
+    }
+
+    .SocietyComment .Links .Link:hover  {
+        text-decoration: underline;
+    }
+    
+    .SocietyComment .CommentText .Paragraph {
+        padding: 0.2em 0em;
+        display: block;
     }
     </style>
 </apex:component>

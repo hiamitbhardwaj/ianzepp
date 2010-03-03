@@ -26,7 +26,7 @@
     <apex:variable var="isComment" value="{!OR(societyComment.Type__c == 'Comment', societyComment.Type__c == 'Reply')}" />
 
     <!-- Guts & Glory -->
-    <apex:form id="SocietyComment" styleClass="SocietyComment {!societyComment.Id}" style="margin-left: {!societyComment.Depth__c * 2}em;">
+    <apex:outputPanel id="SocietyComment" styleClass="SocietyComment {!societyComment.Id}" style="margin-left: {!societyComment.Depth__c * 2}em;">
         <!-- Parent anchor -->
         <apex:outputPanel id="Anchor" styleClass="Anchor" layout="inline">
             <a name="{!societyComment.Id}" />
@@ -62,7 +62,7 @@
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:commandLink>
         </apex:outputPanel>
-        
+
         <!-- Post :: Tagline -->
 
         <apex:outputPanel id="PostTagline" styleClass="PostTagline" layout="block" rendered="{!isPost}">
@@ -73,19 +73,19 @@
             </apex:outputText>
 
             <apex:outputText value=" by " />
-            
+
             <apex:outputLink value="/{!societyComment.CreatedBy.Id}">
                 <apex:outputText value="{!societyComment.CreatedBy.Name}" />
             </apex:outputLink>
-            
+
             <apex:outputText value=" to " />
-            
+
             <apex:outputLink value="/{!societyComment.Society__r.Id}">
                 <apex:outputText value="{!societyComment.Society__r.Name__c}" />
             </apex:outputLink>
         </apex:outputPanel>
 
-        <!-- Comment :: Tagline -->
+        <!-- Comment :: Tagline & Text -->
 
         <apex:outputPanel id="CommentTagline" styleClass="CommentTagline" layout="block" rendered="{!isComment}">
             <apex:outputText styleClass="Metadata" value="{0} - {1} points - {2}">
@@ -98,60 +98,75 @@
         <!-- Comment :: Text -->
 
         <apex:outputPanel id="CommentText" styleClass="CommentText" layout="block" rendered="{!isComment}">
-            <apex:outputText value="{!societyComment.Text__c}" />
+            <apex:repeat var="paragraphText" value="{!societyCommentParagraphs}">
+                <apex:outputText styleClass="Paragraph" value="{!paragraphText}" />
+            </apex:repeat>
         </apex:outputPanel>
 
         <!-- Buttons -->
 
-        <apex:outputPanel id="Buttons" styleClass="Buttons" layout="block">
+        <apex:outputPanel id="Links" styleClass="Links" layout="block">
             <!-- Number of comments : Rendered only for a main post summary -->
-            <apex:outputLink id="ButtonComments" styleClass="Button Comments" value="#" rendered="{!isPost}">
-                <apex:outputText styleClass="ActionText" value="{0} comments">
-                    <apex:param value="{!societyCommentCount}" />
-                </apex:outputText>
+            <apex:outputPanel styleClass="LinkWrapper" rendered="{!isPost}">
+                <apex:commandLink id="LinkCommentCount" styleClass="Link CommentCount" action="{!redirectToComments}">
+                    <apex:outputText styleClass="ActionText" value="{0} comments">
+                        <apex:param value="{!societyCommentCount}" />
+                    </apex:outputText>
 
-                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
-                <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
-            </apex:outputLink>
+                    <apex:param name="societyId" value="{!societyComment.Society__c}" />
+                    <apex:param name="postId" value="{!societyComment.Id}" />
+                </apex:commandLink>
+            </apex:outputPanel>
 
             <!-- Link to the parent comment : Rendered only for a reply-type comment -->
-            <apex:outputLink id="ButtonParentAnchor" styleClass="Button ParentAnchor" value="#{!societyComment.Parent__c}" rendered="{!AND(isComment, NOT(ISBLANK(societyComment.Parent__c)))}" />
+            <apex:outputPanel styleClass="LinkWrapper" rendered="{!AND(isComment, NOT(ISBLANK(societyComment.Parent__c)))}">
+                <apex:outputLink id="LinkParentAnchor" styleClass="Link ParentAnchor" value="#{!societyComment.Parent__c}" />
+            </apex:outputPanel>
 
-            <!-- Save this post or comment : Rendered only for a post -->
-            <apex:commandLink id="ButtonSave" styleClass="Button Saved" action="{!insertSocietyVoteSaved}" rerender="Buttons" rendered="{!isPost}">
-                <apex:outputText styleClass="ActionText" value="Save" />
-                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
-                <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
-            </apex:commandLink>
+            <!-- Save this post : Rendered only for a post -->
+            <apex:outputPanel styleClass="LinkWrapper" rendered="{!isPost}">
+                <apex:commandLink id="LinkSave" styleClass="Link Saved" action="{!insertSocietyVoteSaved}" rerender="Links">
+                    <apex:outputText styleClass="ActionText" value="Save" />
+                    <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
+                    <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
+                </apex:commandLink>
+            </apex:outputPanel>
 
             <!-- Report this post or comment : Rendered for everything -->
-            <apex:commandLink id="ButtonReported" styleClass="Button Reported" action="{!insertSocietyVoteReported}" rerender="Buttons">
-                <apex:outputText styleClass="ActionText" value="Report" />
-                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
-                <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
-            </apex:commandLink>
-
-            <!--
-            <apex:commandLink id="ButtonReply" styleClass="Button Reply" action="{!updateReplyStarted}" rerender="ReplyText">
-                <apex:outputText styleClass="ActionText" value="Reply" />
-                <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
-            </apex:commandLink>
--->
-        </apex:outputPanel>
-
-        <!-- Reply input box
-
-        <apex:outputPanel styleClass="ReplyText" layout="block">
-            <apex:outputPanel layout="block" rendered="{!AND(societyCommentReply.IsInlineEdit__c)}">
-                <apex:inputTextArea value="{!societyCommentReply.Text__c}" />
+            <apex:outputPanel styleClass="LinkWrapper">
+                <apex:commandLink id="LinkReported" styleClass="Link Reported" action="{!insertSocietyVoteReported}" rerender="Links">
+                    <apex:outputText styleClass="ActionText" value="Report" />
+                    <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
+                    <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
+                </apex:commandLink>
             </apex:outputPanel>
 
-            <apex:outputPanel layout="block" rendered="{!AND(societyCommentReply.IsInlineEdit__c)}">
-                <apex:commandButton value="Save" action="{!updateReplySaved}" rerender="SocietyComment" />
-                <apex:commandButton value="Cancel" action="{!updateReplyCanceled}" rerender="ReplyText" />
+            <!-- Reply to comment : rendered for everything -->
+            <apex:outputPanel styleClass="LinkWrapper">
+                <apex:commandLink id="LinkReply" styleClass="Link Reply" action="{!updateReplyStarted}" rerender="ReplyText" status="replyStatus">
+                    <apex:outputText styleClass="ActionText" value="Reply" />
+                    <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
+                    <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
+                </apex:commandLink>
             </apex:outputPanel>
+
+            <!-- Reply box -->
+            <apex:outputPanel styleClass="ReplyText" layout="block">
+                <apex:outputPanel layout="block" rendered="{!AND(selectedSocietyCommentReply.IsInlineEdit__c)}">
+                    <apex:inputTextArea value="{!selectedSocietyCommentReply.Text__c}" />
+                </apex:outputPanel>
+
+                <apex:outputPanel layout="block" rendered="{!AND(selectedSocietyCommentReply.IsInlineEdit__c)}">
+                    <apex:commandButton value="Save" action="{!updateReplySaved}" />
+                    <apex:commandButton value="Cancel" action="{!updateReplyCanceled}" rerender="ReplyText" />
+                </apex:outputPanel>
+            </apex:outputPanel>
+            
+            <apex:actionStatus id="replyStatus">
+                <apex:facet name="Start">
+                    <apex:image value="/img/loading.gif" />
+                </apex:facet>
+            </apex:actionStatus>
         </apex:outputPanel>
-        
-        -->
-    </apex:form>
+    </apex:outputPanel>
 </apex:component>
