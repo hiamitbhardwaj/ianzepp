@@ -7,9 +7,12 @@
     <!-- Default section header -->
     <apex:sectionHeader title="{!$ObjectType.Society__c.Label}" subtitle="{!Society__c.Name__c}" />
 
-    <!-- List of posts -->
-    <apex:repeat var="societyPost" value="{!societyPostList}">
-        <c:SocietyComment societyComment="{!societyPost}" /> 
+    <!-- Show the post -->
+    <c:SocietyComment societyComment="{!selectedSocietyPost}" />
+
+    <!-- Show the related comments -->
+    <apex:repeat var="societyComment" value="{!societyCommentList}">
+        <c:SocietyComment societyComment="{!societyComment}" /> 
     </apex:repeat>
 
     <!-- Include the CSS -->

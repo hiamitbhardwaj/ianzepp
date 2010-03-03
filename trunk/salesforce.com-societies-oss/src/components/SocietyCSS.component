@@ -1,0 +1,54 @@
+<apex:component >
+    <!-- Convert the date/timestamps -->
+    <script type="text/javascript" language="javascript">
+    $(document).ready(function() {
+        $("span.TimeAgo").timeago();
+    });
+    </script>
+
+    <!-- Styling -->
+    <style type="text/css">
+    .SocietyComment .Arrows {
+        background: none repeat scroll 0 0 transparent;
+        float: left;
+        font-size: small;
+        font-weight: bold;
+        margin-left: 7px;
+        margin-right: 4px;
+        overflow: hidden;
+        width: 5ex;
+    }
+    
+    .SocietyComment .Arrows .Arrow { 
+        background-repeat: no-repeat;
+        cursor: pointer;
+        display: block;
+        height: 14px;
+        margin: 2px auto 0;
+        width: 15px;
+    }
+    
+    .SocietyComment .Arrows .Liked { 
+        background-image: url(http://www.reddit.com/static/sprite.png?v=58016b0cc8a8edef30d185317ce306ad);
+        background-position: -4px -223px; 
+    }
+    
+    .SocietyComment .Arrows .Disliked { 
+        background-image: url(http://www.reddit.com/static/sprite.png?v=58016b0cc8a8edef30d185317ce306ad);
+        background-position: -4px -245px; 
+    }
+
+    .SocietyComment .Arrows .Score {
+        color: #C6C6C6;
+        text-align: center;
+    }
+    
+    .SocietyComment .PostSummary {
+        font-weight: normal;
+        font-size: medium;
+        margin-bottom: 0.5em;
+        opacity: 1;
+        overflow: hidden;
+    }
+    </style>
+</apex:component>
