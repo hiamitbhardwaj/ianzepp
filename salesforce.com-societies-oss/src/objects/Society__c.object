@@ -30,7 +30,19 @@
     <fields>
         <fullName>Managers__c</fullName>
         <label>Managers</label>
-        <summaryForeignKey>SocietyManager__c.Society__c</summaryForeignKey>
+        <summaryFilterItems>
+            <field>SocietyMember__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Manager</value>
+        </summaryFilterItems>
+        <summaryForeignKey>SocietyMember__c.Society__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Members__c</fullName>
+        <label>Members</label>
+        <summaryForeignKey>SocietyMember__c.Society__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <type>Summary</type>
     </fields>

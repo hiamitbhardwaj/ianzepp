@@ -14,7 +14,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Comment__c</field>
+                <field>SocietyComment__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>

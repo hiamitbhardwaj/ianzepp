@@ -20,7 +20,7 @@
             <operation>equals</operation>
             <value>Disliked</value>
         </summaryFilterItems>
-        <summaryForeignKey>SocietyVote__c.Comment__c</summaryForeignKey>
+        <summaryForeignKey>SocietyVote__c.SocietyComment__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <type>Summary</type>
     </fields>
@@ -38,7 +38,7 @@
             <operation>equals</operation>
             <value>Liked</value>
         </summaryFilterItems>
-        <summaryForeignKey>SocietyVote__c.Comment__c</summaryForeignKey>
+        <summaryForeignKey>SocietyVote__c.SocietyComment__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <type>Summary</type>
     </fields>
