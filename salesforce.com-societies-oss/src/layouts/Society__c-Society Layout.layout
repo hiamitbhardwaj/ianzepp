@@ -63,6 +63,7 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
+        <fields>NAME</fields>
         <fields>CREATEDBY_USER</fields>
         <fields>Text__c</fields>
         <fields>Type__c</fields>

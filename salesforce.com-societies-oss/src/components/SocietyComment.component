@@ -18,6 +18,7 @@
  -->
 
 <apex:component controller="SocietyController" allowDml="true">
+    <!-- Required and expected attributes -->
     <apex:attribute name="societyComment" type="SocietyComment__c" description="The SocietyComment record" required="true" assignTo="{!selectedSocietyComment}" />
 
     <!-- Cached Variables -->
@@ -33,65 +34,82 @@
 
         <!-- Voting links -->
 
-        <apex:outputPanel id="SocietyVoteArrows" styleClass="SocietyVoteArrows" layout="block">
-            <apex:commandLink id="ArrowLiked" styleClass="Arrow Liked" action="{!insertSocietyVoteLiked}" rerender="SocietyVoteArrows">
-                <apex:outputText styleClass="ActionText" value="Liked" />
-                <apex:outputText styleClass="Score" value="{!societyComment.Liked__c}" />
+        <apex:outputPanel id="Arrows" styleClass="Arrows" layout="block">
+            <!-- Up arrow -->
+            <apex:commandLink id="ArrowLiked" styleClass="Arrow Liked" action="{!insertSocietyVoteLiked}" rerender="Arrows">
+                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:commandLink>
 
-            <apex:commandLink id="ArrowDisliked" styleClass="Arrow Disliked" action="{!insertSocietyVoteDisliked}" rerender="VSocietyoteArrows">
-                <apex:outputText styleClass="ActionText" value="Disliked" />
-                <apex:outputText styleClass="Score" value="{!societyComment.Disliked__c}" />
+            <!-- Number of votes : Rendered ONLY for posts -->
+            <apex:outputPanel id="Score" styleClass="Score" layout="block" rendered="{!isPost}">
+                <apex:outputText value="{!TEXT(societyComment.Score__c)}" />
+            </apex:outputPanel>
+
+            <!-- Down arrow -->
+            <apex:commandLink id="ArrowDisliked" styleClass="Arrow Disliked" action="{!insertSocietyVoteDisliked}" rerender="Arrows">
+                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:commandLink>
         </apex:outputPanel>
 
-        <!-- Link & Summary : Rendered here ONLY for a post -->
+        <!-- Post :: Link & Summary -->
 
-        <apex:commandLink styleClass="PostLink" action="{!redirectToPostOrLink}" rendered="{!isPost}">
-            <apex:outputText styleClass="Summary" value="{!societyComment.Text__c}" /> 
-            <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
-        </apex:commandLink>
+        <apex:outputPanel id="PostSummary" styleClass="PostSummary" layout="block" rendered="{!isPost}">
+            <apex:commandLink id="PostLink" styleClass="Link" action="{!redirectToPostOrLink}">
+                <apex:outputText value="{!societyComment.Text__c}" />
+                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
+                <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
+            </apex:commandLink>
+        </apex:outputPanel>
+        
+        <!-- Post :: Tagline -->
 
-        <!-- Tagline -->
+        <apex:outputPanel id="PostTagline" styleClass="PostTagline" layout="block" rendered="{!isPost}">
+            <apex:outputText value="submitted " />
 
-        <apex:outputPanel styleClass="Tagline" layout="block">
-            <apex:outputLink value="#" styleClass="Author">
-                <apex:outputText value="{!societyComment.CreatedById}" />
-                <apex:param name="UserId" value="{!societyComment.CreatedById}" />
+            <apex:outputText styleClass="TimeAgo" value="{0,date,yyyy-MM-dd'T'HH:mm:ss'Z'}">
+                <apex:param value="{!societyComment.CreatedDate}" />
+            </apex:outputText>
+
+            <apex:outputText value=" by " />
+            
+            <apex:outputLink value="/{!societyComment.CreatedBy.Id}">
+                <apex:outputText value="{!societyComment.CreatedBy.Name}" />
             </apex:outputLink>
-
-            <apex:outputText styleClass="Score Liked" value="{0} points">
-                <apex:param value="{!societyComment.Liked__c}" />
-            </apex:outputText>
-
-            <apex:outputText styleClass="Score Actual" value="{0} points">
-                <apex:param value="{!societyComment.Score__c}" />
-            </apex:outputText>
-
-            <apex:outputText styleClass="Score Disliked" value="{0} points">
-                <apex:param value="{!societyComment.Disliked__c}" />
-            </apex:outputText>
-
-            <apex:outputText styleClass="Created" value="{!societyComment.CreatedDate}" />
+            
+            <apex:outputText value=" to " />
+            
+            <apex:outputLink value="/{!societyComment.Society__r.Id}">
+                <apex:outputText value="{!societyComment.Society__r.Name__c}" />
+            </apex:outputLink>
         </apex:outputPanel>
 
-        <!-- Text : Rendered here ONLY for a type of Comment or Reply -->
+        <!-- Comment :: Tagline -->
 
-        <apex:outputPanel styleClass="Text" layout="block" rendered="{!isComment}">
+        <apex:outputPanel id="CommentTagline" styleClass="CommentTagline" layout="block" rendered="{!isComment}">
+            <apex:outputText styleClass="Metadata" value="{0} - {1} points - {2}">
+                <apex:param value="{!societyComment.CreatedBy.Name}" />
+                <apex:param value="{!societyComment.Score__c}" />
+                <apex:param value="{!societyComment.CreatedDate}" />
+            </apex:outputText>
+        </apex:outputPanel>
+
+        <!-- Comment :: Text -->
+
+        <apex:outputPanel id="CommentText" styleClass="CommentText" layout="block" rendered="{!isComment}">
             <apex:outputText value="{!societyComment.Text__c}" />
         </apex:outputPanel>
 
         <!-- Buttons -->
 
-        <apex:outputPanel styleClass="Buttons" layout="block">
+        <apex:outputPanel id="Buttons" styleClass="Buttons" layout="block">
             <!-- Number of comments : Rendered only for a main post summary -->
             <apex:outputLink id="ButtonComments" styleClass="Button Comments" value="#" rendered="{!isPost}">
                 <apex:outputText styleClass="ActionText" value="{0} comments">
                     <apex:param value="{!societyCommentCount}" />
                 </apex:outputText>
-                
+
                 <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:outputLink>
@@ -102,16 +120,18 @@
             <!-- Save this post or comment : Rendered only for a post -->
             <apex:commandLink id="ButtonSave" styleClass="Button Saved" action="{!insertSocietyVoteSaved}" rerender="Buttons" rendered="{!isPost}">
                 <apex:outputText styleClass="ActionText" value="Save" />
+                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:commandLink>
 
             <!-- Report this post or comment : Rendered for everything -->
             <apex:commandLink id="ButtonReported" styleClass="Button Reported" action="{!insertSocietyVoteReported}" rerender="Buttons">
                 <apex:outputText styleClass="ActionText" value="Report" />
+                <apex:param name="SocietyId" value="{!societyComment.Society__c}" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />
             </apex:commandLink>
 
-<!--
+            <!--
             <apex:commandLink id="ButtonReply" styleClass="Button Reply" action="{!updateReplyStarted}" rerender="ReplyText">
                 <apex:outputText styleClass="ActionText" value="Reply" />
                 <apex:param name="SocietyCommentId" value="{!societyComment.Id}" />

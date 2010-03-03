@@ -79,6 +79,30 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Reported__c</fullName>
+        <label>Reported</label>
+        <summaryFilterItems>
+            <field>SocietyVote__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Reported</value>
+        </summaryFilterItems>
+        <summaryForeignKey>SocietyVote__c.SocietyComment__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Saved__c</fullName>
+        <label>Saved</label>
+        <summaryFilterItems>
+            <field>SocietyVote__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Saved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>SocietyVote__c.SocietyComment__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Score__c</fullName>
         <defaultValue>0</defaultValue>
         <label>Score</label>

@@ -88,14 +88,14 @@ public with sharing class SocietyController {
     //
     
     public List<SocietyComment__c> getSocietyPostList() {
-        return getSocietyCommentList(new List<String> { 'Post', 'Link' }, 0, 100);
+        return getSocietyCommentList(new List<String> { 'Post', 'Link' }, 100);
     }
     
     public List<SocietyComment__c> getSocietyCommentList() {
-        return getSocietyCommentList(new List<String> { 'Comment', 'Reply' }, 5, 1000);
+        return getSocietyCommentList(new List<String> { 'Comment', 'Reply' }, 1000);
     }
     
-    public List<SocietyComment__c> getSocietyCommentList(List<String> commentType, Integer maxDepth, Integer maxLimit) {
+    public List<SocietyComment__c> getSocietyCommentList(List<String> commentType, Integer maxLimit) {
         return [
            select CreatedById
                 , CreatedDate
@@ -105,28 +105,66 @@ public with sharing class SocietyController {
                 , Liked__c
                 , Link__c
                 , Score__c
+                , Society__r.Name__c
                 , Text__c
                 , Type__c
+                , CreatedBy.Name
+                
+                // Also select all of the votes the current user has made
+                , (select Type__c
+                     from SocietyVotes__r
+                    where CreatedById = :UserInfo.getUserId()) 
              from SocietyComment__c
             where Society__c = :selectedSociety.Id
               and Type__c in :commentType
-              and Depth__c < :maxDepth
             limit :maxLimit
         ];
     }
 
     //
-    // Returns the total number of comments under a parent post.
+    // Returns the total number of comments under a parent post or comment.
     //
 
     public Integer getSocietyCommentCount() {
         return [
            select COUNT()
              from SocietyComment__c
-            where Society__c = :selectedSociety.Id
-              and ParentHierarchy__c = :selectedSocietyPost.Id
+            where Society__c = :selectedSocietyComment.Society__c
+              and ParentHierarchy__c includes (:selectedSocietyComment.Id)
               and Type__c in ('Comment', 'Reply')
         ];
+    }
+
+    //
+    // Comment voting history / state
+    //
+    
+    public Boolean getIsVotedLiked() {
+        return getIsVoted('Liked');
+    }
+    
+    public Boolean getIsVotedDisliked() {
+        return getIsVoted('Disliked');
+    }
+    
+    public Boolean getIsVotedSaved() {
+        return getIsVoted('Saved');
+    }
+    
+    public Boolean getIsVotedReported() {
+        return getIsVoted('Reported');
+    }
+    
+    public Boolean getIsVoted(String voteType) {
+        if (selectedSocietyComment == null)
+            return false;
+        if (selectedSocietyComment.SocietyVotes__r == null)
+            return false;
+        if (selectedSocietyComment.SocietyVotes__r.size() == 0)
+            return false;
+        for(SocietyVote__c societyVote : selectedSocietyComment.SocietyVotes__r)
+            if (societyVote.Type__c == voteType) return true;
+        return false;
     }
 
     //
@@ -134,22 +172,26 @@ public with sharing class SocietyController {
     //
     
     public PageReference insertSocietyVoteLiked() {
-        insert new SocietyVote__c(SocietyComment__c = getParam('societyCommentId'), Type__c = 'Liked');
-        return null;
+        return insertSocietyVote('Liked');
     }
 
     public PageReference insertSocietyVoteDisliked() {
-        insert new SocietyVote__c(SocietyComment__c = getParam('societyCommentId'), Type__c = 'Disliked');
-        return null;
+        return insertSocietyVote('Disliked');
     }
     
     public PageReference insertSocietyVoteReported() {
-        insert new SocietyVote__c(SocietyComment__c = getParam('societyCommentId'), Type__c = 'Reported');
-        return null;
+        return insertSocietyVote('Reported');
     }
 
     public PageReference insertSocietyVoteSaved() {
-        insert new SocietyVote__c(SocietyComment__c = getParam('societyCommentId'), Type__c = 'Saved');
+        return insertSocietyVote('Saved');
+    }
+    
+    public PageReference insertSocietyVote(String voteType) {
+        insert new SocietyVote__c(
+            Society__c = getParam('societyId'),
+            SocietyComment__c = getParam('societyCommentId'), 
+            Type__c = voteType);
         return null;
     }
     
